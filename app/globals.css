@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 10%;
+}
+
+html,
+body {
+  background-color: #fafaf7;
+  color: theme("colors.buckeye.ink");
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-buckeye-scarlet focus-visible:ring-offset-2;
+  }
+}
+
+/* Print stylesheet for printable lesson handouts */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}
+
+/* Presentation mode — applied when the SlideDeck is in fullscreen.
+   Scales typography and chess boards up so the deck reads like slides. */
+[data-slidedeck-fullscreen] .prose h1,
+[data-slidedeck-fullscreen] .prose h2,
+[data-slidedeck-fullscreen] .prose h3 {
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+[data-slidedeck-fullscreen] .prose p,
+[data-slidedeck-fullscreen] .prose li,
+[data-slidedeck-fullscreen] .prose td,
+[data-slidedeck-fullscreen] .prose th {
+  font-size: 1.25rem;
+  line-height: 1.65;
+}
+[data-slidedeck-fullscreen] [data-testid="chessboard"] {
+  /* Override the inline max-width set by <ChessBoard> so the board
+     grows to fill the slide. min() keeps it from getting silly on
+     ultrawide displays. */
+  max-width: min(60vmin, 560px) !important;
+}

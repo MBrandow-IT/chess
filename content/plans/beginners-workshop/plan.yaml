@@ -1,0 +1,8 @@
+slug: beginners-workshop
+title: Beginners Workshop
+description: An 8-week introduction to chess for new players. We'll build it lesson-by-lesson as the workshop runs.
+age_group: Ages 7+
+order_idx: 1
+published: true
+order:
+  - 01-chess-basics

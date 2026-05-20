@@ -1,0 +1,211 @@
+<SlideDeck>
+  <Slide title="Welcome to chess!" subtitle="Lesson 1 — Chess Basics">
+    Chess is a game between two players. One plays the **white** army, the
+    other plays the **black** army.
+
+    Today we'll cover everything you need to play your first game:
+
+    - The **board** and how to set it up
+    - How each of the **six pieces** moves and captures
+
+    <ChessBoard fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" />
+  </Slide>
+
+  <Slide title="64 squares, two colours">
+    The board is **8 × 8 = 64 squares**, half light and half dark.
+
+    Two setup rules to remember:
+
+    - **"Light on right"** — the bottom-right corner is always a light square.
+    - **"Queen on her colour"** — the white queen starts on a light square,
+      the black queen on a dark square.
+
+    <ChessBoard fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" />
+  </Slide>
+
+  <Slide title="Files, ranks, and square names">
+    Columns are called **files** and use letters **a–h** (a on White's left).
+
+    Rows are called **ranks** and use numbers **1–8** (1 closest to White).
+
+    Combine them to name any square: the white king starts on **e1**, the
+    black king on **e8**, and White's favourite first move is to **e4**.
+
+    <ChessBoard
+      fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      showCoordinates={true}
+    />
+  </Slide>
+
+  <Slide title="The pawn (♟)">
+    Pawns move **forward one square**. On a pawn's very first move it may move
+    **two squares** if it likes.
+
+    Pawns **capture differently from how they move** — one square
+    **diagonally** forward. They can never go backwards.
+
+    <ChessBoard fen="8/8/8/8/8/8/4P3/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Pawn puzzle">
+    White to move. Use the pawn on **e4** to capture the black knight.
+
+    <Puzzle
+      fen="8/8/8/3n4/4P3/8/8/8 w - - 0 1"
+      solution={["exd5"]}
+      hint="Pawns capture one square diagonally forward."
+      title="Capture the knight"
+    />
+  </Slide>
+
+  <Slide title="The rook (♜)">
+    The rook moves any number of squares in a **straight line** — up, down,
+    left, or right. It can't jump over pieces.
+
+    To capture, it just lands on the enemy piece.
+
+    <ChessBoard fen="8/8/8/8/4R3/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="The bishop (♝)">
+    The bishop moves any number of squares **diagonally**. Each bishop stays
+    on its starting colour forever — light bishops always on light squares,
+    dark on dark.
+
+    <ChessBoard fen="8/8/8/8/3B4/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Rook + bishop puzzle">
+    White to move. The black bishop is on **a4** and undefended. Win it.
+
+    <Puzzle
+      fen="8/8/8/8/b7/8/8/R7 w - - 0 1"
+      solution={["Rxa4"]}
+      hint="Rooks slide in straight lines."
+      title="Take the bishop"
+    />
+  </Slide>
+
+  <Slide title="The knight (♞)">
+    The knight is the trickiest piece. It moves in an **L-shape**:
+    **two squares in one direction, then one square perpendicular** — like
+    a capital letter L.
+
+    The knight is the **only piece that can jump over others**. It always
+    lands on the opposite colour from the square it started on.
+
+    <ChessBoard fen="8/8/8/8/4N3/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Knight puzzle">
+    White to move. Use the knight on **f3** to capture the black pawn on
+    **e5**.
+
+    <Puzzle
+      fen="8/8/8/4p3/8/5N2/8/8 w - - 0 1"
+      solution={["Nxe5"]}
+      hint="Two squares one way, then one square at a right angle."
+      title="L-shaped capture"
+    />
+  </Slide>
+
+  <Slide title="The queen (♛)">
+    The queen is the strongest piece. She combines the rook and bishop:
+    any number of squares in a **straight line OR a diagonal**.
+
+    Like the rook and bishop, she can't jump.
+
+    <ChessBoard fen="8/8/8/8/3Q4/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="The king (♚)">
+    The king moves **one square in any direction** — straight or diagonal.
+
+    The king is the most important piece. You **can never lose your king** —
+    if it's attacked you have to deal with the threat (we'll see this in the
+    next lesson when we talk about <Term name="check">check</Term> and
+    <Term name="checkmate">checkmate</Term>).
+
+    <ChessBoard fen="8/8/8/8/4K3/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Recap — how every piece moves">
+    | Piece | Move | Capture |
+    |---|---|---|
+    | Pawn | Forward 1 (or 2 on first move) | Diagonally forward 1 |
+    | Rook | Straight lines, any distance | Same |
+    | Bishop | Diagonals, any distance | Same |
+    | Knight | "L" — 2 + 1, can jump | Same |
+    | Queen | Straight OR diagonal, any distance | Same |
+    | King | One square in any direction | Same |
+
+    You now know enough to play a full game! Next time we'll cover **check**,
+    **checkmate**, and the three weird rules: castling, en passant, and pawn
+    promotion.
+  </Slide>
+</SlideDeck>
+
+## Quiz preview
+
+These are the kinds of questions you'll see when we play the live quiz for
+this lesson:
+
+<KahootQuestion
+  id="basics-q1"
+  type="multiple-choice"
+  prompt="How many squares are on a chess board?"
+  choices={["32", "48", "64", "100"]}
+  correctChoice={2}
+  timeLimitSeconds={15}
+  basePoints={100}
+/>
+
+<KahootQuestion
+  id="basics-q2"
+  type="multiple-choice"
+  prompt="The white king starts on which square?"
+  choices={["d1", "e1", "d8", "e8"]}
+  correctChoice={1}
+  timeLimitSeconds={20}
+  basePoints={100}
+/>
+
+<KahootQuestion
+  id="basics-q3"
+  type="multiple-choice"
+  prompt="Which piece is the only one that can jump over other pieces?"
+  choices={["Bishop", "Rook", "Knight", "Queen"]}
+  correctChoice={2}
+  timeLimitSeconds={20}
+  basePoints={100}
+/>
+
+<KahootQuestion
+  id="basics-q4"
+  type="best-move"
+  prompt="White to move — capture the knight."
+  fen="8/8/8/3n4/4P3/8/8/8 w - - 0 1"
+  solution={["exd5"]}
+  timeLimitSeconds={20}
+  basePoints={100}
+/>
+
+<KahootQuestion
+  id="basics-q5"
+  type="best-move"
+  prompt="White to move — capture the bishop with the rook."
+  fen="8/8/8/8/b7/8/8/R7 w - - 0 1"
+  solution={["Rxa4"]}
+  timeLimitSeconds={25}
+  basePoints={100}
+/>
+
+<KahootQuestion
+  id="basics-q6"
+  type="best-move"
+  prompt="White to move — knight takes pawn."
+  fen="8/8/8/4p3/8/5N2/8/8 w - - 0 1"
+  solution={["Nxe5"]}
+  timeLimitSeconds={25}
+  basePoints={100}
+/>
