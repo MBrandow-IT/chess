@@ -1,10 +1,9 @@
 import "server-only";
-import { getLessonFile } from "@/lib/content";
-import { extractKahootQuestions } from "@/lib/mdx/extract-questions";
 import {
   createSupabaseAdminClient,
   createSupabaseServerClient,
 } from "@/lib/supabase/server";
+import type { QuestionType } from "@/lib/supabase/types";
 import { generatePin } from "./pin";
 
 export type StartQuizParams = {
@@ -17,12 +16,6 @@ export type StartedQuiz = {
   pin: string;
 };
 
-/**
- * Supabase JS rejects with `PostgrestError` (plain object, NOT an Error
- * subclass), so a bare `throw error` loses its message once it crosses the
- * catch boundary in `app/host/quizzes/new/page.tsx`. Wrap it in a real Error
- * with as much context as we can get.
- */
 function postgrestError(stage: string, e: unknown): Error {
   const obj = (e ?? {}) as {
     message?: string;
@@ -42,15 +35,14 @@ function postgrestError(stage: string, e: unknown): Error {
 }
 
 /**
- * Reads the lesson MDX, extracts every <KahootQuestion /> node, creates a new
- * `quizzes` row owned by the current admin, and snapshots the questions into
+ * Loads published lesson quiz questions from Supabase, creates a new `quizzes`
+ * row owned by the current admin, and snapshots the questions into
  * `quiz_questions`. Returns the new quiz id + PIN.
  */
 export async function startQuizFromLesson({
   planSlug,
   lessonSlug,
 }: StartQuizParams): Promise<StartedQuiz> {
-  // 1. authenticate
   const userClient = await createSupabaseServerClient();
   const { data: userData, error: userErr } = await userClient.auth.getUser();
   if (userErr || !userData.user) throw new Error("Not signed in");
@@ -59,17 +51,6 @@ export async function startQuizFromLesson({
   if (role !== "admin") throw new Error("Not authorized");
   const hostId = userData.user.id;
 
-  // 2. read MDX + extract questions
-  const lessonFile = await getLessonFile(planSlug, lessonSlug);
-  if (!lessonFile) throw new Error(`Lesson not found: ${planSlug}/${lessonSlug}`);
-  const questions = extractKahootQuestions(lessonFile.content);
-  if (questions.length === 0) {
-    throw new Error(
-      "This lesson has no <KahootQuestion /> blocks. Add some before starting a quiz.",
-    );
-  }
-
-  // 3. resolve lesson_id (may be null if sync-plans hasn't been run; that's okay)
   const admin = createSupabaseAdminClient();
   const { data: planRow, error: planLookupErr } = await admin
     .from("lesson_plans")
@@ -77,7 +58,16 @@ export async function startQuizFromLesson({
     .eq("slug", planSlug)
     .maybeSingle();
   if (planLookupErr) throw postgrestError("lookup lesson_plans", planLookupErr);
+
   let lessonId: string | null = null;
+  let questions: {
+    type: QuestionType;
+    prompt: string;
+    payload: Record<string, unknown>;
+    time_limit_seconds: number;
+    base_points: number;
+  }[] = [];
+
   if (planRow) {
     const { data: lessonRow, error: lessonLookupErr } = await admin
       .from("lessons")
@@ -87,9 +77,27 @@ export async function startQuizFromLesson({
       .maybeSingle();
     if (lessonLookupErr) throw postgrestError("lookup lessons", lessonLookupErr);
     lessonId = lessonRow?.id ?? null;
+
+    if (lessonId) {
+      const { data: catalog, error: catalogErr } = await admin
+        .from("lesson_quiz_questions")
+        .select("type, prompt, payload, time_limit_seconds, base_points")
+        .eq("lesson_id", lessonId)
+        .eq("published", true)
+        .order("order_idx", { ascending: true });
+      if (catalogErr) {
+        throw postgrestError("lookup lesson_quiz_questions", catalogErr);
+      }
+      questions = catalog ?? [];
+    }
   }
 
-  // 4. create the quiz with a unique PIN (retry a few times on collision)
+  if (questions.length === 0) {
+    throw new Error(
+      "No quiz questions for this lesson. Add them in the host editor under Edit quiz.",
+    );
+  }
+
   let pin = generatePin();
   let quizId: string | null = null;
   let lastInsertError: unknown = null;
@@ -123,24 +131,31 @@ export async function startQuizFromLesson({
     );
   }
 
-  // 5. snapshot the questions
-  const rows = questions.map((q, idx) => ({
-    quiz_id: quizId!,
-    idx,
-    type: q.type,
-    payload: {
-      prompt: q.prompt ?? null,
-      fen: q.fen ?? null,
-      choices: q.choices ?? null,
-      correctChoice: q.correctChoice ?? null,
-      solution: q.solution ?? null,
-    },
-    time_limit_seconds: q.timeLimitSeconds ?? 30,
-    base_points: q.basePoints ?? 100,
-  }));
+  const rows = questions.map((q, idx) => {
+    const payload = q.payload as {
+      fen?: string | null;
+      choices?: string[] | null;
+      correctChoice?: number | null;
+      solution?: string[] | null;
+    };
+    return {
+      quiz_id: quizId!,
+      idx,
+      type: q.type,
+      payload: {
+        prompt: q.prompt ?? null,
+        fen: payload.fen ?? null,
+        choices: payload.choices ?? null,
+        correctChoice: payload.correctChoice ?? null,
+        solution: payload.solution ?? null,
+      },
+      time_limit_seconds: q.time_limit_seconds ?? 30,
+      base_points: q.base_points ?? 100,
+    };
+  });
+
   const { error: qErr } = await admin.from("quiz_questions").insert(rows);
   if (qErr) {
-    // roll back the quiz so we don't leave orphans
     await admin.from("quizzes").delete().eq("id", quizId);
     throw postgrestError("insert quiz_questions", qErr);
   }

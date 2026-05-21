@@ -5,6 +5,11 @@
 
 export type QuizStatus = "lobby" | "question" | "reveal" | "ended";
 export type QuestionType = "multiple-choice" | "best-move" | "best-sequence";
+export type ContactCategory =
+  | "advice"
+  | "tutoring"
+  | "admin_access"
+  | "bug_report";
 
 export type LessonPlanRow = {
   id: string;
@@ -92,6 +97,30 @@ export type LessonPuzzleRow = {
   created_at: string;
 };
 
+export type LessonQuizQuestionRow = {
+  id: string;
+  lesson_id: string;
+  slug: string;
+  type: QuestionType;
+  prompt: string;
+  payload: Record<string, unknown>;
+  time_limit_seconds: number;
+  base_points: number;
+  order_idx: number;
+  published: boolean;
+  created_at: string;
+};
+
+export type ContactSubmissionRow = {
+  id: string;
+  category: ContactCategory;
+  name: string;
+  email: string;
+  message: string;
+  page_url: string | null;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -154,6 +183,26 @@ export type Database = {
         Update: Partial<LessonPuzzleRow>;
         Relationships: [];
       };
+      lesson_quiz_questions: {
+        Row: LessonQuizQuestionRow;
+        Insert: Partial<LessonQuizQuestionRow> &
+          Pick<
+            LessonQuizQuestionRow,
+            "lesson_id" | "slug" | "type" | "prompt" | "payload"
+          >;
+        Update: Partial<LessonQuizQuestionRow>;
+        Relationships: [];
+      };
+      contact_submissions: {
+        Row: ContactSubmissionRow;
+        Insert: Partial<ContactSubmissionRow> &
+          Pick<
+            ContactSubmissionRow,
+            "category" | "name" | "email" | "message"
+          >;
+        Update: Partial<ContactSubmissionRow>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -182,6 +231,7 @@ export type Database = {
     Enums: {
       quiz_status: QuizStatus;
       question_type: QuestionType;
+      contact_category: ContactCategory;
     };
   };
 };

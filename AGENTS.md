@@ -95,7 +95,8 @@ components/
   lesson/Collapsible.tsx   Generic collapsing card (used for "Quiz preview").
   lesson/PieceValue.tsx    "Worth N pts" chip used on piece-intro slides.
   lesson/Term.tsx          Tooltip term used inline in MDX.
-  lesson/KahootQuestion.tsx Quiz-preview block parsed from MDX at sync time.
+  lesson/KahootQuestion.tsx Legacy MDX quiz block (extractor still used in tests).
+  lesson/LessonQuizPreview.tsx DB-driven quiz preview on lesson pages.
   play/PlayerQuiz.tsx      The whole student-side quiz UI.
   brand/BuckeyeHeader.tsx  Global header (hidden on /play and /host).
   brand/BuckeyeFooter.tsx  Global footer (also hidden on /play and /host).
@@ -103,10 +104,13 @@ components/
 lib/
   chess/moves.ts           loadChess() + legalMovesFromFen() helpers.
   chess/scoring.ts         Mirrors submit_answer RPC's scoring formula.
+  chess/quiz-answer.ts     Client/server best-move answer validation (alternating lines).
   mdx/compile.ts           renderLessonMDX() — see §5.
   mdx/components.tsx       MDX component registry — see §5.
-  mdx/extract-questions.ts Parses <KahootQuestion> from MDX for db sync.
-  quiz/start.ts            Creates a quiz row + snapshots questions.
+  mdx/extract-questions.ts Legacy: parses `<KahootQuestion>` from MDX (tests only).
+  lesson-quiz-questions.ts Fetch helpers for `lesson_quiz_questions` catalog.
+  host/quiz-question-validation.ts Admin form validation for quiz questions.
+  quiz/start.ts            Creates a quiz row + snapshots questions from DB catalog.
   quiz/pin.ts              6-digit PIN generator.
   supabase/                Browser/server clients, types, RPC helper.
   sound.ts                 Tiny SFX player for moves/captures.
@@ -167,7 +171,7 @@ The MDX registry in `lib/mdx/components.tsx` exposes these globally:
 | `<Slide title="..." subtitle="...">` | One slide. |
 | `<ChessBoard fen="..." selectedSquare="e4" showLegalMoves />` | The board. See §6. |
 | `<Puzzle fen="..." solution={["exd5"]} hint="..." title="..." />` | Solve-a-line. |
-| `<KahootQuestion type="multiple-choice" ... />` | Quiz preview / live-quiz question source. |
+| `<KahootQuestion type="multiple-choice" ... />` | **Deprecated** in MDX — use host quiz editor instead. Still registered for legacy content. |
 | `<Term name="check">check</Term>` | Inline tooltip for chess vocabulary. |
 | `<Collapsible title="..." subtitle="..." defaultOpen={false}>` | Section that collapses; default closed. |
 | `<PieceValue piece="knight" />` | Inline "Worth 3 pts" chip; valid values: `pawn / knight / bishop / rook / queen / king`. |
@@ -207,6 +211,41 @@ API routes (admin-only): `POST/PATCH/DELETE /api/host/lesson-puzzles`.
 
 Schema lives in `0004_lesson_puzzles.sql`. `npm run sync` does **not** touch
 practice puzzles — the host editor is the sole write path.
+
+### 5.6 Live quiz questions (host editor → Supabase)
+
+**Live quiz** question banks live in Supabase `lesson_quiz_questions`, not in
+MDX. Author via **`/host/lessons/<plan>/<lesson>/quiz`**.
+
+Question types (v1):
+
+| Type | `payload` shape |
+|---|---|
+| `multiple-choice` | `{ "choices": string[], "correctChoice": number }` |
+| `best-move` | `{ "fen": string, "solution": string[] }` — full alternating line |
+
+For **`best-move`** puzzles with `solution.length > 1`, even-indexed SAN
+entries are what the student must play; odd-indexed entries are opponent replies
+that auto-play (same model as practice puzzles and `<Puzzle>`). On submit,
+`PlayerQuiz` sends `{ student_moves, wrong_attempts }`; `submit_answer` (see
+`0007_best_move_alternating.sql`) compares `student_moves` to the even-index
+solution entries. Single-move puzzles still accept legacy `{ san }`.
+
+Workflow:
+
+1. Sign in as admin → host dashboard → **Edit quiz** on a lesson.
+2. Add **multiple choice** (prompt, 2–4 choices, correct answer, timer, points)
+   or **chess puzzle** (board setup + alternating solution line via
+   `BoardEditor` + `SolutionRecorder`).
+3. **Start quiz** from the host dashboard snapshots published rows into
+   `quiz_questions` for that session (`lib/quiz/start.ts`).
+
+Lesson pages show a DB-driven preview via `<LessonQuizPreview>` (fetched server-side).
+
+API routes (admin-only): `POST/PATCH/DELETE /api/host/lesson-quiz-questions`.
+
+Schema: `0006_lesson_quiz_questions.sql`. Seed data for lesson 1 is in that
+migration; new lessons start empty until questions are added in the host UI.
 
 ---
 
@@ -342,6 +381,7 @@ same migration.
 | `/play` and `/play/[pin]` | Student-facing quiz. **Global header & footer hidden here** (see `BuckeyeHeader.tsx` / `BuckeyeFooter.tsx` hide list). |
 | `/host` and below | Instructor dashboard. Gated by `getCurrentUser()` returning `isAdmin === true`. **Global header & footer hidden here** too — host layout has its own thin toolbar. |
 | `/host/lessons/[plan]/[lesson]/puzzles` | Admin practice puzzle editor (list / create / edit). |
+| `/host/lessons/[plan]/[lesson]/quiz` | Admin live-quiz question editor (list / create / edit). |
 | `/admin/login` | Magic-link signin via Supabase. |
 | `/test` | Dev-only debug page showing the starting position. Safe to leave deployed. |
 | `/api/quizzes/...` | Route handlers wrapping the SQL RPCs. |

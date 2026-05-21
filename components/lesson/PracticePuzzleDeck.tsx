@@ -59,7 +59,7 @@ export function PracticePuzzleDeck({
             solution={current.solution}
             hint={current.hint ?? undefined}
             title={current.title}
-            onSolved={() => setSolved(true)}
+            onSolved={(_detail) => setSolved(true)}
           />
 
           {solved && hasNext ? (

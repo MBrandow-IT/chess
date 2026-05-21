@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Square } from "chess.js";
 import { ChessBoard } from "@/components/chess/ChessBoard";
+import { Puzzle, type PuzzleSolvedDetail } from "@/components/chess/Puzzle";
 import { loadChess } from "@/lib/chess/moves";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { scoreAnswer } from "@/lib/chess/scoring";
@@ -449,13 +450,18 @@ function QuestionPlay({
             }
           />
         ) : question.type === "best-move" ? (
-          <BestMove
+          <QuizChessPuzzle
             fen={payload.fen ?? "start"}
+            solution={payload.solution ?? []}
             disabled={!!result || submitting || remaining <= 0}
             wrongAttemptsRef={wrongAttemptsRef}
-            onAnswer={(san) =>
+            onAnswer={(detail) =>
               submit(
-                { san, wrong_attempts: wrongAttemptsRef.current },
+                {
+                  student_moves: detail.studentMoves,
+                  san: detail.studentMoves[0],
+                  wrong_attempts: detail.wrongAttempts,
+                },
                 elapsedMs,
               )
             }
@@ -527,52 +533,38 @@ function MultipleChoice({
   );
 }
 
-function BestMove({
+function QuizChessPuzzle({
   fen,
+  solution,
   disabled,
   wrongAttemptsRef,
   onAnswer,
 }: {
   fen: string;
+  solution: string[];
   disabled: boolean;
   wrongAttemptsRef: React.MutableRefObject<number>;
-  onAnswer: (san: string) => void;
+  onAnswer: (detail: PuzzleSolvedDetail) => void;
 }) {
-  const [position, setPosition] = useState(fen);
-  const [feedback, setFeedback] = useState<"wrong" | null>(null);
-
-  function onMove(from: Square, to: Square, piece: string): boolean {
-    if (disabled) return false;
-    const probe = loadChess(fen);
-    const promotion =
-      piece[1] === "P" && (to[1] === "8" || to[1] === "1") ? "q" : undefined;
-    try {
-      const move = probe.move({ from, to, promotion });
-      if (!move) return false;
-      onAnswer(move.san);
-      setPosition(probe.fen());
-      return true;
-    } catch {
-      wrongAttemptsRef.current += 1;
-      setFeedback("wrong");
-      setTimeout(() => setFeedback(null), 600);
-      return false;
-    }
+  if (solution.length === 0) {
+    return (
+      <p className="text-sm text-red-600">This question has no solution configured.</p>
+    );
   }
 
   return (
-    <div>
-      <ChessBoard
-        fen={position}
-        interactive={!disabled}
-        showLegalMoves
-        onMove={onMove}
-        maxWidth={420}
-      />
-      {feedback === "wrong" ? (
-        <p className="mt-2 text-center text-xs text-red-600">Illegal move</p>
-      ) : null}
-    </div>
+    <Puzzle
+      key={`${fen}-${solution.join(",")}`}
+      boardId="quiz-play"
+      fen={fen}
+      solution={solution}
+      allowReveal={false}
+      disabled={disabled}
+      onWrongAttemptsChange={(count) => {
+        wrongAttemptsRef.current = count;
+      }}
+      onSolved={onAnswer}
+    />
   );
 }
 

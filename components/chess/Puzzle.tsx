@@ -6,6 +6,11 @@ import { ChessBoard } from "./ChessBoard";
 import { loadChess } from "@/lib/chess/moves";
 import { sfx } from "@/lib/sound";
 
+export type PuzzleSolvedDetail = {
+  wrongAttempts: number;
+  studentMoves: string[];
+};
+
 export type PuzzleProps = {
   /** Starting position. */
   fen: string;
@@ -21,9 +26,13 @@ export type PuzzleProps = {
   /** Whether to auto-flip the board for the side-to-move. */
   autoFlip?: boolean;
   /** Called once when the puzzle is solved. */
-  onSolved?: () => void;
+  onSolved?: (detail: PuzzleSolvedDetail) => void;
   /** Unique id when multiple boards share one ChessboardDnDProvider. */
   boardId?: string;
+  /** When true, the board ignores input (e.g. after quiz answer submitted). */
+  disabled?: boolean;
+  /** Fired when wrong-attempt count changes (live quiz scoring preview). */
+  onWrongAttemptsChange?: (count: number) => void;
 };
 
 type Status = "idle" | "wrong" | "almost" | "solved";
@@ -37,6 +46,8 @@ export function Puzzle({
   autoFlip = true,
   onSolved,
   boardId,
+  disabled = false,
+  onWrongAttemptsChange,
 }: PuzzleProps) {
   const startFen = fen;
   const [position, setPosition] = useState(startFen);
@@ -48,6 +59,7 @@ export function Puzzle({
     null,
   );
   const [revealed, setRevealed] = useState(false);
+  const studentMovesRef = useRef<string[]>([]);
   const gameRef = useRef<Chess>(loadChess(startFen));
   const onSolvedRef = useRef(onSolved);
   onSolvedRef.current = onSolved;
@@ -63,8 +75,13 @@ export function Puzzle({
   const flipped = autoFlip && sideToMove === "b";
 
   useEffect(() => {
-    if (status === "solved") onSolvedRef.current?.();
-  }, [status]);
+    if (status === "solved") {
+      onSolvedRef.current?.({
+        wrongAttempts,
+        studentMoves: [...studentMovesRef.current],
+      });
+    }
+  }, [status, wrongAttempts]);
 
   function reset() {
     gameRef.current = loadChess(startFen);
@@ -72,13 +89,18 @@ export function Puzzle({
     setStepIdx(0);
     setStatus("idle");
     setWrongAttempts(0);
+    studentMovesRef.current = [];
     setShowHint(false);
     setLastMove(null);
     setRevealed(false);
   }
 
+  useEffect(() => {
+    onWrongAttemptsChange?.(wrongAttempts);
+  }, [wrongAttempts, onWrongAttemptsChange]);
+
   function tryMove(from: Square, to: Square, piece: string): boolean {
-    if (status === "solved" || revealed) return false;
+    if (disabled || status === "solved" || revealed) return false;
 
     const promotion = piece[1] === "P" && (to[1] === "8" || to[1] === "1")
       ? "q"
@@ -109,6 +131,9 @@ export function Puzzle({
     }
 
     gameRef.current.move({ from, to, promotion });
+    if (stepIdx % 2 === 0) {
+      studentMovesRef.current.push(attempted.san);
+    }
     setPosition(gameRef.current.fen());
     setLastMove({ from, to });
     if (attempted.captured) sfx.capture();
@@ -172,7 +197,7 @@ export function Puzzle({
       <ChessBoard
         boardId={boardId}
         fen={position}
-        interactive={status !== "solved" && !revealed}
+        interactive={!disabled && status !== "solved" && !revealed}
         showLegalMoves
         flipped={flipped}
         lastMove={lastMove}

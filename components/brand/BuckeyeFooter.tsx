@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 // Mirror the hide-list used by BuckeyeHeader so /play and /host stay
@@ -37,8 +38,14 @@ export function BuckeyeFooter() {
             For educational and classroom use. Chess pieces are public domain.
           </p>
         </div>
-        <div className="text-xs text-buckeye-gray">
-          &copy; {new Date().getFullYear()} Buckeye Chess Workshops
+        <div className="flex flex-col items-start gap-2 text-xs text-buckeye-gray sm:items-end">
+          <Link
+            href="/contact"
+            className="focus-ring rounded-md font-medium text-buckeye-scarlet underline-offset-2 hover:underline"
+          >
+            Contact
+          </Link>
+          <p>&copy; {new Date().getFullYear()} Buckeye Chess Workshops</p>
         </div>
       </div>
     </footer>

@@ -7,7 +7,9 @@ import {
   listPlans,
 } from "@/lib/content";
 import { renderLessonMDX } from "@/lib/mdx/compile";
+import { fetchLessonQuizQuestions } from "@/lib/lesson-quiz-questions";
 import { PrintButton } from "@/components/lesson/PrintButton";
+import { LessonQuizPreview } from "@/components/lesson/LessonQuizPreview";
 import { SoundToggle } from "@/components/lesson/SoundToggle";
 
 export async function generateStaticParams() {
@@ -53,6 +55,7 @@ export default async function LessonPage({
       : null;
 
   const content = await renderLessonMDX(file.content);
+  const quizQuestions = await fetchLessonQuizQuestions(planSlug, lessonSlug);
 
   return (
     <article className="container-page py-8">
@@ -93,6 +96,10 @@ export default async function LessonPage({
       </header>
 
       <div className="lesson-content">{content}</div>
+
+      <div className="no-print mt-8">
+        <LessonQuizPreview questions={quizQuestions} />
+      </div>
 
       <nav className="no-print mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-black/5 pt-6">
         {prev ? (
