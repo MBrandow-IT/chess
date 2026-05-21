@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlan, listLessons, listPlans } from "@/lib/content";
+import { fetchLessonScheduleMap } from "@/lib/events/queries";
+import { formatEventDate } from "@/lib/events/format";
+import { getCurrentUser } from "@/lib/supabase/auth";
+
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const plans = await listPlans();
@@ -27,6 +32,9 @@ export default async function PlanPage({
   if (!plan) notFound();
 
   const lessons = await listLessons(planSlug);
+  const user = await getCurrentUser();
+  const isAdmin = user?.isAdmin ?? false;
+  const scheduleMap = await fetchLessonScheduleMap(planSlug);
 
   return (
     <div className="container-page py-10">
@@ -37,12 +45,16 @@ export default async function PlanPage({
       <p className="mt-2 max-w-2xl text-buckeye-gray">{plan.description}</p>
 
       <ol className="mt-8 space-y-3">
-        {lessons.map((lesson, idx) => (
-          <li key={lesson.slug}>
-            <Link
-              href={`/plans/${planSlug}/${lesson.slug}`}
-              className="focus-ring flex items-center gap-4 rounded-xl border border-black/5 bg-white p-4 shadow-card transition hover:-translate-y-0.5 hover:shadow-lg"
-            >
+        {lessons.map((lesson, idx) => {
+          const schedule = isAdmin ? null : scheduleMap.get(lesson.slug);
+          const cardClassName =
+            "flex items-center gap-4 rounded-xl border border-black/5 bg-white p-4 shadow-card " +
+            (schedule
+              ? "opacity-90"
+              : "focus-ring transition hover:-translate-y-0.5 hover:shadow-lg");
+
+          const inner = (
+            <>
               <span className="grid h-10 w-10 flex-none place-items-center rounded-md bg-buckeye-cream font-display text-sm font-semibold text-buckeye-scarlet">
                 {String(idx + 1).padStart(2, "0")}
               </span>
@@ -53,13 +65,34 @@ export default async function PlanPage({
                 <span className="mt-0.5 block text-sm text-buckeye-gray">
                   {lesson.summary}
                 </span>
+                {schedule ? (
+                  <span className="mt-2 inline-block rounded-full bg-buckeye-cream px-2.5 py-0.5 text-xs font-medium text-buckeye-scarlet">
+                    Coming soon · {formatEventDate(schedule.unlockAt)}
+                  </span>
+                ) : null}
               </span>
-              <span aria-hidden className="text-buckeye-gray">
-                →
-              </span>
-            </Link>
-          </li>
-        ))}
+              {!schedule ? (
+                <span aria-hidden className="text-buckeye-gray">
+                  →
+                </span>
+              ) : null}
+            </>
+          );
+
+          return (
+            <li key={lesson.slug}>
+              {schedule ? (
+                <div className={cardClassName} aria-disabled="true">
+                  {inner}
+                </div>
+              ) : (
+                <Link href={`/plans/${planSlug}/${lesson.slug}`} className={cardClassName}>
+                  {inner}
+                </Link>
+              )}
+            </li>
+          );
+        })}
         {lessons.length === 0 ? (
           <li className="rounded-xl border border-dashed border-black/10 bg-white/60 p-8 text-center text-buckeye-gray">
             No lessons in this plan yet.

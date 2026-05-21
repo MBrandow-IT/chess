@@ -46,6 +46,10 @@ export default async function HostLayout({
             Instructor dashboard
           </Link>
           <span className="text-buckeye-gray">·</span>
+          <Link href="/host/events" className="text-buckeye-gray hover:underline">
+            Events
+          </Link>
+          <span className="text-buckeye-gray">·</span>
           <span className="text-buckeye-gray">{user.email}</span>
         </div>
         <form action="/auth/signout" method="post">

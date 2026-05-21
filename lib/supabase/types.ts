@@ -10,6 +10,8 @@ export type ContactCategory =
   | "tutoring"
   | "admin_access"
   | "bug_report";
+export type EventKind = "workshop" | "tournament" | "other";
+export type EventStatus = "scheduled" | "canceled";
 
 export type LessonPlanRow = {
   id: string;
@@ -121,6 +123,41 @@ export type ContactSubmissionRow = {
   created_at: string;
 };
 
+export type EventSeriesRow = {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  recurrence_weekdays: number[];
+  start_time: string;
+  end_time: string;
+  timezone: string;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type EventRow = {
+  id: string;
+  series_id: string | null;
+  title: string;
+  description: string;
+  location: string;
+  kind: EventKind;
+  featured: boolean;
+  signup_url: string | null;
+  starts_at: string;
+  ends_at: string;
+  status: EventStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+export type EventLessonRow = {
+  event_id: string;
+  lesson_id: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -203,6 +240,32 @@ export type Database = {
         Update: Partial<ContactSubmissionRow>;
         Relationships: [];
       };
+      event_series: {
+        Row: EventSeriesRow;
+        Insert: Partial<EventSeriesRow> &
+          Pick<
+            EventSeriesRow,
+            | "title"
+            | "recurrence_weekdays"
+            | "start_time"
+            | "end_time"
+          >;
+        Update: Partial<EventSeriesRow>;
+        Relationships: [];
+      };
+      events: {
+        Row: EventRow;
+        Insert: Partial<EventRow> &
+          Pick<EventRow, "title" | "starts_at" | "ends_at">;
+        Update: Partial<EventRow>;
+        Relationships: [];
+      };
+      event_lessons: {
+        Row: EventLessonRow;
+        Insert: EventLessonRow;
+        Update: Partial<EventLessonRow>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -232,6 +295,8 @@ export type Database = {
       quiz_status: QuizStatus;
       question_type: QuestionType;
       contact_category: ContactCategory;
+      event_kind: EventKind;
+      event_status: EventStatus;
     };
   };
 };

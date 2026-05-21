@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { listPlans, listLessons } from "@/lib/content";
+import { fetchLessonScheduleMap } from "@/lib/events/queries";
+import { formatEventDate } from "@/lib/events/format";
 
 export const metadata = { title: "Host dashboard" };
 
@@ -7,10 +9,11 @@ export default async function HostDashboardPage() {
   const plans = await listPlans();
 
   const planSections = await Promise.all(
-    plans.map(async (plan) => ({
-      plan,
-      lessons: await listLessons(plan.slug),
-    })),
+    plans.map(async (plan) => {
+      const lessons = await listLessons(plan.slug);
+      const scheduleMap = await fetchLessonScheduleMap(plan.slug);
+      return { plan, lessons, scheduleMap };
+    }),
   );
 
   return (
@@ -32,7 +35,7 @@ export default async function HostDashboardPage() {
         </p>
       ) : (
         <div className="space-y-8">
-          {planSections.map(({ plan, lessons }) => (
+          {planSections.map(({ plan, lessons, scheduleMap }) => (
             <section key={plan.slug}>
               <h2 className="font-display text-xl font-semibold">
                 {plan.title}
@@ -46,7 +49,9 @@ export default async function HostDashboardPage() {
                 </p>
               ) : (
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {lessons.map((lesson) => (
+                  {lessons.map((lesson) => {
+                    const schedule = scheduleMap.get(lesson.slug);
+                    return (
                     <li
                       key={lesson.slug}
                       className="flex items-center justify-between gap-3 rounded-xl border border-black/5 bg-white p-4 shadow-card"
@@ -57,6 +62,11 @@ export default async function HostDashboardPage() {
                         </p>
                         <p className="mt-0.5 text-xs text-buckeye-gray">
                           {lesson.summary}
+                        </p>
+                        <p className="mt-1 text-xs font-medium text-buckeye-scarlet">
+                          {schedule
+                            ? `Scheduled · ${formatEventDate(schedule.unlockAt)} (${schedule.eventTitle})`
+                            : "Live for students"}
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-1.5">
@@ -86,7 +96,8 @@ export default async function HostDashboardPage() {
                         </Link>
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               )}
             </section>

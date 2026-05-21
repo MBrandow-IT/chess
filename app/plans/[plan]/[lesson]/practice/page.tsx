@@ -8,6 +8,9 @@ import {
 } from "@/lib/content";
 import { fetchLessonPuzzles } from "@/lib/lesson-puzzles";
 import { PracticePuzzleDeck } from "@/components/lesson/PracticePuzzleDeck";
+import { getLessonAccess } from "@/lib/events/lesson-access";
+
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const plans = await listPlans();
@@ -46,6 +49,9 @@ export default async function PracticePage({
 
   const file = await getLessonFile(planSlug, lessonSlug);
   if (!file) notFound();
+
+  const { blocked } = await getLessonAccess(planSlug, lessonSlug);
+  if (blocked) notFound();
 
   const puzzles = await fetchLessonPuzzles(planSlug, lessonSlug);
 

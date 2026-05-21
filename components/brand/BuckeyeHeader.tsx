@@ -56,6 +56,12 @@ export function BuckeyeHeader() {
             <span className="hidden sm:inline">Lesson Plans</span>
           </Link>
           <Link
+            href="/events"
+            className="focus-ring rounded-md px-2 py-1.5 text-buckeye-ink hover:bg-black/5 sm:px-3 sm:py-2"
+          >
+            Events
+          </Link>
+          <Link
             href="/play"
             className="focus-ring rounded-md bg-buckeye-scarlet px-2 py-1.5 font-medium text-white hover:bg-red-700 sm:px-3 sm:py-2"
           >

@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { listPlans } from "@/lib/content";
+import { NextUpStrip } from "@/components/events/NextUpStrip";
+
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const plans = await listPlans();
@@ -35,6 +38,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <NextUpStrip />
 
       <section className="container-page py-12">
         <div className="mb-6 flex items-end justify-between">

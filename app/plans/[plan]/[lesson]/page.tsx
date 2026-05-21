@@ -11,6 +11,11 @@ import { fetchLessonQuizQuestions } from "@/lib/lesson-quiz-questions";
 import { PrintButton } from "@/components/lesson/PrintButton";
 import { LessonQuizPreview } from "@/components/lesson/LessonQuizPreview";
 import { SoundToggle } from "@/components/lesson/SoundToggle";
+import { getLessonAccess } from "@/lib/events/lesson-access";
+import { fetchLessonScheduleMap } from "@/lib/events/queries";
+import { formatEventDate } from "@/lib/events/format";
+
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const plans = await listPlans();
@@ -34,6 +39,28 @@ export async function generateMetadata({
   return { title: file?.meta.title ?? "Lesson" };
 }
 
+function findAdjacentLesson(
+  lessons: { slug: string; title: string }[],
+  currentSlug: string,
+  scheduleMap: Map<string, unknown | null>,
+  direction: "prev" | "next",
+) {
+  const idx = lessons.findIndex((lesson) => lesson.slug === currentSlug);
+  if (idx < 0) return null;
+
+  if (direction === "prev") {
+    for (let i = idx - 1; i >= 0; i -= 1) {
+      if (!scheduleMap.get(lessons[i].slug)) return lessons[i];
+    }
+    return null;
+  }
+
+  for (let i = idx + 1; i < lessons.length; i += 1) {
+    if (!scheduleMap.get(lessons[i].slug)) return lessons[i];
+  }
+  return null;
+}
+
 export default async function LessonPage({
   params,
 }: {
@@ -46,13 +73,20 @@ export default async function LessonPage({
   const file = await getLessonFile(planSlug, lessonSlug);
   if (!file) notFound();
 
+  const { isAdmin, schedule, blocked } = await getLessonAccess(
+    planSlug,
+    lessonSlug,
+  );
+  if (blocked) notFound();
+
   const lessons = await listLessons(planSlug);
+  const scheduleMap = await fetchLessonScheduleMap(planSlug);
+  const navScheduleMap = isAdmin
+    ? new Map<string, null>()
+    : scheduleMap;
   const currentIdx = lessons.findIndex((l) => l.slug === lessonSlug);
-  const prev = currentIdx > 0 ? lessons[currentIdx - 1] : null;
-  const next =
-    currentIdx >= 0 && currentIdx < lessons.length - 1
-      ? lessons[currentIdx + 1]
-      : null;
+  const prev = findAdjacentLesson(lessons, lessonSlug, navScheduleMap, "prev");
+  const next = findAdjacentLesson(lessons, lessonSlug, navScheduleMap, "next");
 
   const content = await renderLessonMDX(file.content);
   const quizQuestions = await fetchLessonQuizQuestions(planSlug, lessonSlug);
@@ -68,6 +102,13 @@ export default async function LessonPage({
           {plan.title}
         </Link>
       </nav>
+
+      {isAdmin && schedule ? (
+        <div className="no-print mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          Admin preview — this lesson is scheduled to go live on{" "}
+          {formatEventDate(schedule.unlockAt)} ({schedule.eventTitle}).
+        </div>
+      ) : null}
 
       <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
