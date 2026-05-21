@@ -38,12 +38,46 @@ body {
    load @tailwindcss/typography, so `.prose table` would otherwise be
    completely unstyled. Styled as a clean bordered grid à la documentation
    tables: thin gray lines around every cell, a darker rule under the
-   header, alternating row tint for scannability. */
-.prose table {
+   header, alternating row tint for scannability.
+
+   Tables are wrapped at the MDX layer by `ScrollableTable`
+   (`prose-table-scroll`), which lets the table keep its natural width while
+   the wrapper provides horizontal scroll on narrow screens. We therefore
+   use `min-width: 100%` (not `width: 100%`) so the table fills its
+   container when there's room but is free to grow past it when needed. */
+/* Horizontal-scroll container injected around every <table> by the
+   `rehypeWrapTables` plugin in lib/mdx/compile.ts. */
+.prose-table-scroll {
+  /* The wrapper is a block child of `.prose` that's always sized to its
+     parent — never to its own content — so `overflow-x: auto` reliably
+     creates an internal scrollbar instead of letting the table push the
+     page wider. `min-width: 0` defeats the `min-width: auto` default that
+     applies in any flex/grid ancestor. */
+  display: block;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  /* Subtle "there's more →" affordance — gradients fade the left/right
+     edges and a soft shadow appears only when there's content offscreen
+     in that direction (background-attachment: scroll). */
+  background:
+    linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)) left center
+      / 24px 100% no-repeat,
+    linear-gradient(to left, white 30%, rgba(255, 255, 255, 0)) right center
+      / 24px 100% no-repeat,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0))
+      left center / 12px 100% no-repeat,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0))
+      right center / 12px 100% no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.prose table {
+  min-width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin: 1.25rem 0;
   font-size: 0.95rem;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -60,6 +94,10 @@ body {
   border-right: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   vertical-align: top;
+  /* Keep cell content on a single line so the table's natural width
+     reflects the longest cell, which is what triggers the wrapper's
+     horizontal scroll on narrow viewports. */
+  white-space: nowrap;
 }
 .prose th {
   font-weight: 600;

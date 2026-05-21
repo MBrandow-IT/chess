@@ -172,23 +172,37 @@ export function SlideDeck({ children }: SlideDeckProps) {
       <div
         className={
           isFullscreen
-            ? "flex flex-1 items-center justify-center overflow-y-auto p-4 sm:p-8"
+            ? "flex flex-1 flex-col items-center overflow-y-auto p-4 sm:p-8"
             : ""
         }
       >
+        {/*
+          In fullscreen we use auto vertical margins on the card instead of
+          `items-center` on the parent. Reason: classic flexbox centering
+          pushes content above the scroll origin when the card is taller
+          than the viewport, hiding the top of long slides. `my-auto`
+          collapses to 0 when there's no spare room, so long slides scroll
+          cleanly from the top while short slides still feel centered.
+        */}
         <div
           className={
             "rounded-2xl border border-black/5 bg-white shadow-card " +
             (isFullscreen
-              ? "w-full max-w-5xl p-8 sm:p-12"
-              : "p-6 sm:p-8")
+              ? // No `overflow-hidden` here in fullscreen: it would create
+                // a clipping scroll context that prevents the outer
+                // overflow-y-auto wrapper from scrolling on mobile
+                // Chrome's fullscreen surface. The outer element is sized
+                // to the viewport, so a horizontal page scroll isn't
+                // reachable anyway.
+                "my-auto w-full max-w-5xl p-6 sm:p-12"
+              : // Non-fullscreen: clip horizontal overflow as a safety net
+                // so a wide markdown table can never push the page wider
+                // than its column. The table's own scroll wrapper still
+                // scrolls cleanly within the card.
+                "overflow-hidden p-6 sm:p-8")
           }
         >
-          <div
-            className={
-              isFullscreen ? "min-h-[60vh]" : "min-h-[320px]"
-            }
-          >
+          <div className={isFullscreen ? undefined : "min-h-[320px]"}>
             {slides[idx]}
           </div>
         </div>

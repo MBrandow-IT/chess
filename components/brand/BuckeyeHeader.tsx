@@ -21,10 +21,11 @@ export function BuckeyeHeader() {
 
   return (
     <header className="no-print sticky top-0 z-30 border-b border-black/5 bg-white/80 backdrop-blur">
-      <div className="container-page flex h-16 items-center justify-between">
+      <div className="container-page flex h-14 items-center justify-between gap-2 sm:h-16">
         <Link
           href="/"
-          className="focus-ring flex items-center gap-3 rounded-md px-1 py-1 text-buckeye-ink"
+          aria-label="Buckeye Chess Workshops home"
+          className="focus-ring flex items-center gap-2 rounded-md px-1 py-1 text-buckeye-ink sm:gap-3"
         >
           <span
             aria-hidden
@@ -34,8 +35,9 @@ export function BuckeyeHeader() {
               &#9812;
             </span>
           </span>
-          <span className="flex flex-col leading-tight">
-            <span className="font-display text-base font-semibold">
+          {/* Text label hides on mobile so the header doesn't crowd the nav. */}
+          <span className="hidden flex-col leading-tight sm:flex">
+            <span className="font-display text-sm font-semibold sm:text-base">
               Buckeye Chess Workshops
             </span>
             <span className="text-xs text-buckeye-gray">
@@ -44,18 +46,21 @@ export function BuckeyeHeader() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 text-sm">
+        <nav className="flex items-center gap-1 text-xs sm:text-sm">
           <Link
             href="/plans"
-            className="focus-ring rounded-md px-3 py-2 text-buckeye-ink hover:bg-black/5"
+            className="focus-ring rounded-md px-2 py-1.5 text-buckeye-ink hover:bg-black/5 sm:px-3 sm:py-2"
           >
-            Lesson Plans
+            {/* Shorter label on mobile to keep the bar from wrapping. */}
+            <span className="sm:hidden">Plans</span>
+            <span className="hidden sm:inline">Lesson Plans</span>
           </Link>
           <Link
             href="/play"
-            className="focus-ring rounded-md bg-buckeye-scarlet px-3 py-2 font-medium text-white hover:bg-red-700"
+            className="focus-ring rounded-md bg-buckeye-scarlet px-2 py-1.5 font-medium text-white hover:bg-red-700 sm:px-3 sm:py-2"
           >
-            Join a Quiz
+            <span className="sm:hidden">Join</span>
+            <span className="hidden sm:inline">Join a Quiz</span>
           </Link>
         </nav>
       </div>
