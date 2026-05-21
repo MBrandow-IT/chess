@@ -10,6 +10,12 @@ import {
   useState,
 } from "react";
 
+/**
+ * Query-string param used to deep-link / bookmark a specific slide. 1-indexed
+ * because the rest of the UI ("Slide 3 of 12") is 1-indexed too.
+ */
+const PAGE_PARAM = "page";
+
 export type SlideDeckProps = {
   children: React.ReactNode;
 };
@@ -20,6 +26,11 @@ export function SlideDeck({ children }: SlideDeckProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const total = slides.length;
+
+  // We skip the very first URL write so the deck doesn't immediately rewrite
+  // the URL on mount (which would race the URL-→-idx sync below and briefly
+  // strip `?page=N` out of the address bar before putting it back).
+  const skipNextUrlWrite = useRef(true);
 
   const next = useCallback(
     () => setIdx((i) => Math.min(total - 1, i + 1)),
@@ -69,6 +80,46 @@ export function SlideDeck({ children }: SlideDeckProps) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [next, prev, toggleFullscreen]);
+
+  // URL → slide index. Runs on mount (handles refresh / bookmark) and again
+  // on browser Back/Forward so popstate doesn't get out of sync with the UI.
+  // The next URL-write effect is skipped once so we don't immediately
+  // overwrite the param that just drove this navigation.
+  useEffect(() => {
+    function syncFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get(PAGE_PARAM);
+      const parsed = raw ? Number.parseInt(raw, 10) : NaN;
+      const target =
+        Number.isFinite(parsed) && parsed >= 1
+          ? Math.min(parsed - 1, total - 1)
+          : 0;
+      skipNextUrlWrite.current = true;
+      setIdx(target);
+    }
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, [total]);
+
+  // Slide index → URL. Uses replaceState so we don't pile up a history entry
+  // for every dot the user clicks; Back still leaves the lesson cleanly.
+  // `?page=1` is omitted on purpose — the bare URL means slide 1.
+  useEffect(() => {
+    if (skipNextUrlWrite.current) {
+      skipNextUrlWrite.current = false;
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    if (idx === 0) {
+      params.delete(PAGE_PARAM);
+    } else {
+      params.set(PAGE_PARAM, String(idx + 1));
+    }
+    const query = params.toString();
+    const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+    window.history.replaceState(null, "", nextUrl);
+  }, [idx]);
 
   if (total === 0) {
     return (

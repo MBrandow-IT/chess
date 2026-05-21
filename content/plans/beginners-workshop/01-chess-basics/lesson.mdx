@@ -44,7 +44,9 @@
     Pawns **capture differently from how they move** — one square
     **diagonally** forward. They can never go backwards.
 
-    <ChessBoard fen="8/8/8/8/8/8/4P3/8 w - - 0 1" />
+    <PieceValue piece="pawn" />
+
+    <ChessBoard fen="8/8/8/8/8/8/4P3/8 w - - 0 1" selectedSquare="e2" />
   </Slide>
 
   <Slide title="Pawn puzzle">
@@ -64,7 +66,9 @@
 
     To capture, it just lands on the enemy piece.
 
-    <ChessBoard fen="8/8/8/8/4R3/8/8/8 w - - 0 1" />
+    <PieceValue piece="rook" />
+
+    <ChessBoard fen="8/8/8/8/4R3/8/8/8 w - - 0 1" selectedSquare="e4" />
   </Slide>
 
   <Slide title="The bishop (♝)">
@@ -72,7 +76,9 @@
     on its starting colour forever — light bishops always on light squares,
     dark on dark.
 
-    <ChessBoard fen="8/8/8/8/3B4/8/8/8 w - - 0 1" />
+    <PieceValue piece="bishop" />
+
+    <ChessBoard fen="8/8/8/8/3B4/8/8/8 w - - 0 1" selectedSquare="d4" />
   </Slide>
 
   <Slide title="Rook + bishop puzzle">
@@ -94,7 +100,9 @@
     The knight is the **only piece that can jump over others**. It always
     lands on the opposite colour from the square it started on.
 
-    <ChessBoard fen="8/8/8/8/4N3/8/8/8 w - - 0 1" />
+    <PieceValue piece="knight" />
+
+    <ChessBoard fen="8/8/8/8/4N3/8/8/8 w - - 0 1" selectedSquare="e4" />
   </Slide>
 
   <Slide title="Knight puzzle">
@@ -115,7 +123,9 @@
 
     Like the rook and bishop, she can't jump.
 
-    <ChessBoard fen="8/8/8/8/3Q4/8/8/8 w - - 0 1" />
+    <PieceValue piece="queen" />
+
+    <ChessBoard fen="8/8/8/8/3Q4/8/8/8 w - - 0 1" selectedSquare="d4" />
   </Slide>
 
   <Slide title="The king (♚)">
@@ -126,22 +136,29 @@
     next lesson when we talk about <Term name="check">check</Term> and
     <Term name="checkmate">checkmate</Term>).
 
-    <ChessBoard fen="8/8/8/8/4K3/8/8/8 w - - 0 1" />
+    <PieceValue piece="king" />
+
+    <ChessBoard fen="8/8/8/8/4K3/8/8/8 w - - 0 1" selectedSquare="e4" />
   </Slide>
 
   <Slide title="Recap — how every piece moves">
-    | Piece | Move | Capture |
-    |---|---|---|
-    | Pawn | Forward 1 (or 2 on first move) | Diagonally forward 1 |
-    | Rook | Straight lines, any distance | Same |
-    | Bishop | Diagonals, any distance | Same |
-    | Knight | "L" — 2 + 1, can jump | Same |
-    | Queen | Straight OR diagonal, any distance | Same |
-    | King | One square in any direction | Same |
+    | Piece | Move | Capture | Worth |
+    |---|---|---|---|
+    | Pawn | Forward 1 (or 2 on first move) | Diagonally forward 1 | 1 |
+    | Knight | "L" — 2 + 1, can jump | Same | 3 |
+    | Bishop | Diagonals, any distance | Same | 3 |
+    | Rook | Straight lines, any distance | Same | 5 |
+    | Queen | Straight OR diagonal, any distance | Same | 9 |
+    | King | One square in any direction | Same | priceless |
 
-    You now know enough to play a full game! Next time we'll cover **check**,
-    **checkmate**, and the three weird rules: castling, en passant, and pawn
-    promotion.
+    Those **Worth** points are a quick way to know when a trade is good —
+    capturing a knight (3) with a pawn (1) is great; losing your queen (9)
+    for a bishop (3) is not. We'll dig into trades and material balance in
+    the next lesson.
+
+    You now know enough to play a full game! Next time we'll cover
+    **check**, **checkmate**, and the three weird rules: castling, en
+    passant, and pawn promotion.
   </Slide>
 </SlideDeck>
 

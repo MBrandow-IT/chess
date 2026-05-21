@@ -5,6 +5,7 @@ import { Slide } from "@/components/lesson/Slide";
 import { KahootQuestion } from "@/components/lesson/KahootQuestion";
 import { Term } from "@/components/lesson/Term";
 import { Collapsible } from "@/components/lesson/Collapsible";
+import { PieceValue } from "@/components/lesson/PieceValue";
 
 /** Components made available to every MDX lesson without imports. */
 export const mdxComponents = {
@@ -15,4 +16,5 @@ export const mdxComponents = {
   KahootQuestion,
   Term,
   Collapsible,
+  PieceValue,
 } as const;

@@ -36,14 +36,17 @@ body {
 
 /* Tables inside lesson slides (e.g. the recap on Lesson 1) — we don't
    load @tailwindcss/typography, so `.prose table` would otherwise be
-   completely unstyled. */
+   completely unstyled. Styled as a clean bordered grid à la documentation
+   tables: thin gray lines around every cell, a darker rule under the
+   header, alternating row tint for scannability. */
 .prose table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: 1.25rem 0;
   font-size: 0.95rem;
   background: white;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -53,19 +56,24 @@ body {
 .prose th,
 .prose td {
   text-align: left;
-  padding: 0.6rem 0.9rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.65rem 0.9rem;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   vertical-align: top;
 }
 .prose th {
   font-weight: 600;
   color: theme("colors.buckeye.ink");
+  border-bottom: 2px solid rgba(0, 0, 0, 0.14);
 }
-.prose tbody tr:last-child td {
+.prose tr > *:last-child {
+  border-right: none;
+}
+.prose tbody tr:last-child > td {
   border-bottom: none;
 }
-.prose tbody tr:nth-child(even) td {
-  background: rgba(0, 0, 0, 0.015);
+.prose tbody tr:nth-child(even) > td {
+  background: rgba(0, 0, 0, 0.02);
 }
 
 /* Presentation mode — applied when the SlideDeck is in fullscreen.

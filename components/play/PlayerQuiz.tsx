@@ -1,15 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Chess, type Square } from "chess.js";
+import { type Square } from "chess.js";
 import { ChessBoard } from "@/components/chess/ChessBoard";
-
-// Some teaching quiz FENs intentionally omit kings (e.g. piece-movement
-// drills). chess.js rejects such positions by default, so we always skip
-// validation when loading quiz FENs.
-function loadChess(fen: string): Chess {
-  return new Chess(fen, { skipValidation: true });
-}
+import { loadChess } from "@/lib/chess/moves";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { scoreAnswer } from "@/lib/chess/scoring";
 import { sfx } from "@/lib/sound";
@@ -571,6 +565,7 @@ function BestMove({
       <ChessBoard
         fen={position}
         interactive={!disabled}
+        showLegalMoves
         onMove={onMove}
         maxWidth={420}
       />
@@ -622,6 +617,7 @@ function BestSequence({
       <ChessBoard
         fen={position}
         interactive={!disabled}
+        showLegalMoves
         onMove={onMove}
         maxWidth={420}
       />

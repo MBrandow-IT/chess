@@ -3,15 +3,8 @@
 import { useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { ChessBoard } from "./ChessBoard";
+import { loadChess } from "@/lib/chess/moves";
 import { sfx } from "@/lib/sound";
-
-// Teaching puzzles often use stripped-down positions (e.g. just a pawn and a
-// knight) that don't satisfy chess.js's default FEN validation, which requires
-// both kings on the board. `skipValidation` lets us load these illustrative
-// positions while still using chess.js for move generation/SAN parsing.
-function loadChess(fen: string): Chess {
-  return new Chess(fen, { skipValidation: true });
-}
 
 export type PuzzleProps = {
   /** Starting position. */
@@ -167,6 +160,7 @@ export function Puzzle({
       <ChessBoard
         fen={position}
         interactive={status !== "solved" && !revealed}
+        showLegalMoves
         flipped={flipped}
         lastMove={lastMove}
         onMove={tryMove}
