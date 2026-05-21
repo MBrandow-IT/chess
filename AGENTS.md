@@ -78,8 +78,10 @@ app/
   layout.tsx               Root layout, mounts BuckeyeHeader/Footer.
   globals.css              All bespoke CSS (no @tailwindcss/typography!).
   page.tsx                 Marketing home.
-  plans/[plan]/[lesson]    SSG lesson renderer; uses lib/mdx/compile.ts.
-  host/                    Instructor dashboard (gated to admin role).
+  plans/[plan]/[lesson]           SSG lesson renderer; uses lib/mdx/compile.ts.
+  plans/[plan]/[lesson]/practice  Practice puzzle deck (reads lesson_puzzles).
+  host/                           Instructor dashboard (gated to admin role).
+    lessons/[plan]/[lesson]/puzzles  Practice puzzle editor (drag-drop + solution line).
   play/                    Anonymous student quiz join + play.
   api/quizzes/             Quiz lifecycle route handlers.
   test/page.tsx            Debug page — bare board at the starting position.
@@ -182,6 +184,29 @@ If a table looks unstyled, the slide's wrapper has lost its `prose` class
 1. Create `content/plans/<plan>/<lesson-folder>/lesson.mdx` + `lesson.yaml`.
 2. Update the parent `plan.yaml`'s `order:` array.
 3. Run `npm run sync` to upsert metadata into Supabase.
+
+### 5.5 Practice puzzles (host editor → Supabase)
+
+Slide `<Puzzle>` blocks are for **in-lesson teaching only**. The **practice
+pool** is stored in Supabase `lesson_puzzles` and authored via the host UI:
+
+**`/host/lessons/<plan>/<lesson>/puzzles`**
+
+Workflow:
+
+1. Sign in as admin → open the host dashboard → **Edit puzzles** on a lesson.
+2. **Step 1 — Set up the position:** drag pieces from the spare tray, set side
+   to move (White / Black). At most one king per color; kingless teaching
+   positions are fine.
+3. **Step 2 — Record solution:** play the full line on the board. Even-indexed
+   moves are what the student must find; odd-indexed moves are opponent replies
+   that auto-play during practice (same model as `<Puzzle>`).
+4. Save. Published puzzles appear on **`/plans/<plan>/<lesson>/practice`**.
+
+API routes (admin-only): `POST/PATCH/DELETE /api/host/lesson-puzzles`.
+
+Schema lives in `0004_lesson_puzzles.sql`. `npm run sync` does **not** touch
+practice puzzles — the host editor is the sole write path.
 
 ---
 
@@ -313,8 +338,10 @@ same migration.
 | `/` | Marketing home. Static. |
 | `/plans` | Lesson-plan list. Static. |
 | `/plans/[plan]/[lesson]` | SSG lesson page. |
+| `/plans/[plan]/[lesson]/practice` | Practice puzzles for a lesson (Supabase catalog). |
 | `/play` and `/play/[pin]` | Student-facing quiz. **Global header & footer hidden here** (see `BuckeyeHeader.tsx` / `BuckeyeFooter.tsx` hide list). |
 | `/host` and below | Instructor dashboard. Gated by `getCurrentUser()` returning `isAdmin === true`. **Global header & footer hidden here** too — host layout has its own thin toolbar. |
+| `/host/lessons/[plan]/[lesson]/puzzles` | Admin practice puzzle editor (list / create / edit). |
 | `/admin/login` | Magic-link signin via Supabase. |
 | `/test` | Dev-only debug page showing the starting position. Safe to leave deployed. |
 | `/api/quizzes/...` | Route handlers wrapping the SQL RPCs. |

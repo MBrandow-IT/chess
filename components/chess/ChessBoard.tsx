@@ -50,6 +50,8 @@ export type ChessBoardProps = {
   arrows?: Arrow[];
   /** Pixel width; if omitted the board is fluid up to maxWidth. */
   width?: number;
+  /** Unique id when multiple boards share one ChessboardDnDProvider. */
+  boardId?: string;
   /** Max width when fluid. */
   maxWidth?: number;
   /** Called when a piece is dropped (drag) or click-to-moved. Return true to keep the move. */
@@ -73,6 +75,7 @@ export function ChessBoard({
   lastMove = null,
   arrows = [],
   width,
+  boardId,
   maxWidth = 480,
   onMove,
   onSquareClick,
@@ -245,6 +248,7 @@ export function ChessBoard({
     >
       {measuredWidth ? (
         <Chessboard
+          id={boardId}
           position={fen}
           boardWidth={measuredWidth}
           boardOrientation={flipped ? "black" : "white"}

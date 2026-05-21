@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { Chess, type Square } from "chess.js";
 import { ChessBoard } from "./ChessBoard";
 import { loadChess } from "@/lib/chess/moves";
@@ -20,6 +20,10 @@ export type PuzzleProps = {
   allowReveal?: boolean;
   /** Whether to auto-flip the board for the side-to-move. */
   autoFlip?: boolean;
+  /** Called once when the puzzle is solved. */
+  onSolved?: () => void;
+  /** Unique id when multiple boards share one ChessboardDnDProvider. */
+  boardId?: string;
 };
 
 type Status = "idle" | "wrong" | "almost" | "solved";
@@ -31,6 +35,8 @@ export function Puzzle({
   title,
   allowReveal = true,
   autoFlip = true,
+  onSolved,
+  boardId,
 }: PuzzleProps) {
   const startFen = fen;
   const [position, setPosition] = useState(startFen);
@@ -43,6 +49,8 @@ export function Puzzle({
   );
   const [revealed, setRevealed] = useState(false);
   const gameRef = useRef<Chess>(loadChess(startFen));
+  const onSolvedRef = useRef(onSolved);
+  onSolvedRef.current = onSolved;
 
   const sideToMove = useMemo(() => {
     try {
@@ -53,6 +61,10 @@ export function Puzzle({
   }, [startFen]);
 
   const flipped = autoFlip && sideToMove === "b";
+
+  useEffect(() => {
+    if (status === "solved") onSolvedRef.current?.();
+  }, [status]);
 
   function reset() {
     gameRef.current = loadChess(startFen);
@@ -158,6 +170,7 @@ export function Puzzle({
       </div>
 
       <ChessBoard
+        boardId={boardId}
         fen={position}
         interactive={status !== "solved" && !revealed}
         showLegalMoves

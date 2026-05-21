@@ -81,6 +81,12 @@ export default async function LessonPage({
           ) : null}
         </div>
         <div className="no-print flex items-center gap-2">
+          <Link
+            href={`/plans/${planSlug}/${lessonSlug}/practice`}
+            className="focus-ring rounded-md border border-buckeye-scarlet/30 bg-buckeye-scarlet/5 px-3 py-1.5 text-sm font-medium text-buckeye-scarlet hover:bg-buckeye-scarlet/10"
+          >
+            Practice puzzles
+          </Link>
           <SoundToggle />
           <PrintButton />
         </div>

@@ -12,7 +12,7 @@
 import path from "node:path";
 import { config as loadEnv } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
-import { listPlans, listLessons } from "@/lib/content";
+import { listPlans, listLessons, lessonFolderName } from "@/lib/content";
 import type { Database } from "@/lib/supabase/types";
 
 loadEnv({ path: path.join(process.cwd(), ".env.local") });
@@ -66,6 +66,7 @@ async function main() {
     const desiredSlugs = new Set(lessons.map((l) => l.slug));
 
     for (const lesson of lessons) {
+      const folder = await lessonFolderName(plan.slug, lesson.slug);
       const { error: lessonErr } = await sb.from("lessons").upsert(
         {
           plan_id: planRow.id,
@@ -73,7 +74,7 @@ async function main() {
           title: lesson.title,
           summary: lesson.summary,
           order_idx: lesson.order_idx,
-          content_path: `content/plans/${plan.slug}/${slugFolderName(plan, lesson.slug)}/lesson.mdx`,
+          content_path: `content/plans/${plan.slug}/${folder ?? lesson.slug}/lesson.mdx`,
         },
         { onConflict: "plan_id,slug" },
       );
@@ -98,23 +99,12 @@ async function main() {
       }
     }
 
-    console.log(`OK (${lessons.length} lessons${stale.length ? `, pruned ${stale.length}` : ""})`);
+    console.log(
+      `OK (${lessons.length} lessons${stale.length ? `, pruned ${stale.length}` : ""})`,
+    );
   }
 
   console.log("Done.");
-}
-
-function slugFolderName(
-  plan: Awaited<ReturnType<typeof listPlans>>[number],
-  lessonSlug: string,
-): string {
-  // plan.order is an array of folder names like "01-chess-basics" — find the
-  // one whose lesson.yaml has the matching slug. Falls back to the slug itself.
-  for (const folder of plan.order ?? []) {
-    if (folder.endsWith(lessonSlug)) return folder;
-    if (folder.replace(/^\d+-/, "") === lessonSlug) return folder;
-  }
-  return lessonSlug;
 }
 
 main().catch((err) => {

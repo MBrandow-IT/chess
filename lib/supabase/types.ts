@@ -77,6 +77,21 @@ export type QuizAnswerRow = {
   created_at: string;
 };
 
+export type LessonPuzzleRow = {
+  id: string;
+  lesson_id: string;
+  slug: string;
+  title: string;
+  fen: string;
+  solution: string[];
+  hint: string | null;
+  themes: string[];
+  difficulty: string | null;
+  order_idx: number;
+  published: boolean;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -127,6 +142,16 @@ export type Database = {
             | "points_awarded"
           >;
         Update: Partial<QuizAnswerRow>;
+        Relationships: [];
+      };
+      lesson_puzzles: {
+        Row: LessonPuzzleRow;
+        Insert: Partial<LessonPuzzleRow> &
+          Pick<
+            LessonPuzzleRow,
+            "lesson_id" | "slug" | "fen" | "solution"
+          >;
+        Update: Partial<LessonPuzzleRow>;
         Relationships: [];
       };
     };

@@ -29,6 +29,23 @@ export type LessonFile = {
   filepath: string;
 };
 
+/** One row from `puzzles.yaml` (stable `id` becomes the DB slug). */
+export type LessonPuzzleMeta = {
+  id: string;
+  title: string;
+  fen: string;
+  solution: string[];
+  hint?: string;
+  themes?: string[];
+  difficulty?: string;
+  order_idx?: number;
+  published?: boolean;
+};
+
+export type LessonPuzzlesFile = {
+  puzzles: LessonPuzzleMeta[];
+};
+
 const CONTENT_ROOT = path.join(process.cwd(), "content", "plans");
 
 async function pathExists(p: string): Promise<boolean> {
@@ -134,4 +151,43 @@ export async function listAllLessonsWithContent(
     out.push({ meta, content, filepath: mdxPath });
   }
   return out.sort((a, b) => a.meta.order_idx - b.meta.order_idx);
+}
+
+/** Resolve the on-disk folder name for a lesson slug within a plan. */
+export async function lessonFolderName(
+  planSlug: string,
+  lessonSlug: string,
+): Promise<string | null> {
+  const plan = await getPlan(planSlug);
+  if (!plan) return null;
+
+  const planDir = path.join(CONTENT_ROOT, planSlug);
+  if (!(await pathExists(planDir))) return null;
+
+  for (const folder of plan.order ?? []) {
+    if (folder.endsWith(lessonSlug)) return folder;
+    if (folder.replace(/^\d+-/, "") === lessonSlug) return folder;
+  }
+
+  const entries = await fs.readdir(planDir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const meta = await readYaml<LessonMeta>(
+      path.join(planDir, entry.name, "lesson.yaml"),
+    );
+    if (meta?.slug === lessonSlug) return entry.name;
+  }
+
+  return lessonSlug;
+}
+
+export async function getLessonPuzzlesFile(
+  planSlug: string,
+  lessonSlug: string,
+): Promise<LessonPuzzlesFile | null> {
+  const folder = await lessonFolderName(planSlug, lessonSlug);
+  if (!folder) return null;
+
+  const puzzlesPath = path.join(CONTENT_ROOT, planSlug, folder, "puzzles.yaml");
+  return readYaml<LessonPuzzlesFile>(puzzlesPath);
 }
