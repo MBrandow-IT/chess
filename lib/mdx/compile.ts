@@ -1,4 +1,5 @@
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { mdxComponents } from "./components";
 
 /**
@@ -22,7 +23,9 @@ export async function renderLessonMDX(source: string) {
       parseFrontmatter: false,
       blockJS: false,
       mdxOptions: {
-        remarkPlugins: [],
+        // GFM extends standard markdown with tables, strikethrough, task lists,
+        // and autolinks — lesson authors expect those to "just work".
+        remarkPlugins: [remarkGfm],
         rehypePlugins: [],
       },
     },

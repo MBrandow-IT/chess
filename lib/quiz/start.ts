@@ -18,6 +18,30 @@ export type StartedQuiz = {
 };
 
 /**
+ * Supabase JS rejects with `PostgrestError` (plain object, NOT an Error
+ * subclass), so a bare `throw error` loses its message once it crosses the
+ * catch boundary in `app/host/quizzes/new/page.tsx`. Wrap it in a real Error
+ * with as much context as we can get.
+ */
+function postgrestError(stage: string, e: unknown): Error {
+  const obj = (e ?? {}) as {
+    message?: string;
+    code?: string;
+    details?: string;
+    hint?: string;
+  };
+  const parts = [
+    `[${stage}]`,
+    obj.message ?? "unknown supabase error",
+    obj.code ? `(code: ${obj.code})` : "",
+    obj.hint ? `— hint: ${obj.hint}` : "",
+  ].filter(Boolean);
+  const err = new Error(parts.join(" "));
+  console.error("[startQuizFromLesson]", stage, e);
+  return err;
+}
+
+/**
  * Reads the lesson MDX, extracts every <KahootQuestion /> node, creates a new
  * `quizzes` row owned by the current admin, and snapshots the questions into
  * `quiz_questions`. Returns the new quiz id + PIN.
@@ -47,25 +71,28 @@ export async function startQuizFromLesson({
 
   // 3. resolve lesson_id (may be null if sync-plans hasn't been run; that's okay)
   const admin = createSupabaseAdminClient();
-  const { data: planRow } = await admin
+  const { data: planRow, error: planLookupErr } = await admin
     .from("lesson_plans")
     .select("id")
     .eq("slug", planSlug)
     .maybeSingle();
+  if (planLookupErr) throw postgrestError("lookup lesson_plans", planLookupErr);
   let lessonId: string | null = null;
   if (planRow) {
-    const { data: lessonRow } = await admin
+    const { data: lessonRow, error: lessonLookupErr } = await admin
       .from("lessons")
       .select("id")
       .eq("plan_id", planRow.id)
       .eq("slug", lessonSlug)
       .maybeSingle();
+    if (lessonLookupErr) throw postgrestError("lookup lessons", lessonLookupErr);
     lessonId = lessonRow?.id ?? null;
   }
 
   // 4. create the quiz with a unique PIN (retry a few times on collision)
   let pin = generatePin();
   let quizId: string | null = null;
+  let lastInsertError: unknown = null;
   for (let attempt = 0; attempt < 5; attempt++) {
     const { data, error } = await admin
       .from("quizzes")
@@ -83,10 +110,18 @@ export async function startQuizFromLesson({
       pin = data.pin;
       break;
     }
-    if (error && !/duplicate key/i.test(error.message)) throw error;
+    lastInsertError = error;
+    if (error && !/duplicate key/i.test(error.message)) {
+      throw postgrestError("insert quizzes", error);
+    }
     pin = generatePin();
   }
-  if (!quizId) throw new Error("Could not allocate a unique PIN. Try again.");
+  if (!quizId) {
+    throw postgrestError(
+      "allocate unique PIN",
+      lastInsertError ?? { message: "5 collisions in a row — try again." },
+    );
+  }
 
   // 5. snapshot the questions
   const rows = questions.map((q, idx) => ({
@@ -107,7 +142,7 @@ export async function startQuizFromLesson({
   if (qErr) {
     // roll back the quiz so we don't leave orphans
     await admin.from("quizzes").delete().eq("id", quizId);
-    throw qErr;
+    throw postgrestError("insert quiz_questions", qErr);
   }
 
   return { id: quizId, pin };

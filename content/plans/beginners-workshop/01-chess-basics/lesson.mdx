@@ -145,67 +145,67 @@
   </Slide>
 </SlideDeck>
 
-## Quiz preview
+<Collapsible
+  title="Quiz preview"
+  subtitle="These are the kinds of questions you'll see when we play the live quiz for this lesson."
+>
+  <KahootQuestion
+    id="basics-q1"
+    type="multiple-choice"
+    prompt="How many squares are on a chess board?"
+    choices={["32", "48", "64", "100"]}
+    correctChoice={2}
+    timeLimitSeconds={15}
+    basePoints={100}
+  />
 
-These are the kinds of questions you'll see when we play the live quiz for
-this lesson:
+  <KahootQuestion
+    id="basics-q2"
+    type="multiple-choice"
+    prompt="The white king starts on which square?"
+    choices={["d1", "e1", "d8", "e8"]}
+    correctChoice={1}
+    timeLimitSeconds={20}
+    basePoints={100}
+  />
 
-<KahootQuestion
-  id="basics-q1"
-  type="multiple-choice"
-  prompt="How many squares are on a chess board?"
-  choices={["32", "48", "64", "100"]}
-  correctChoice={2}
-  timeLimitSeconds={15}
-  basePoints={100}
-/>
+  <KahootQuestion
+    id="basics-q3"
+    type="multiple-choice"
+    prompt="Which piece is the only one that can jump over other pieces?"
+    choices={["Bishop", "Rook", "Knight", "Queen"]}
+    correctChoice={2}
+    timeLimitSeconds={20}
+    basePoints={100}
+  />
 
-<KahootQuestion
-  id="basics-q2"
-  type="multiple-choice"
-  prompt="The white king starts on which square?"
-  choices={["d1", "e1", "d8", "e8"]}
-  correctChoice={1}
-  timeLimitSeconds={20}
-  basePoints={100}
-/>
+  <KahootQuestion
+    id="basics-q4"
+    type="best-move"
+    prompt="White to move — capture the knight."
+    fen="8/8/8/3n4/4P3/8/8/8 w - - 0 1"
+    solution={["exd5"]}
+    timeLimitSeconds={20}
+    basePoints={100}
+  />
 
-<KahootQuestion
-  id="basics-q3"
-  type="multiple-choice"
-  prompt="Which piece is the only one that can jump over other pieces?"
-  choices={["Bishop", "Rook", "Knight", "Queen"]}
-  correctChoice={2}
-  timeLimitSeconds={20}
-  basePoints={100}
-/>
+  <KahootQuestion
+    id="basics-q5"
+    type="best-move"
+    prompt="White to move — capture the bishop with the rook."
+    fen="8/8/8/8/b7/8/8/R7 w - - 0 1"
+    solution={["Rxa4"]}
+    timeLimitSeconds={25}
+    basePoints={100}
+  />
 
-<KahootQuestion
-  id="basics-q4"
-  type="best-move"
-  prompt="White to move — capture the knight."
-  fen="8/8/8/3n4/4P3/8/8/8 w - - 0 1"
-  solution={["exd5"]}
-  timeLimitSeconds={20}
-  basePoints={100}
-/>
-
-<KahootQuestion
-  id="basics-q5"
-  type="best-move"
-  prompt="White to move — capture the bishop with the rook."
-  fen="8/8/8/8/b7/8/8/R7 w - - 0 1"
-  solution={["Rxa4"]}
-  timeLimitSeconds={25}
-  basePoints={100}
-/>
-
-<KahootQuestion
-  id="basics-q6"
-  type="best-move"
-  prompt="White to move — knight takes pawn."
-  fen="8/8/8/4p3/8/5N2/8/8 w - - 0 1"
-  solution={["Nxe5"]}
-  timeLimitSeconds={25}
-  basePoints={100}
-/>
+  <KahootQuestion
+    id="basics-q6"
+    type="best-move"
+    prompt="White to move — knight takes pawn."
+    fen="8/8/8/4p3/8/5N2/8/8 w - - 0 1"
+    solution={["Nxe5"]}
+    timeLimitSeconds={25}
+    basePoints={100}
+  />
+</Collapsible>

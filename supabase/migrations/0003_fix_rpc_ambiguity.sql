@@ -1,13 +1,26 @@
 -- =====================================================================
--- RPCs (security-definer) used by anonymous players & the host
+-- Fix: ambiguous column references in public.join_quiz and
+-- public.submit_answer
+--
+-- The previous definitions (0002_rpcs.sql) declared OUT columns via
+-- RETURNS TABLE whose names collided with real columns on the queried
+-- tables:
+--
+--   join_quiz       → OUT (quiz_id, session_token)  vs quizzes/quiz_players
+--   submit_answer   → OUT (total_score)             vs quiz_players
+--
+-- PostgreSQL's default plpgsql behaviour is `#variable_conflict error`,
+-- so any bare reference like `where quiz_id = v_quiz_id`,
+-- `returning session_token into v_token`, or
+-- `set total_score = total_score + v_points` raised:
+--
+--   ERROR: column reference "<name>" is ambiguous
+--
+-- These re-definitions table-qualify every column reference inside the
+-- function bodies. Both use CREATE OR REPLACE so this migration is a
+-- safe no-op against databases that already have the corrected version.
 -- =====================================================================
 
--- ---------------------------------------------------------------------
--- join_quiz(pin, display_name)
---   • Looks up an active quiz by PIN (status <> 'ended')
---   • Inserts a quiz_players row
---   • Returns the new player id + session_token (secret) + quiz id
--- ---------------------------------------------------------------------
 create or replace function public.join_quiz(
   p_pin          text,
   p_display_name text
@@ -21,10 +34,6 @@ language plpgsql
 security definer
 set search_path = public
 as $$
--- NOTE: the OUT columns above (`quiz_id`, `session_token`) shadow real
--- columns on `public.quiz_players` / `public.quizzes`. Every column
--- reference inside the body is therefore table-qualified, otherwise
--- plpgsql raises "column reference … is ambiguous".
 declare
   v_quiz_id   uuid;
   v_player_id uuid;
@@ -48,7 +57,6 @@ begin
     raise exception 'no active quiz with that PIN';
   end if;
 
-  -- If they already joined with this name in this quiz, reuse the row.
   select qp.id, qp.session_token
     into v_player_id, v_token
   from public.quiz_players qp
@@ -68,17 +76,6 @@ $$;
 grant execute on function public.join_quiz(text, text) to anon, authenticated;
 
 
--- ---------------------------------------------------------------------
--- submit_answer
---
--- Players call this from the browser (anon role) with the secret session
--- token they were given at join time. Scoring is authoritative server-side.
---
--- Scoring rules (mirrored in lib/chess/scoring.ts for client preview):
---   points = floor( max(0, base * (1 - elapsedSec/100)) * 0.5^wrongAttempts )
---   points = 0 if !correct
---   points = 0 if elapsedSec > time_limit_seconds
--- ---------------------------------------------------------------------
 create or replace function public.submit_answer(
   p_player_id        uuid,
   p_session_token    uuid,
@@ -113,7 +110,6 @@ declare
   v_submitted     text;
   v_existing      uuid;
 begin
-  -- 1. authenticate the player via their session_token secret
   select * into v_player
   from public.quiz_players
   where id = p_player_id;
@@ -125,7 +121,6 @@ begin
     raise exception 'invalid session token';
   end if;
 
-  -- 2. load the question + quiz; verify it's the current one and status=question
   select * into v_question
   from public.quiz_questions
   where id = p_question_id;
@@ -145,7 +140,6 @@ begin
     raise exception 'this is not the current question';
   end if;
 
-  -- 3. prevent duplicate submissions
   select id into v_existing
   from public.quiz_answers
   where question_id = p_question_id and player_id = p_player_id;
@@ -153,7 +147,6 @@ begin
     raise exception 'answer already submitted for this question';
   end if;
 
-  -- 4. derive correctness + wrong_attempts from payload
   v_q_type    := v_question.type::text;
   v_wrong     := greatest(0, coalesce((p_payload ->> 'wrong_attempts')::integer, 0));
 
@@ -161,7 +154,6 @@ begin
     v_correct_idx := (v_question.payload ->> 'correctChoice')::integer;
     v_choice_idx  := (p_payload ->> 'choice')::integer;
     v_correct     := v_correct_idx is not null and v_choice_idx = v_correct_idx;
-    -- For MC we always treat wrong = 0 / 1
     v_wrong := case when v_correct then 0 else 1 end;
 
   elsif v_q_type = 'best-move' then
@@ -173,7 +165,6 @@ begin
               and (v_solution ->> 0) = v_submitted;
 
   elsif v_q_type = 'best-sequence' then
-    -- Expect payload.moves = ["Nf3", "e5", ...] matching question.payload.solution
     declare
       v_player_seq jsonb := p_payload -> 'moves';
       v_expected   jsonb := v_question.payload -> 'solution';
@@ -187,7 +178,6 @@ begin
     raise exception 'unknown question type: %', v_q_type;
   end if;
 
-  -- 5. elapsed time: prefer server-tracked start time if available, else client report
   if v_quiz.current_question_started_at is not null then
     v_elapsed_ms := greatest(
       0,
@@ -198,7 +188,6 @@ begin
   end if;
   v_elapsed_sec := v_elapsed_ms / 1000.0;
 
-  -- 6. score
   if v_correct
      and v_elapsed_sec <= v_question.time_limit_seconds
   then
@@ -210,7 +199,6 @@ begin
     v_points := 0;
   end if;
 
-  -- 7. persist
   insert into public.quiz_answers (
     quiz_id, question_id, player_id, payload,
     time_ms, wrong_attempts, correct, points_awarded
@@ -219,8 +207,6 @@ begin
     v_elapsed_ms, v_wrong, v_correct, v_points
   );
 
-  -- NOTE: the OUT column `total_score` shadows `quiz_players.total_score`.
-  -- The aliased UPDATE form removes the ambiguity on the RHS.
   update public.quiz_players as qp
   set total_score = qp.total_score + v_points
   where qp.id = p_player_id;
@@ -233,101 +219,3 @@ end;
 $$;
 
 grant execute on function public.submit_answer(uuid, uuid, uuid, jsonb, integer) to anon, authenticated;
-
-
--- ---------------------------------------------------------------------
--- advance_quiz / reveal_quiz / end_quiz — host helpers
---
--- These call from the host UI (instructor is authenticated).
--- They check that auth.uid() = quiz.host_id before mutating state.
--- ---------------------------------------------------------------------
-create or replace function public.advance_quiz(p_quiz_id uuid)
-returns public.quizzes
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_quiz public.quizzes%rowtype;
-  v_next_idx integer;
-  v_total integer;
-begin
-  select * into v_quiz from public.quizzes where id = p_quiz_id;
-  if v_quiz.id is null then raise exception 'quiz not found'; end if;
-  if not (public.is_admin() or v_quiz.host_id = auth.uid()) then
-    raise exception 'not authorized';
-  end if;
-
-  select count(*) into v_total from public.quiz_questions where quiz_id = p_quiz_id;
-  v_next_idx := v_quiz.current_question_idx + 1;
-
-  if v_next_idx >= v_total then
-    update public.quizzes
-      set status = 'ended', ended_at = now()
-    where id = p_quiz_id
-    returning * into v_quiz;
-    return v_quiz;
-  end if;
-
-  update public.quizzes
-    set status = 'question',
-        current_question_idx = v_next_idx,
-        current_question_started_at = now(),
-        started_at = coalesce(started_at, now())
-  where id = p_quiz_id
-  returning * into v_quiz;
-  return v_quiz;
-end;
-$$;
-
-grant execute on function public.advance_quiz(uuid) to authenticated;
-
-create or replace function public.reveal_quiz(p_quiz_id uuid)
-returns public.quizzes
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_quiz public.quizzes%rowtype;
-begin
-  select * into v_quiz from public.quizzes where id = p_quiz_id;
-  if v_quiz.id is null then raise exception 'quiz not found'; end if;
-  if not (public.is_admin() or v_quiz.host_id = auth.uid()) then
-    raise exception 'not authorized';
-  end if;
-
-  update public.quizzes
-    set status = 'reveal'
-  where id = p_quiz_id
-  returning * into v_quiz;
-  return v_quiz;
-end;
-$$;
-
-grant execute on function public.reveal_quiz(uuid) to authenticated;
-
-create or replace function public.end_quiz(p_quiz_id uuid)
-returns public.quizzes
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_quiz public.quizzes%rowtype;
-begin
-  select * into v_quiz from public.quizzes where id = p_quiz_id;
-  if v_quiz.id is null then raise exception 'quiz not found'; end if;
-  if not (public.is_admin() or v_quiz.host_id = auth.uid()) then
-    raise exception 'not authorized';
-  end if;
-
-  update public.quizzes
-    set status = 'ended', ended_at = now()
-  where id = p_quiz_id
-  returning * into v_quiz;
-  return v_quiz;
-end;
-$$;
-
-grant execute on function public.end_quiz(uuid) to authenticated;

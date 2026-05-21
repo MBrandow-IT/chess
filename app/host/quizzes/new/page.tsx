@@ -27,7 +27,24 @@ export default async function NewQuizPage({
     });
     quizId = result.id;
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "Could not start quiz.";
+    // `next/navigation` redirect() throws a special signal we must never swallow.
+    if (
+      err &&
+      typeof err === "object" &&
+      "digest" in err &&
+      typeof (err as { digest?: string }).digest === "string" &&
+      (err as { digest: string }).digest.startsWith("NEXT_REDIRECT")
+    ) {
+      throw err;
+    }
+    console.error("[/host/quizzes/new] startQuizFromLesson failed:", err);
+    const msg =
+      err instanceof Error
+        ? err.message
+        : err && typeof err === "object" && "message" in err &&
+            typeof (err as { message?: unknown }).message === "string"
+          ? (err as { message: string }).message
+          : "Could not start quiz.";
     return <ErrorView title="Couldn't start the quiz" body={msg} />;
   }
   redirect(`/host/quizzes/${quizId}`);

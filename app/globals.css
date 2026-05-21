@@ -34,6 +34,40 @@ body {
   }
 }
 
+/* Tables inside lesson slides (e.g. the recap on Lesson 1) — we don't
+   load @tailwindcss/typography, so `.prose table` would otherwise be
+   completely unstyled. */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.prose thead {
+  background: theme("colors.buckeye.cream");
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  vertical-align: top;
+}
+.prose th {
+  font-weight: 600;
+  color: theme("colors.buckeye.ink");
+}
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+.prose tbody tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.015);
+}
+
 /* Presentation mode — applied when the SlideDeck is in fullscreen.
    Scales typography and chess boards up so the deck reads like slides. */
 [data-slidedeck-fullscreen] .prose h1,

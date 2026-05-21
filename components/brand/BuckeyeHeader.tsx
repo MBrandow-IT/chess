@@ -1,6 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+// Routes that get a "focused" chrome-free experience. /play has its own
+// branding once you join, and /host already renders its own toolbar with
+// the dashboard link + sign-out, so the global header would be redundant.
+const HIDDEN_PREFIXES = ["/play", "/host"];
+
+function shouldHideHeader(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return HIDDEN_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
 
 export function BuckeyeHeader() {
+  const pathname = usePathname();
+  if (shouldHideHeader(pathname)) return null;
+
   return (
     <header className="no-print sticky top-0 z-30 border-b border-black/5 bg-white/80 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between">

@@ -1,4 +1,22 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
+// Mirror the hide-list used by BuckeyeHeader so /play and /host stay
+// chrome-free top and bottom.
+const HIDDEN_PREFIXES = ["/play", "/host"];
+
+function shouldHideFooter(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return HIDDEN_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
 export function BuckeyeFooter() {
+  const pathname = usePathname();
+  if (shouldHideFooter(pathname)) return null;
+
   return (
     <footer className="no-print mt-16 border-t border-black/5 bg-white/60">
       <div className="container-page flex flex-col items-start gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
