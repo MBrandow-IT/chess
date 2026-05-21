@@ -79,17 +79,17 @@ export function PlayerQuiz({ initialQuiz, initialQuestions }: Props) {
   // Pull my latest player row periodically (also handles missed events)
   useEffect(() => {
     if (!session) return;
-    let cancelled = false;
+    let canceled = false;
     (async () => {
       const { data } = await sb
         .from("quiz_players")
         .select("*")
         .eq("id", session.playerId)
         .maybeSingle();
-      if (!cancelled && data) setMe(data);
+      if (!canceled && data) setMe(data);
     })();
     return () => {
-      cancelled = true;
+      canceled = true;
     };
   }, [sb, session]);
 

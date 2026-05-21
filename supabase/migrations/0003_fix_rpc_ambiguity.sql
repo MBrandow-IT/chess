@@ -9,7 +9,7 @@
 --   join_quiz       → OUT (quiz_id, session_token)  vs quizzes/quiz_players
 --   submit_answer   → OUT (total_score)             vs quiz_players
 --
--- PostgreSQL's default plpgsql behaviour is `#variable_conflict error`,
+-- PostgreSQL's default plpgsql behavior is `#variable_conflict error`,
 -- so any bare reference like `where quiz_id = v_quiz_id`,
 -- `returning session_token into v_token`, or
 -- `set total_score = total_score + v_points` raised:

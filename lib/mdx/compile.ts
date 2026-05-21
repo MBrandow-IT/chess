@@ -13,7 +13,7 @@ import { mdxComponents } from "./components";
  *
  * `blockDangerousJS` stays at its default (`true`) so a stray attempt at
  * `eval`, `Function`, `process`, or `require` inside MDX will still be
- * stripped out as defence-in-depth.
+ * stripped out as defense-in-depth.
  */
 export async function renderLessonMDX(source: string) {
   const { content } = await compileMDX({

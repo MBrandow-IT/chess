@@ -1,6 +1,6 @@
 "use client";
 
-import { Maximize2, Minimize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from "lucide-react";
 import {
   Children,
   isValidElement,
@@ -15,6 +15,38 @@ import {
  * because the rest of the UI ("Slide 3 of 12") is 1-indexed too.
  */
 const PAGE_PARAM = "page";
+
+type DotItem =
+  | { kind: "dot"; idx: number }
+  | { kind: "ellipsis"; side: "left" | "right" };
+
+/**
+ * Pagination-style window for the slide-progress dots. Long decks (>7 slides)
+ * collapse the dots that are far from the current slide into a `…` so the
+ * controls bar fits on a phone. Returns: first slide, optional ellipsis,
+ * a small window around the current slide, optional ellipsis, last slide.
+ */
+function visibleDots(current: number, total: number): DotItem[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => ({
+      kind: "dot" as const,
+      idx: i,
+    }));
+  }
+
+  const items: DotItem[] = [];
+  const winRadius = 1;
+  const start = Math.max(1, current - winRadius);
+  const end = Math.min(total - 2, current + winRadius);
+
+  items.push({ kind: "dot", idx: 0 });
+  if (start > 1) items.push({ kind: "ellipsis", side: "left" });
+  for (let i = start; i <= end; i++) items.push({ kind: "dot", idx: i });
+  if (end < total - 2) items.push({ kind: "ellipsis", side: "right" });
+  items.push({ kind: "dot", idx: total - 1 });
+
+  return items;
+}
 
 export type SlideDeckProps = {
   children: React.ReactNode;
@@ -174,37 +206,49 @@ export function SlideDeck({ children }: SlideDeckProps) {
           type="button"
           onClick={prev}
           disabled={idx === 0}
-          className="focus-ring rounded-md border border-black/10 bg-white px-4 py-2 text-sm font-medium hover:bg-black/5 disabled:opacity-40"
+          aria-label="Previous slide"
+          className="focus-ring inline-flex items-center justify-center gap-1 rounded-md border border-black/10 bg-white p-2 text-sm font-medium hover:bg-black/5 disabled:opacity-40 sm:px-4 sm:py-2"
         >
-          ← Previous
+          <ChevronLeft size={18} aria-hidden className="sm:hidden" />
+          <span className="hidden sm:inline">← Previous</span>
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div
             className="flex items-center gap-1.5"
             aria-label="Slide progress"
           >
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setIdx(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === idx ? "step" : undefined}
-                className={
-                  "h-2.5 rounded-full transition-all " +
-                  (i === idx
-                    ? "w-6 bg-buckeye-scarlet"
-                    : "w-2.5 bg-black/15 hover:bg-black/30")
-                }
-              />
-            ))}
+            {visibleDots(idx, total).map((item) =>
+              item.kind === "ellipsis" ? (
+                <span
+                  key={`ellipsis-${item.side}`}
+                  aria-hidden
+                  className="px-0.5 text-xs leading-none text-buckeye-gray"
+                >
+                  …
+                </span>
+              ) : (
+                <button
+                  key={item.idx}
+                  type="button"
+                  onClick={() => setIdx(item.idx)}
+                  aria-label={`Go to slide ${item.idx + 1}`}
+                  aria-current={item.idx === idx ? "step" : undefined}
+                  className={
+                    "h-2.5 rounded-full transition-all " +
+                    (item.idx === idx
+                      ? "w-6 bg-buckeye-scarlet"
+                      : "w-2.5 bg-black/15 hover:bg-black/30")
+                  }
+                />
+              ),
+            )}
           </div>
 
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="focus-ring inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-medium hover:bg-black/5"
+            className="focus-ring inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white p-2 text-sm font-medium hover:bg-black/5 sm:px-3 sm:py-2"
             aria-label={
               isFullscreen ? "Exit fullscreen (Esc)" : "Present fullscreen (F)"
             }
@@ -223,15 +267,21 @@ export function SlideDeck({ children }: SlideDeckProps) {
           type="button"
           onClick={next}
           disabled={idx === total - 1}
-          className="focus-ring rounded-md border border-black/10 bg-white px-4 py-2 text-sm font-medium hover:bg-black/5 disabled:opacity-40"
+          aria-label="Next slide"
+          className="focus-ring inline-flex items-center justify-center gap-1 rounded-md border border-black/10 bg-white p-2 text-sm font-medium hover:bg-black/5 disabled:opacity-40 sm:px-4 sm:py-2"
         >
-          Next →
+          <ChevronRight size={18} aria-hidden className="sm:hidden" />
+          <span className="hidden sm:inline">Next →</span>
         </button>
       </div>
 
       {!isFullscreen ? (
         <div className="no-print mt-2 text-center text-xs text-buckeye-gray">
-          Slide {idx + 1} of {total} · arrow keys to navigate, F for fullscreen
+          Slide {idx + 1} of {total}
+          <span className="hidden sm:inline">
+            {" "}
+            · arrow keys to navigate, F for fullscreen
+          </span>
         </div>
       ) : null}
     </div>
