@@ -102,6 +102,7 @@ export default async function PracticePage({
         <PracticePuzzleDeck
           puzzles={puzzles}
           lessonTitle={file.meta.title}
+          storageKey={`bcw:practice:${planSlug}:${lessonSlug}`}
         />
       )}
 
