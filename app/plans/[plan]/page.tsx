@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlan, listLessons, listPlans } from "@/lib/content";
 import { fetchLessonScheduleMap } from "@/lib/events/queries";
+import { isLessonListedForStudents } from "@/lib/events/lesson-access";
 import { formatEventDate } from "@/lib/events/format";
 import { getCurrentUser } from "@/lib/supabase/auth";
 
@@ -35,21 +36,27 @@ export default async function PlanPage({
   const user = await getCurrentUser();
   const isAdmin = user?.isAdmin ?? false;
   const scheduleMap = await fetchLessonScheduleMap(planSlug);
+  const listedLessons = isAdmin
+    ? lessons
+    : lessons.filter((lesson) =>
+        isLessonListedForStudents(scheduleMap.get(lesson.slug)),
+      );
 
   return (
     <div className="container-page py-10">
       <p className="text-sm font-semibold uppercase tracking-wider text-buckeye-scarlet">
-        {plan.age_group ?? "All ages"} · {lessons.length} lessons
+        {plan.age_group ?? "All ages"} · {listedLessons.length} lessons
       </p>
       <h1 className="mt-2 font-display text-3xl font-bold">{plan.title}</h1>
       <p className="mt-2 max-w-2xl text-buckeye-gray">{plan.description}</p>
 
       <ol className="mt-8 space-y-3">
-        {lessons.map((lesson, idx) => {
-          const schedule = isAdmin ? null : scheduleMap.get(lesson.slug);
+        {listedLessons.map((lesson, idx) => {
+          const state = isAdmin ? null : scheduleMap.get(lesson.slug);
+          const scheduled = state?.status === "scheduled" ? state : null;
           const cardClassName =
             "flex items-center gap-4 rounded-xl border border-black/5 bg-white p-4 shadow-card " +
-            (schedule
+            (scheduled
               ? "opacity-90"
               : "focus-ring transition hover:-translate-y-0.5 hover:shadow-lg");
 
@@ -65,13 +72,13 @@ export default async function PlanPage({
                 <span className="mt-0.5 block text-sm text-buckeye-gray">
                   {lesson.summary}
                 </span>
-                {schedule ? (
+                {scheduled ? (
                   <span className="mt-2 inline-block rounded-full bg-buckeye-cream px-2.5 py-0.5 text-xs font-medium text-buckeye-scarlet">
-                    Coming soon · {formatEventDate(schedule.unlockAt)}
+                    Coming soon · {formatEventDate(scheduled.unlockAt)}
                   </span>
                 ) : null}
               </span>
-              {!schedule ? (
+              {!scheduled ? (
                 <span aria-hidden className="text-buckeye-gray">
                   →
                 </span>
@@ -81,7 +88,7 @@ export default async function PlanPage({
 
           return (
             <li key={lesson.slug}>
-              {schedule ? (
+              {scheduled ? (
                 <div className={cardClassName} aria-disabled="true">
                   {inner}
                 </div>
@@ -93,7 +100,7 @@ export default async function PlanPage({
             </li>
           );
         })}
-        {lessons.length === 0 ? (
+        {listedLessons.length === 0 ? (
           <li className="rounded-xl border border-dashed border-black/10 bg-white/60 p-8 text-center text-buckeye-gray">
             No lessons in this plan yet.
           </li>

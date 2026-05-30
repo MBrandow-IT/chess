@@ -39,7 +39,7 @@ export function GenerateSeriesButton({ seriesId }: { seriesId: string }) {
         onClick={onGenerate}
         className="focus-ring rounded-md border border-black/10 bg-white px-3 py-1.5 text-xs font-medium hover:bg-black/5 disabled:opacity-60"
       >
-        {busy ? "Generating..." : "Generate 4 weeks"}
+        {busy ? "Generating..." : "Generate next 4 weeks"}
       </button>
       {message ? <span className="text-xs text-buckeye-gray">{message}</span> : null}
     </div>

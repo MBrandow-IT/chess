@@ -8,7 +8,7 @@ export type AttachedEvent = {
 };
 
 export type LessonVisibility = {
-  status: "live" | "scheduled";
+  status: "live" | "scheduled" | "hidden";
   unlockAt?: string;
   eventTitle?: string;
   eventId?: string;
@@ -26,7 +26,7 @@ export function getLessonVisibility(
   if (isAdmin) return { status: "live" };
 
   const active = attachedEvents.filter((event) => event.status !== "canceled");
-  if (active.length === 0) return { status: "live" };
+  if (active.length === 0) return { status: "hidden" };
 
   const earliest = active.reduce((min, event) =>
     event.startsAt < min.startsAt ? event : min,

@@ -36,8 +36,10 @@ export function EventCard({ event }: { event: PublicEvent }) {
       ) : null}
       {workshops.length > 0 ? (
         <ul className="mt-4 flex flex-wrap gap-2">
-          {workshops.map((lesson) =>
-            lesson.visibility.status === "live" ? (
+          {workshops.map((lesson) => {
+            if (lesson.visibility.status === "hidden") return null;
+
+            return lesson.visibility.status === "live" ? (
               <li key={lesson.lessonId}>
                 <Link
                   href={`/plans/${lesson.planSlug}/${lesson.lessonSlug}`}
@@ -56,8 +58,8 @@ export function EventCard({ event }: { event: PublicEvent }) {
                   ? formatEventDate(lesson.visibility.unlockAt)
                   : "soon"}
               </li>
-            ),
-          )}
+            );
+          })}
         </ul>
       ) : null}
     </article>

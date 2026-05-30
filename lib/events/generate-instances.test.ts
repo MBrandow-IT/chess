@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildSeriesInstances } from "./generate-instances";
+import { addDaysYmd, ymdInPhoenixFromIso } from "./format";
 import { getLessonVisibility } from "./visibility";
-
 describe("buildSeriesInstances", () => {
   const series = {
     id: "series-1",
@@ -23,18 +23,35 @@ describe("buildSeriesInstances", () => {
     );
   });
 
-  it("skips existing starts_at values", () => {
+  it("skips existing starts_at values when regenerating from today", () => {
     const now = new Date("2026-06-01T12:00:00-07:00");
     const first = buildSeriesInstances(series, 1, new Set(), now);
     const existing = new Set(first.map((row) => row.starts_at));
     const second = buildSeriesInstances(series, 1, existing, now);
     expect(second).toHaveLength(0);
   });
-});
+
+  it("generates additional weeks beyond the last existing session", () => {
+    const now = new Date("2026-06-01T12:00:00-07:00");
+    const first = buildSeriesInstances(series, 4, new Set(), now);
+    expect(first.length).toBeGreaterThan(0);
+
+    const latestStartsAt = first
+      .map((row) => row.starts_at)
+      .sort()
+      .at(-1)!;
+    const startYmd = addDaysYmd(ymdInPhoenixFromIso(latestStartsAt), 1);
+    const existing = new Set(first.map((row) => row.starts_at));
+    const second = buildSeriesInstances(series, 4, existing, now, startYmd);
+
+    expect(second.length).toBeGreaterThan(0);
+    expect(second.every((row) => row.starts_at > latestStartsAt)).toBe(true);
+    expect(new Set(second.map((row) => row.starts_at)).size).toBe(second.length);
+  });});
 
 describe("getLessonVisibility", () => {
-  it("returns live when no events are attached", () => {
-    expect(getLessonVisibility([], new Date(), false)).toEqual({ status: "live" });
+  it("returns hidden when no events are attached", () => {
+    expect(getLessonVisibility([], new Date(), false)).toEqual({ status: "hidden" });
   });
 
   it("returns scheduled before two hours ahead of the attached event", () => {

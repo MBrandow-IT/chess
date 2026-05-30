@@ -11,8 +11,8 @@ import { fetchLessonQuizQuestions } from "@/lib/lesson-quiz-questions";
 import { PrintButton } from "@/components/lesson/PrintButton";
 import { LessonQuizPreview } from "@/components/lesson/LessonQuizPreview";
 import { SoundToggle } from "@/components/lesson/SoundToggle";
-import { getLessonAccess } from "@/lib/events/lesson-access";
-import { fetchLessonScheduleMap } from "@/lib/events/queries";
+import { getLessonAccess, isLessonLiveForStudents } from "@/lib/events/lesson-access";
+import { fetchLessonScheduleMap, type LessonScheduleState } from "@/lib/events/queries";
 import { formatEventDate } from "@/lib/events/format";
 
 export const revalidate = 3600;
@@ -42,21 +42,25 @@ export async function generateMetadata({
 function findAdjacentLesson(
   lessons: { slug: string; title: string }[],
   currentSlug: string,
-  scheduleMap: Map<string, unknown | null>,
+  scheduleMap: Map<string, LessonScheduleState>,
   direction: "prev" | "next",
+  isAdmin: boolean,
 ) {
   const idx = lessons.findIndex((lesson) => lesson.slug === currentSlug);
   if (idx < 0) return null;
 
+  const isNavigable = (slug: string) =>
+    isAdmin || isLessonLiveForStudents(scheduleMap.get(slug));
+
   if (direction === "prev") {
     for (let i = idx - 1; i >= 0; i -= 1) {
-      if (!scheduleMap.get(lessons[i].slug)) return lessons[i];
+      if (isNavigable(lessons[i].slug)) return lessons[i];
     }
     return null;
   }
 
   for (let i = idx + 1; i < lessons.length; i += 1) {
-    if (!scheduleMap.get(lessons[i].slug)) return lessons[i];
+    if (isNavigable(lessons[i].slug)) return lessons[i];
   }
   return null;
 }
@@ -81,12 +85,9 @@ export default async function LessonPage({
 
   const lessons = await listLessons(planSlug);
   const scheduleMap = await fetchLessonScheduleMap(planSlug);
-  const navScheduleMap = isAdmin
-    ? new Map<string, null>()
-    : scheduleMap;
   const currentIdx = lessons.findIndex((l) => l.slug === lessonSlug);
-  const prev = findAdjacentLesson(lessons, lessonSlug, navScheduleMap, "prev");
-  const next = findAdjacentLesson(lessons, lessonSlug, navScheduleMap, "next");
+  const prev = findAdjacentLesson(lessons, lessonSlug, scheduleMap, "prev", isAdmin);
+  const next = findAdjacentLesson(lessons, lessonSlug, scheduleMap, "next", isAdmin);
 
   const content = await renderLessonMDX(file.content);
   const quizQuestions = await fetchLessonQuizQuestions(planSlug, lessonSlug);

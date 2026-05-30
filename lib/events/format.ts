@@ -64,3 +64,12 @@ export function todayYmdInPhoenix(now = new Date()): string {
     day: "2-digit",
   }).format(now);
 }
+
+export function ymdInPhoenixFromIso(iso: string): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: EVENT_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(iso));
+}

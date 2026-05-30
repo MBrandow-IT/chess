@@ -17,11 +17,15 @@ export type PublicEvent = EventRow & {
   lessons: EventLessonChip[];
 };
 
-export type LessonScheduleInfo = {
-  unlockAt: string;
-  eventTitle: string;
-  eventId: string;
-};
+export type LessonScheduleState =
+  | { status: "live" }
+  | {
+      status: "scheduled";
+      unlockAt: string;
+      eventTitle: string;
+      eventId: string;
+    }
+  | { status: "hidden" };
 
 function horizonEndIso(now = new Date()): string {
   const end = new Date(now.getTime() + WORKSHOP_PUBLIC_HORIZON_DAYS * 86400000);
@@ -165,9 +169,9 @@ export async function fetchNextUp(now = new Date()) {
 export async function fetchLessonScheduleMap(
   planSlug: string,
   now = new Date(),
-): Promise<Map<string, LessonScheduleInfo | null>> {
+): Promise<Map<string, LessonScheduleState>> {
   const sb = createSupabaseAdminClient();
-  const map = new Map<string, LessonScheduleInfo | null>();
+  const map = new Map<string, LessonScheduleState>();
 
   const { data: plan } = await sb
     .from("lesson_plans")
@@ -214,12 +218,15 @@ export async function fetchLessonScheduleMap(
     const visibility = getLessonVisibility(attached, now, false);
     if (visibility.status === "scheduled" && visibility.unlockAt) {
       map.set(lesson.slug, {
+        status: "scheduled",
         unlockAt: visibility.unlockAt,
         eventTitle: visibility.eventTitle ?? "Workshop",
         eventId: visibility.eventId ?? "",
       });
+    } else if (visibility.status === "hidden") {
+      map.set(lesson.slug, { status: "hidden" });
     } else {
-      map.set(lesson.slug, null);
+      map.set(lesson.slug, { status: "live" });
     }
   }
 

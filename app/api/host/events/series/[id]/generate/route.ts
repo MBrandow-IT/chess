@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { buildSeriesInstances } from "@/lib/events/generate-instances";
 import { DEFAULT_GENERATE_WEEKS_AHEAD } from "@/lib/events/constants";
+import { addDaysYmd, ymdInPhoenixFromIso } from "@/lib/events/format";
 import { GenerateInstancesSchema } from "@/lib/host/event-validation";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/supabase/auth";
@@ -46,10 +47,18 @@ export async function POST(
     (existing ?? []).map((row) => row.starts_at as string),
   );
 
+  let startYmd: string | undefined;
+  if (existingStartsAt.size > 0) {
+    const latestStartsAt = [...existingStartsAt].sort().at(-1)!;
+    startYmd = addDaysYmd(ymdInPhoenixFromIso(latestStartsAt), 1);
+  }
+
   const instances = buildSeriesInstances(
     series as EventSeriesRow,
     weeksAhead,
     existingStartsAt,
+    new Date(),
+    startYmd,
   );
 
   if (instances.length === 0) {

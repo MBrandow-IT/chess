@@ -50,7 +50,13 @@ export default async function HostDashboardPage() {
               ) : (
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                   {lessons.map((lesson) => {
-                    const schedule = scheduleMap.get(lesson.slug);
+                    const state = scheduleMap.get(lesson.slug);
+                    const statusLabel =
+                      state?.status === "scheduled"
+                        ? `Scheduled · ${formatEventDate(state.unlockAt)} (${state.eventTitle})`
+                        : state?.status === "live"
+                          ? "Live for students"
+                          : "Hidden from students (no event attached)";
                     return (
                     <li
                       key={lesson.slug}
@@ -64,9 +70,7 @@ export default async function HostDashboardPage() {
                           {lesson.summary}
                         </p>
                         <p className="mt-1 text-xs font-medium text-buckeye-scarlet">
-                          {schedule
-                            ? `Scheduled · ${formatEventDate(schedule.unlockAt)} (${schedule.eventTitle})`
-                            : "Live for students"}
+                          {statusLabel}
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-1.5">

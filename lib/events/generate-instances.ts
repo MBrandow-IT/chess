@@ -33,13 +33,14 @@ export function buildSeriesInstances(
   weeksAhead: number,
   existingStartsAt: Set<string> = new Set(),
   now = new Date(),
+  startYmd?: string,
 ): GeneratedEventInstance[] {
   const weekdaySet = new Set(series.recurrence_weekdays);
-  const startYmd = todayYmdInPhoenix(now);
-  const endYmd = addDaysYmd(startYmd, weeksAhead * 7);
+  const rangeStart = startYmd ?? todayYmdInPhoenix(now);
+  const endYmd = addDaysYmd(rangeStart, weeksAhead * 7);
   const out: GeneratedEventInstance[] = [];
 
-  let cursor = startYmd;
+  let cursor = rangeStart;
   while (cursor <= endYmd) {
     const probe = new Date(`${cursor}T12:00:00-07:00`);
     const isoWeekday = jsDateToIsoWeekday(probe);
