@@ -1,12 +1,11 @@
 slug: beginners-workshop
 title: Beginners Workshop
-description: A complete 8-week, 16-lesson beginner chess workshop that moves from rules to practical game play.
+description: A complete beginner chess workshop that moves from rules to practical game play.
 age_group: Ages 7+
 order_idx: 1
 published: true
 order:
   - 01-chess-basics
-  - 02-check-checkmate-and-special-rules
   - 03-opening-principles-fast-development
   - 04-opening-traps-to-avoid
   - 05-tactics-forks-and-double-attacks

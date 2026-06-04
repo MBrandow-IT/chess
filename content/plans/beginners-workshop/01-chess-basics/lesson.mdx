@@ -1,5 +1,5 @@
 <SlideDeck>
-  <Slide title="Welcome to chess!" subtitle="Lesson 1 — Chess Basics">
+  <Slide title="Welcome to chess!" subtitle="Lesson 1 — Board, Pieces, and Rules">
     Chess is a game between two players. One plays the **white** army, the
     other plays the **black** army.
 
@@ -7,6 +7,7 @@
 
     - The **board** and how to set it up
     - How each of the **six pieces** moves and captures
+    - **Check**, **checkmate**, and three special rules
 
     <ChessBoard fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" />
   </Slide>
@@ -132,9 +133,8 @@
     The king moves **one square in any direction** — straight or diagonal.
 
     The king is the most important piece. You **can never lose your king** —
-    if it's attacked you have to deal with the threat (we'll see this in the
-    next lesson when we talk about <Term name="check">check</Term> and
-    <Term name="checkmate">checkmate</Term>).
+    if it's attacked you have to deal with the threat right away. We'll cover
+    exactly what that means in the next few slides.
 
     <PieceValue piece="king" />
 
@@ -153,11 +153,180 @@
 
     Those **Worth** points are a quick way to know when a trade is good —
     capturing a knight (3) with a pawn (1) is great; losing your queen (9)
-    for a bishop (3) is not. We'll dig into trades and material balance in
-    the next lesson.
+    for a bishop (3) is not.
 
-    You now know enough to play a full game! Next time we'll cover
-    **check**, **checkmate**, and the three weird rules: castling, en
-    passant, and pawn promotion.
+    You now know how every piece moves. Next up: **check**, **checkmate**,
+    and three special rules every beginner needs — **castling**, **en passant**,
+    and **pawn promotion**.
+  </Slide>
+
+  <Slide title="Check — your king is under attack" subtitle="Part 1 of 3">
+    <Term name="check">Check</Term> means the **enemy is attacking your king
+    on the very next move**.
+
+    When you're in check, you **must** respond immediately. You cannot:
+
+    - Ignore the attack
+    - Make some other move and deal with it later
+    - Move your king **onto** an attacked square
+
+    In the position below, Black's queen on **g2** attacks White's king on
+    **h1**. White is in check and must do something about it **this turn**.
+
+    <ChessBoard
+      fen="6k1/8/8/8/8/8/6q1/7K w - - 0 1"
+      highlights={["g2", "h1"]}
+    />
+  </Slide>
+
+  <Slide title="Check — move away or capture" subtitle="Part 2 of 3">
+    Two of the three legal responses to check:
+
+    **1. Move the king** to a safe square.
+
+    **2. Capture** the attacking piece.
+
+    Below, Black's rook on **e3** checks White's king on **e4**. White can
+    flee to **d4**, **d5**, **f5**, or **f4** — or simply take the rook with
+    **Kxe3**.
+
+    <ChessBoard
+      fen="4k3/8/8/4K3/8/4r3/8 w - - 0 1"
+      highlights={["e3", "e4"]}
+      selectedSquare="e4"
+    />
+  </Slide>
+
+  <Slide title="Check — block the attack" subtitle="Part 3 of 3">
+    **3. Block** the attack by sliding a piece between your king and the
+    attacker — but **only** if the attacker is a **queen, rook, or bishop**
+    attacking in a straight line.
+
+    White to move. Black's queen on **h4** checks the king on **e1**. The
+    king cannot capture the queen (a pawn on **g2** guards it). Can you block?
+
+    <Puzzle
+      fen="6k1/8/8/8/8/7q/6P1/4K3 w - - 0 1"
+      solution={["g3"]}
+      hint="Put a pawn on the diagonal between the queen and your king."
+      title="Block the check"
+    />
+  </Slide>
+
+  <Slide title="Checkmate — check with no escape" subtitle="Part 1 of 3">
+    <Term name="checkmate">Checkmate</Term> is check where **none** of the
+    three escapes work. The king is attacked and every possible response is
+    illegal — the game is **over** on the spot.
+
+    Remember the three escapes:
+
+    1. Move the king
+    2. Capture the attacker
+    3. Block (if it's a sliding piece)
+
+    If all three fail, that's checkmate.
+
+    <ChessBoard fen="Q5k1/5ppp/8/8/8/8/8/6K1 b - - 0 1" highlights={["a8", "g8"]} />
+  </Slide>
+
+  <Slide title="Checkmate example — back-rank mate" subtitle="Part 2 of 3">
+    A classic beginner pattern: the king is trapped on the **back rank** by its
+    own pawns, and an enemy rook slides in for mate.
+
+    Black's king on **g8** cannot step forward — pawns on **f7**, **g7**, and
+    **h7** block every escape. White plays **Re8#**: the rook checks on the
+    back rank and the king has no legal move.
+
+    <ChessBoard
+      fen="6k1/5ppp/4R3/8/8/8/8/4K3 b - - 0 1"
+      lastMove={{ from: "e1", to: "e8" }}
+      highlights={["e8", "g8"]}
+    />
+  </Slide>
+
+  <Slide title="Checkmate example — queen finishes the game" subtitle="Part 3 of 3">
+    The queen is the most common piece to deliver checkmate because she
+    controls so many squares at once.
+
+    White to move. Black's king on **g8** is boxed in by its own pawns.
+    Find the one-move checkmate.
+
+    <Puzzle
+      fen="6k1/5ppp/8/8/8/8/6Q1/6K1 w - - 0 1"
+      solution={["Qa8#"]}
+      hint="Your queen can reach the back rank with check. Can the king escape?"
+      title="Queen checkmate"
+    />
+  </Slide>
+
+  <Slide title="Castling — move the king and rook in one turn" subtitle="Special rules · 1 of 3">
+    **Castling** is the only move where you move **two pieces at once**:
+
+    - The **king** slides **two squares** toward a rook
+    - That **rook jumps** to the square the king skipped over
+
+    **Kingside castling** (short): king **e1 → g1**, rook **h1 → f1**.
+
+    You may castle only if:
+
+    - Neither the king nor that rook has moved yet
+    - No pieces sit between them
+    - The king is **not in check**, and does not pass through or land on an
+      attacked square
+
+    <ChessBoard
+      fen="rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 3"
+      arrows={[["e1", "g1"], ["h1", "f1"]]}
+      highlights={["e1", "g1", "f1", "h1"]}
+    />
+  </Slide>
+
+  <Slide title="En passant — capture a pawn that just hopped two squares" subtitle="Special rules · 2 of 3">
+    Normally pawns capture **diagonally**. **En passant** ("in passing") is
+    the one exception:
+
+    If an **enemy pawn** moves **two squares** from its starting rank and
+    lands **right next to** your pawn, you may capture it **as if it had only
+    moved one square** — but **only on the very next move**.
+
+    Below, White's pawn sits on **e5**. Black just played **…d7–d5** (two
+    squares). White may capture **en passant** with **exd6**, removing the
+    black pawn on **d5** even though the pawn never stood on **d6**.
+
+    <ChessBoard
+      fen="4k3/8/3pP3/8/8/8/8/4K3 w - d6 0 1"
+      lastMove={{ from: "d7", to: "d5" }}
+      highlights={["d5", "e5", "d6"]}
+    />
+  </Slide>
+
+  <Slide title="Pawn promotion — a pawn becomes a new piece" subtitle="Special rules · 3 of 3">
+    When a pawn reaches the **far rank** (the 8th rank for White, 1st for
+    Black), it **promotes**: you swap it for a **queen**, **rook**,
+    **bishop**, or **knight** of the same color.
+
+    Almost always you choose a **queen** — she's the strongest piece. But
+    sometimes a knight fork is worth promoting to a knight instead!
+
+    White to move. Push the pawn to **e8** and promote to a queen.
+
+    <Puzzle
+      fen="5k2/4P3/8/8/8/8/8/4K3 w - - 0 1"
+      solution={["e8=Q+"]}
+      hint="Advance the pawn to the last rank — it becomes a queen."
+      title="Promote the pawn"
+    />
+  </Slide>
+
+  <Slide title="You're ready to play!">
+    Today you learned everything you need for a real game:
+
+    - The **board** and how every **piece** moves
+    - **Check** and the three ways to escape it
+    - **Checkmate** — how games end
+    - **Castling**, **en passant**, and **promotion**
+
+    Next lesson: **opening principles** — how to start a game with good
+    habits instead of random moves.
   </Slide>
 </SlideDeck>
