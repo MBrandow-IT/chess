@@ -191,7 +191,7 @@
     **Kxe3**.
 
     <ChessBoard
-      fen="4k3/8/8/4K3/8/4r3/8 w - - 0 1"
+      fen="4k3/8/8/8/4K3/4r3/8/8 w - - 0 1"
       highlights={["e3", "e4"]}
       selectedSquare="e4"
     />
@@ -202,13 +202,13 @@
     attacker — but **only** if the attacker is a **queen, rook, or bishop**
     attacking in a straight line.
 
-    White to move. Black's queen on **h4** checks the king on **e1**. The
-    king cannot capture the queen (a pawn on **g2** guards it). Can you block?
+    White to move. Black's queen on **h4** checks the king on **e1** along the
+    diagonal. Push your pawn to block!
 
     <Puzzle
-      fen="6k1/8/8/8/8/7q/6P1/4K3 w - - 0 1"
+      fen="6k1/8/8/8/7q/8/6P1/4K3 w - - 0 1"
       solution={["g3"]}
-      hint="Put a pawn on the diagonal between the queen and your king."
+      hint="Advance the g-pawn one square to block the diagonal."
       title="Block the check"
     />
   </Slide>
@@ -275,7 +275,7 @@
       attacked square
 
     <ChessBoard
-      fen="rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 3"
+      fen="rnbqkbnr/pppppppp/8/8/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 1"
       arrows={[["e1", "g1"], ["h1", "f1"]]}
       highlights={["e1", "g1", "f1", "h1"]}
     />
@@ -294,7 +294,7 @@
     black pawn on **d5** even though the pawn never stood on **d6**.
 
     <ChessBoard
-      fen="4k3/8/3pP3/8/8/8/8/4K3 w - d6 0 1"
+      fen="4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1"
       lastMove={{ from: "d7", to: "d5" }}
       highlights={["d5", "e5", "d6"]}
     />
@@ -311,7 +311,7 @@
     White to move. Push the pawn to **e8** and promote to a queen.
 
     <Puzzle
-      fen="5k2/4P3/8/8/8/8/8/4K3 w - - 0 1"
+      fen="6k1/4P3/8/8/8/8/8/4K3 w - - 0 1"
       solution={["e8=Q+"]}
       hint="Advance the pawn to the last rank — it becomes a queen."
       title="Promote the pawn"
