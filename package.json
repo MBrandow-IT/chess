@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "sync": "tsx scripts/sync-plans.ts",
-    "make-admin": "tsx scripts/make-admin.ts"
+    "make-admin": "tsx scripts/make-admin.ts",
+    "condense-workshop": "tsx scripts/condense-beginners-workshop-to-8-lessons.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",

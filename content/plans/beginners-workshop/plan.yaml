@@ -1,22 +1,15 @@
 slug: beginners-workshop
 title: Beginners Workshop
-description: A complete beginner chess workshop that moves from rules to practical game play.
+description: An 8-week beginner chess workshop with one focused lesson each week, moving from rules to practical game play.
 age_group: Ages 7+
 order_idx: 1
 published: true
 order:
   - 01-chess-basics
   - 03-opening-principles-fast-development
-  - 04-opening-traps-to-avoid
   - 05-tactics-forks-and-double-attacks
-  - 06-tactics-pins-skewers-and-discovered-attacks
   - 07-tactics-removing-defenders-and-overloading
-  - 08-basic-mating-patterns
   - 09-endgame-king-and-pawn-fundamentals
-  - 10-endgame-opposition-and-pawn-races
   - 11-endgame-rook-endings-and-conversion
-  - 12-piece-activity-and-planning
   - 13-pawn-structure-and-smart-trades
-  - 14-how-to-analyze-your-games
   - 15-time-management-and-tournament-readiness
-  - 16-capstone-review-and-mini-tournament
