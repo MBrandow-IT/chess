@@ -215,27 +215,23 @@
     White is fully developed. Black wasted time with **…Bg4** and **…g6**
     instead of developing or castling.
 
-    Find the move that wins material by force.
+    Find the sequence that leads to **checkmate** — even after Black captures
+    your queen! Play all of White's moves:
+
+    1. **Nxe5** (threatens the queen AND f7)
+    2. …Bxd1 (Black grabs the queen — but it's a trap!)
+    3. **Bxf7+** (check! King must move)
+    4. …Ke7 (forced)
+    5. **Nd5#** (checkmate!)
 
     <Puzzle
       fen="rn1qkbnr/ppp2p1p/3p2p1/4p3/2B1P1b1/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 5"
-      solution={["Nxe5"]}
-      hint="The e5 pawn is barely defended. What happens after you take?"
+      solution={["Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"]}
+      hint="Take the e5 pawn first. After Black takes your queen, attack f7 with the bishop."
       title="Exploit weak center"
     />
   </Slide>
 
-  <Slide title="Challenge — attack f7 with development">
-    White has castled and Black hasn't. The f7 square is only defended by
-    Black's king. Jump a piece toward f7 to create a deadly double attack.
-
-    <Puzzle
-      fen="r1bqk1nr/ppp2ppp/2np4/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 0 5"
-      solution={["Ng5"]}
-      hint="A knight on g5 teams up with the bishop to target f7."
-      title="Attack f7"
-    />
-  </Slide>
 
   <Slide title="Challenge — punish the knight jump">
     Black played **…Nd4??** attacking White's knight, but left e5 undefended.
