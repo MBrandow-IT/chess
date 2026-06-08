@@ -1,5 +1,5 @@
 <SlideDeck>
-  <Slide title="Lesson 3 — Opening Principles and Fast Development">
+  <Slide title="Lesson 2 — Opening Principles and Fast Development">
     Strong beginners follow principles instead of memorizing long move lists.
 
     Goals for today:
@@ -7,13 +7,46 @@
     - Fight for the center with pawns and pieces
     - Develop minor pieces quickly
     - Castle early and connect rooks
+    - Punish opponents who ignore these ideas
   </Slide>
 
-  <Slide title="Class plan (30 minutes)">
-    - **5 min**: Review checkmate and special rules
-    - **12 min**: Opening principles with examples
-    - **10 min**: Puzzle lab (**teacher adds manually**)
-    - **3 min**: Exit ticket ("What makes an opening move good?")
+  <Slide title="Key definitions">
+    Before we start — a few terms you'll hear a lot:
+
+    | Term | Meaning |
+    |---|---|
+    | **Development** | Moving a piece from its starting square to an active square where it controls the board |
+    | **Tempo** | One turn of time. Wasting a tempo means giving your opponent a free move |
+    | **Blunder** | A serious mistake that loses material or the game — marked with **??** in notation |
+    | **Center** | The four key squares: **e4, d4, e5, d5**. Controlling them gives your pieces more room |
+    | **Castling** | King safety move (reviewed last lesson). Get your king tucked away early! |
+    | **Initiative** | Having the ability to create threats — the opponent has to react to YOU |
+  </Slide>
+
+  <Slide title="Why openings matter">
+    The opening sets up everything that follows. A good opening gives you:
+
+    - **Space** — your pieces have squares to move to
+    - **Time** — you develop faster than your opponent
+    - **Safety** — your king is castled and protected
+
+    A bad opening gives your opponent all three for free. Let's see how to
+    avoid that.
+  </Slide>
+
+  <Slide title="Opening priorities (in order)">
+    Try these moves on the board! Drag pieces to practice a good opening:
+
+    1. **Control the center** — push e4 or d4
+    2. **Develop knights and bishops** — one move each
+    3. **Castle** — before move 10 if you can
+    4. **Connect your rooks** — queen steps aside so rooks see each other
+
+    <ChessBoard
+      fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      interactive={true}
+      showLegalMoves={true}
+    />
   </Slide>
 
   <Slide title="Opening checklist for beginners">
@@ -23,28 +56,95 @@
     - Develop knights and bishops once each
     - Castle before launching attacks
     - Avoid moving the same piece repeatedly without a reason
-    - Avoid early queen adventures
+    - Avoid early queen adventures — she can get chased and you lose tempos
 
-    <ChessBoard fen="r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 2 3" />
+    <ChessBoard fen="r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" />
   </Slide>
 
-  <Slide title="Common opening mistakes">
+  <Slide title="Common opening mistakes (blunders!)">
     - Moving too many pawns and falling behind in development
-    - Bringing out the queen too soon
+    - Bringing out the queen too soon (she gets chased — losing tempos)
     - Ignoring king safety
     - Chasing one piece while the opponent develops everything
 
-    A simple plan beats random moves almost every time.
+    A simple plan beats random moves almost every time. When in doubt:
+    **develop a new piece toward the center**.
   </Slide>
 
-  <Slide title="Puzzle lab + homework setup">
-    **Puzzle Lab (10 min):** Teacher inserts manual positions for:
+  <Slide title="Puzzle — punish the early queen raid">
+    Black played **…Qh4??** way too early — the queen is out before any
+    other piece is developed. White can grab a free center pawn.
 
-    - Best developing move
-    - Spot the move that violates opening principles
-    - Safe castling opportunities
+    <Puzzle
+      fen="rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"
+      solution={["Nxe5"]}
+      hint="The e5 pawn is undefended now that the queen left."
+      title="Punish early queen moves"
+    />
+  </Slide>
 
-    **Homework idea:** Play two short games and score your first 10 moves with
-    the opening checklist.
+  <Slide title="Example — improve with development">
+    White has played 1.e4 e5 2.Nf3 Nc6 3.Bc4. It's a classic Italian Game
+    start — all opening principles in action.
+
+    Try developing Black's pieces from here. Move the knight to f6, the
+    bishop out, and castle. There's no single "right" answer — just practice
+    getting pieces off the back rank quickly.
+
+    <ChessBoard
+      fen="r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3"
+      interactive={true}
+      showLegalMoves={true}
+    />
+  </Slide>
+
+  <Slide title="Challenge — exploit the uncastled king">
+    White is fully developed. Black wasted time with **…Bg4** and **…g6**
+    instead of developing or castling.
+
+    Find the move that wins material by force.
+
+    <Puzzle
+      fen="rn1qkbnr/ppp2p1p/3p2p1/4p3/2B1P1b1/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 5"
+      solution={["Nxe5"]}
+      hint="The e5 pawn is barely defended. What happens if you take it?"
+      title="Exploit weak center"
+    />
+  </Slide>
+
+  <Slide title="Challenge — attack f7 with development">
+    White has castled and Black hasn't. The f7 square is only defended by
+    Black's king. Jump a piece toward f7 to create a deadly double attack.
+
+    <Puzzle
+      fen="r1bqk1nr/ppp2ppp/2np4/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 0 5"
+      solution={["Ng5"]}
+      hint="A knight on g5 teams up with the bishop to target f7."
+      title="Attack f7"
+    />
+  </Slide>
+
+  <Slide title="Challenge — punish the knight jump">
+    Black played **…Nd4??** attacking White's knight, but left e5 undefended.
+    Take the free pawn and open lines toward Black's king.
+
+    <Puzzle
+      fen="r1bqkbnr/pppp1ppp/8/4p3/2BnP3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
+      solution={["Nxe5"]}
+      hint="Same idea — if a defender leaves, grab what it was protecting."
+      title="Punish the knight jump"
+    />
+  </Slide>
+
+  <Slide title="This week's challenge">
+    Play **three** games this week (online or with a friend) and after each
+    game, check your first 10 moves against the opening checklist:
+
+    - ✅ Did I control the center?
+    - ✅ Did I develop knights and bishops quickly?
+    - ✅ Did I castle before move 10?
+    - ✅ Did I avoid moving the same piece twice without reason?
+
+    Score yourself out of 4 each game. Try to improve your average by game 3!
   </Slide>
 </SlideDeck>
