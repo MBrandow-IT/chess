@@ -33,8 +33,8 @@ cross join (
       'opening-punish-queen-raid',
       'Punish early queen moves',
       'rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3',
-      '["Nxe5"]',
-      'The e5 pawn is undefended since the queen left.',
+      '["Nxh4"]',
+      'Your knight on f3 can jump to h4 — that''s an L-shape capture.',
       '{development,free-pawn}',
       'easy',
       0

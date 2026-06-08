@@ -2,8 +2,8 @@ puzzles:
   - id: opening-punish-queen-raid
     title: "Punish early queen moves"
     fen: "rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"
-    solution: ["Nxe5"]
-    hint: "The e5 pawn is undefended since the queen left."
+    solution: ["Nxh4"]
+    hint: "Your knight on f3 can jump to h4 — that's an L-shape capture."
     themes: ["development", "free-pawn"]
     difficulty: easy
     order_idx: 0
