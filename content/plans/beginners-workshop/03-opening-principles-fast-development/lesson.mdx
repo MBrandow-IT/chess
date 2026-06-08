@@ -11,6 +11,21 @@
     - Avoid common beginner traps
   </Slide>
 
+  <Slide title="Key definitions">
+    Before we dive in — a few terms you'll hear every class:
+
+    | Term | Meaning |
+    |---|---|
+    | **Blunder** | A serious mistake that loses material or the game — marked with **??** in notation |
+    | **Development** | Moving a piece from its starting square to an active square where it controls the board |
+    | **Tempo** | One turn of time. Wasting a tempo means giving your opponent a free move |
+    | **Center** | The four key squares: **e4, d4, e5, d5**. Controlling them gives your pieces more room |
+    | **Initiative** | Having the ability to create threats — the opponent has to react to YOU |
+
+    If your opponent makes a **blunder**, you need to be developed enough to
+    punish it. If YOU blunder, being castled and developed limits the damage.
+  </Slide>
+
   <Slide title="Why openings matter">
     The opening sets the direction for the whole game.
 
@@ -24,8 +39,8 @@
     <ChessBoard fen="r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" />
   </Slide>
 
-  <Slide title="Opening priorities in order">
-    A practical beginner order:
+  <Slide title="Opening priorities (in order)">
+    Try these moves on the board! Drag pieces to practice a good opening:
 
     1. **Fight for the center** (e4, d4, e5, d5)
     2. **Develop knights and bishops**
@@ -33,6 +48,12 @@
     4. Connect rooks and improve your worst piece
 
     If a move does not help one of these goals, question it.
+
+    <ChessBoard
+      fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      interactive={true}
+      showLegalMoves={true}
+    />
   </Slide>
 
   <Slide title="Center control wins space">
@@ -79,15 +100,16 @@
   </Slide>
 
   <Slide title="Puzzle — punish the early queen raid">
-    White to move. Black's queen rushed to **h4** too early.
+    White to move. Black played **…Qh4??** way too early — the queen is out
+    before any other piece. The e5 pawn is now undefended.
 
-    Win the queen in one move.
+    Win a free center pawn!
 
     <Puzzle
-      fen="rnb1kbnr/pppp1ppp/8/4p3/6q1/5N2/PPPPPPPP/RNBQKB1R w KQkq - 1 3"
-      solution={["Nxh4"]}
-      hint="Use a developing move that also attacks the queen."
-      title="Knight catches the queen"
+      fen="rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"
+      solution={["Nxe5"]}
+      hint="The e5 pawn has no defender now that the queen left."
+      title="Punish early queen moves"
     />
   </Slide>
 
@@ -157,14 +179,17 @@
     />
   </Slide>
 
-  <Slide title="Puzzle — improve with development">
-    White to move. Choose a move that develops and prepares castling.
+  <Slide title="Example — improve with development">
+    White to move from a typical Italian Game position.
 
-    <Puzzle
-      fen="r1bqkbnr/pppp1ppp/2n5/4p3/8/2N5/PPPPPPPP/R1BQKBNR w KQkq - 2 2"
-      solution={["Nf3"]}
-      hint="Develop your king knight to its best square."
-      title="Simple, strong development"
+    There's no single right answer — try different developing moves!
+    Move the knight, push d3, or castle. Practice getting pieces off the
+    back rank quickly.
+
+    <ChessBoard
+      fen="r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 3"
+      interactive={true}
+      showLegalMoves={true}
     />
   </Slide>
 
@@ -187,10 +212,48 @@
     Student moves are White's moves in the line below.
 
     <Puzzle
-      fen="r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
-      solution={["c3", "Nf6", "d4"]}
+      fen="r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R w KQkq - 0 5"
+      solution={["d4", "exd4", "cxd4"]}
       hint="Support your center first, then strike."
       title="Build then break"
+    />
+  </Slide>
+
+  <Slide title="Challenge — exploit the uncastled king">
+    White is fully developed. Black wasted time with **…Bg4** and **…g6**
+    instead of developing or castling.
+
+    Find the move that wins material by force.
+
+    <Puzzle
+      fen="rn1qkbnr/ppp2p1p/3p2p1/4p3/2B1P1b1/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 5"
+      solution={["Nxe5"]}
+      hint="The e5 pawn is barely defended. What happens after you take?"
+      title="Exploit weak center"
+    />
+  </Slide>
+
+  <Slide title="Challenge — attack f7 with development">
+    White has castled and Black hasn't. The f7 square is only defended by
+    Black's king. Jump a piece toward f7 to create a deadly double attack.
+
+    <Puzzle
+      fen="r1bqk1nr/ppp2ppp/2np4/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 0 5"
+      solution={["Ng5"]}
+      hint="A knight on g5 teams up with the bishop to target f7."
+      title="Attack f7"
+    />
+  </Slide>
+
+  <Slide title="Challenge — punish the knight jump">
+    Black played **…Nd4??** attacking White's knight, but left e5 undefended.
+    Take the free pawn and open lines toward Black's king.
+
+    <Puzzle
+      fen="r1bqkbnr/pppp1ppp/8/4p3/2BnP3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
+      solution={["Nxe5"]}
+      hint="Same idea — if a defender leaves, grab what it was protecting."
+      title="Punish the knight jump"
     />
   </Slide>
 
@@ -204,15 +267,15 @@
     - Did I check my opponent's threats every turn?
   </Slide>
 
-  <Slide title="Wrap-up and assignment">
-    Today you learned how to start games with a repeatable process:
+  <Slide title="This week's challenge">
+    Play **three** games this week (online or with a friend) and after each
+    game, check your first 10 moves against the opening checklist:
 
-    - Center first
-    - Fast development
-    - Safe king
-    - Trap awareness
+    - ✅ Did I control the center?
+    - ✅ Did I develop knights and bishops quickly?
+    - ✅ Did I castle before move 10?
+    - ✅ Did I avoid moving the same piece twice without reason?
 
-    **Homework:** Play two games and write down your first 10 moves. For each
-    move, label it as center, development, king safety, or "other."
+    Score yourself out of 4 each game. Try to improve your average by game 3!
   </Slide>
 </SlideDeck>
