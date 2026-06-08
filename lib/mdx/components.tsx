@@ -1,4 +1,5 @@
 import { ChessBoard } from "@/components/chess/ChessBoard";
+import { AnalysisBoard } from "@/components/chess/AnalysisBoard";
 import { Puzzle } from "@/components/chess/Puzzle";
 import { SlideDeck } from "@/components/lesson/SlideDeck";
 import { Slide } from "@/components/lesson/Slide";
@@ -17,6 +18,7 @@ import { PieceValue } from "@/components/lesson/PieceValue";
  */
 export const mdxComponents = {
   ChessBoard,
+  AnalysisBoard,
   Puzzle,
   SlideDeck,
   Slide,
