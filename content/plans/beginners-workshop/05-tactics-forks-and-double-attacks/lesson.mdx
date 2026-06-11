@@ -1,50 +1,302 @@
 <SlideDeck>
   <Slide title="Lesson 3 — Tactics I: Forks, Pins, Skewers, and Double Attacks">
-    Tactics are short forcing sequences. Forks are the first tactical weapon
-    beginners should master.
+    Tactics are short, forcing sequences that win material or create a winning
+    attack. This week you learn to **spot** them — and **avoid** walking into
+    them.
 
-    Goals:
+    By the end of class, you should be able to:
 
-    - Define fork and double attack
-    - Connect fork ideas to pin and skewer patterns
-    - Defend by reducing piece vulnerability
+    - Define fork, double attack, pin, and skewer
+    - Use knight and queen forks to win material
+    - Recognize when a piece is pinned or skewered
+    - Scan every move with a simple checklist before you play
   </Slide>
 
-  <Slide title="Class plan (30 minutes)">
-    - **5 min**: Review trap awareness
-    - **12 min**: Fork ideas and defensive habits
-    - **10 min**: Puzzle lab (**teacher adds manually**)
-    - **3 min**: Student recap examples
+  <Slide title="Key definitions">
+    Tactics vocabulary you'll use all workshop:
+
+    | Term | Meaning |
+    |---|---|
+    | **Tactic** | A short forcing sequence — often 1–3 moves — that wins material or creates a decisive threat |
+    | **Double attack** | One move that creates two threats at once; the opponent can usually answer only one |
+    | **Fork** | A double attack where one piece attacks two or more enemy targets |
+    | **Pin** | A piece cannot move because a more valuable piece is behind it on the same line |
+    | **Skewer** | Like a reverse pin — a valuable piece is forced to move, exposing a piece behind it |
+    | **Loose (unguarded)** | A piece with no defender; a prime fork target |
+
+    Last week you learned to **develop quickly**. This week you learn what to
+    do when developed pieces start creating threats.
   </Slide>
 
-  <Slide title="Fork basics">
-    A fork attacks two or more targets at once. If the opponent can save only
-    one, you win material.
+  <Slide title="Why tactics matter">
+    Most beginner games are decided by one or two tactical shots — not by
+    long-term strategy.
 
-    Common fork targets:
+    Tactics show up when:
 
-    - King + queen
-    - King + rook
-    - Queen + unprotected minor piece
+    - Pieces are **developed** and pointing at the enemy
+    - A piece is **loose** (undefended)
+    - The king and queen sit on squares a knight can reach
+    - Two pieces share the same file, rank, or diagonal
 
-    <ChessBoard fen="r3k2r/ppp2ppp/2n5/3N4/8/8/PPP2PPP/R3K2R w KQkq - 0 1" />
+    If you finished Lesson 2's opening checklist, you're already set up to
+    **find** tactics. If you skip development, you won't have pieces in place
+    to punish mistakes.
+
+    <ChessBoard fen="r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" />
+  </Slide>
+
+  <Slide title="Double attacks — two threats, one move">
+    A **double attack** means your single move creates two problems your
+    opponent cannot fully solve.
+
+    Examples:
+
+    - Attack the king **and** a rook
+    - Attack the queen **and** a bishop
+    - Deliver check **and** threaten a capture
+
+    If only one threat can be parried, you win material. The **fork** is the
+    most common double attack in beginner chess.
+  </Slide>
+
+  <Slide title="Knight forks — the #1 beginner tactic">
+    Knights are the best forking piece because they **jump** — their attack
+    cannot be blocked.
+
+    A knight on a central square often hits targets on opposite sides of the
+    board at once.
+
+    Best fork targets:
+
+    - **King + queen** (wins the queen)
+    - **King + rook** (wins the rook)
+    - **Queen + loose minor piece**
+
+    <PieceValue piece="knight" />
+
+    Watch for enemy knights landing on **c7**, **d5**, **e5**, and **f7**
+    near your king and queen.
+  </Slide>
+
+  <Slide title="Example — knight fork on c5">
+    White to move. The knight on **d3** can jump to **c5**, attacking both
+    the king on **b6** and the queen on **d8** at the same time.
+
+    Black can save only one. White wins the queen.
+
+    <ChessBoard fen="1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Puzzle — knight fork">
+    White to move. Jump your knight to attack the king and queen together.
+
+    <Puzzle
+      fen="1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1"
+      solution={["Nc5"]}
+      hint="Knights move in an L-shape. Which square hits both king and queen?"
+      title="Knight fork"
+    />
+  </Slide>
+
+  <Slide title="Queen double attacks">
+    The queen combines rook + bishop movement, so it can fork along ranks,
+    files, **and** diagonals.
+
+    Queen forks often appear when:
+
+    - The enemy king and a piece sit on the same line
+    - A loose piece sits near the king
+    - You give check and attack something else at the same time
+
+    <PieceValue piece="queen" />
+
+    Queen adventures from Lesson 2? This is why early queen moves backfire —
+    a developed queen creates forks; a wandering queen **gets** forked.
+  </Slide>
+
+  <Slide title="Puzzle — queen fork">
+    White to move. Slide the queen to a square that checks the king and
+    attacks the bishop at the same time.
+
+    <Puzzle
+      fen="4k3/8/8/8/3b4/8/8/4Q1K2 w - - 0 1"
+      solution={["Qe5+"]}
+      hint="The queen on e1 can reach e5 in one move — a square that hits e8 and d4."
+      title="Queen fork"
+    />
+  </Slide>
+
+  <Slide title="Pawn forks — small piece, big surprise">
+    Pawns attack diagonally, so a single pawn push can fork two pieces at
+    once.
+
+    Common pattern:
+
+    - Enemy king on **c6**, knight on **e6**
+    - **d4–d5+** attacks both
+
+    Pawn forks are easy to miss because pawns feel slow. Always check what
+    squares your opponent's next pawn push will hit.
+
+    <ChessBoard fen="8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Puzzle — pawn fork">
+    White to move. Push your d-pawn to attack the king and knight together.
+
+    <Puzzle
+      fen="8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1"
+      solution={["d5"]}
+      hint="One square forward on the d-file creates two attacks at once."
+      title="Pawn fork"
+    />
+  </Slide>
+
+  <Slide title="Pins — stuck in place">
+    A **pin** happens when a piece cannot move without exposing a more
+    valuable piece behind it on the same line (file, rank, or diagonal).
+
+    Bishops and rooks create most pins. A pinned piece is often effectively
+    frozen — or it becomes a free capture.
+
+    Think: **"stuck in place."**
+
+    <ChessBoard fen="r1bqk2r/pppp1ppp/2n5/4p3/1PB5/8/PPP2PPP/RNBQK2R b KQkq - 0 1" />
+  </Slide>
+
+  <Slide title="Absolute vs relative pins">
+    | Type | What stops the piece from moving? | Example |
+    |---|---|---|
+    | **Absolute pin** | Moving would expose the **king** to check — illegal | Bishop pins a knight to the king |
+    | **Relative pin** | Moving would lose a **more valuable** piece | Bishop pins a knight to the queen |
+
+    Absolute pins are stronger — the pinned piece truly cannot move. Relative
+    pins can sometimes be broken, but it usually costs material.
+
+    Good habit: if you spot a pin, ask **"Can I win the pinned piece?"**
+  </Slide>
+
+  <Slide title="Puzzle — set the pin">
+    White to move. Develop your bishop to pin Black's knight to the king on
+    **e8**.
+
+    <Puzzle
+      fen="r1bqk2r/pppp1ppp/2n5/4p3/2B1P3/8/PPPP1PPP/RNBQK1R w KQkq - 2 4"
+      solution={["Bb5"]}
+      hint="A bishop on b5 looks through the knight on c6 toward the king."
+      title="Pin the knight"
+    />
+  </Slide>
+
+  <Slide title="Skewers — the reverse pin">
+    A **skewer** looks like a pin, but the **more valuable** piece is in
+    **front**.
+
+    When that piece moves out of the way, you capture what's behind it.
+
+    Think: **"forced to move."**
+
+    Classic pattern: bishop checks the king on **b6**, and a rook on **c7**
+    sits behind it on the same diagonal.
+
+    <ChessBoard fen="8/2r5/1k6/B7/8/8/8/4K3 b - - 0 1" />
+  </Slide>
+
+  <Slide title="Pin vs skewer — side by side">
+    | | **Pin** | **Skewer** |
+    |---|---|---|
+    | Valuable piece | Behind (stays put) | In front (must move) |
+    | Weaker piece | In front (frozen) | Behind (gets captured) |
+    | Feeling | "I can't move" | "I have to move — and lose something" |
+
+    Both use the same geometry: pieces lined up on a file, rank, or diagonal.
+    Training your eye to see **lines** is the key to spotting both.
+  </Slide>
+
+  <Slide title="Puzzle — skewer the king and rook">
+    White to move. Place your bishop on a square that checks the king and
+    attacks the rook behind it.
+
+    <Puzzle
+      fen="8/2r5/1k6/8/1B6/8/8/4K3 w - - 0 1"
+      solution={["Ba5+"]}
+      hint="From b4, one diagonal move hits both b6 and c7."
+      title="Bishop skewer"
+    />
+  </Slide>
+
+  <Slide title="How to find tactics — the CCT scan">
+    Before every move, scan for:
+
+    1. **Checks** — can I give check and win something?
+    2. **Captures** — can I take something safely?
+    3. **Threats** — can I attack an undefended piece?
+
+    Say **"CCT"** quietly in your head. It takes five seconds and catches
+    most beginner tactics — both yours and your opponent's.
+
+    Also ask: **"What did my opponent's last move threaten?"** If you only
+    look at your own ideas, you walk into forks.
   </Slide>
 
   <Slide title="Defending against forks">
-    - Keep valuable pieces on different colors and files
-    - Watch for enemy knight jump squares near your king and queen
-    - Castle and coordinate pieces to reduce loose targets
-    - If needed, give up a small concession to avoid a bigger tactic
+    Prevention beats calculation. Habits that stop forks:
+
+    - Keep king and queen on **different** knight paths when possible
+    - Don't leave pieces **undefended** in the center
+    - Castle so your king is not sitting on an open diagonal or file
+    - Before moving, ask: **"What squares does the enemy knight reach?"**
+
+    If a fork is already on the board, sometimes you must give up a pawn to
+    save the queen. Losing a pawn beats losing the queen.
   </Slide>
 
-  <Slide title="Puzzle lab + homework setup">
-    **Puzzle Lab (10 min):** Teacher inserts manual positions for:
+  <Slide title="Defending against pins and skewers">
+    - **Break the pin** — move the valuable piece behind, or block the line
+      with another piece or pawn
+    - **Challenge the pinning piece** — attack the bishop or rook that creates
+      the pin
+    - **Don't put king and queen on the same line** without a good reason
+    - **Castle early** — a king stuck in the center is the easiest skewer target
 
-    - Knight forks
-    - Queen double attacks
-    - Defensive moves that avoid forks
+    If your piece is pinned, treat it as if it is not on the board until the
+    pin is broken.
+  </Slide>
 
-    **Homework idea:** In your next game, mark every move where a fork was
-    possible for either side.
+  <Slide title="Puzzle — win the pinned knight">
+    White to move. Black's knight on **c6** is pinned to the king by your
+    bishop on **b4**. Take advantage.
+
+    <Puzzle
+      fen="r1bqk2r/pppp1ppp/2n5/4N3/1PB5/8/PPP2PPP/RNBQK2R w KQkq - 0 1"
+      solution={["Nxc6"]}
+      hint="The knight cannot move away — what can you capture?"
+      title="Exploit the pin"
+    />
+  </Slide>
+
+  <Slide title="Tactic checklist (use every game)">
+    Before you move:
+
+    - **CCT scan** — any checks, captures, or threats for me?
+    - **Opponent CCT** — what are they threatening with their last move?
+    - **Knight squares** — where could an enemy knight fork me?
+    - **Lines** — any pins or skewers on open files and diagonals?
+    - **Loose pieces** — is anything undefended?
+
+    After the game, tag each big material swing: was it a fork, pin, or skewer?
+  </Slide>
+
+  <Slide title="This week's challenge">
+    Play **three** games this week (online or with a friend). After each game,
+    write down:
+
+    - One tactic **you** missed
+    - One tactic **you** found (or your opponent found on you)
+    - Which type it was: fork, pin, skewer, or other
+
+    Bonus: solve **five** fork puzzles on your chess site of choice before
+    next class. Speed matters less than accuracy — get them right.
   </Slide>
 </SlideDeck>

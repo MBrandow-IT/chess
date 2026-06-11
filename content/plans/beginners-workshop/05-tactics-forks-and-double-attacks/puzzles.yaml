@@ -1,0 +1,60 @@
+puzzles:
+  - id: tactics-knight-fork
+    title: "Knight fork"
+    fen: "1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1"
+    solution: ["Nc5"]
+    hint: "Knights move in an L-shape. Which square hits both king and queen?"
+    themes: ["fork", "knight"]
+    difficulty: easy
+    order_idx: 0
+    published: true
+
+  - id: tactics-queen-fork
+    title: "Queen fork"
+    fen: "4k3/8/8/8/3b4/8/8/4Q1K2 w - - 0 1"
+    solution: ["Qe5+"]
+    hint: "The queen on e1 can reach e5 in one move — a square that hits e8 and d4."
+    themes: ["fork", "queen"]
+    difficulty: easy
+    order_idx: 1
+    published: true
+
+  - id: tactics-pawn-fork
+    title: "Pawn fork"
+    fen: "8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1"
+    solution: ["d5"]
+    hint: "One square forward on the d-file creates two attacks at once."
+    themes: ["fork", "pawn"]
+    difficulty: easy
+    order_idx: 2
+    published: true
+
+  - id: tactics-pin-knight
+    title: "Pin the knight"
+    fen: "r1bqk2r/pppp1ppp/2n5/4p3/2B1P3/8/PPPP1PPP/RNBQK1R w KQkq - 2 4"
+    solution: ["Bb5"]
+    hint: "A bishop on b5 looks through the knight on c6 toward the king."
+    themes: ["pin", "bishop"]
+    difficulty: easy
+    order_idx: 3
+    published: true
+
+  - id: tactics-bishop-skewer
+    title: "Bishop skewer"
+    fen: "8/2r5/1k6/8/1B6/8/8/4K3 w - - 0 1"
+    solution: ["Ba5+"]
+    hint: "From b4, one diagonal move hits both b6 and c7."
+    themes: ["skewer", "bishop"]
+    difficulty: medium
+    order_idx: 4
+    published: true
+
+  - id: tactics-exploit-pin
+    title: "Exploit the pin"
+    fen: "r1bqk2r/pppp1ppp/2n5/4N3/1PB5/8/PPP2PPP/RNBQK2R w KQkq - 0 1"
+    solution: ["Nxc6"]
+    hint: "The knight cannot move away — what can you capture?"
+    themes: ["pin", "knight"]
+    difficulty: medium
+    order_idx: 5
+    published: true
