@@ -21,6 +21,9 @@ export function emptyBoardSetup(): BoardSetup {
   return { position: {}, turn: "w" };
 }
 
+export const STARTING_FEN =
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 export function countKings(position: BoardPosition, color: "w" | "b"): number {
   const king = `${color}K` as Piece;
   return Object.values(position).filter((piece) => piece === king).length;
@@ -96,6 +99,10 @@ export function fenToBoardSetup(fen: string): BoardSetup {
   }
 
   return { position, turn: game.turn() };
+}
+
+export function startingBoardSetup(): BoardSetup {
+  return fenToBoardSetup(STARTING_FEN);
 }
 
 export function slugifyTitle(title: string): string {

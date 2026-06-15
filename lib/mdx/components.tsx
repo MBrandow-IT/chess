@@ -1,6 +1,11 @@
 import { ChessBoard } from "@/components/chess/ChessBoard";
 import { AnalysisBoard } from "@/components/chess/AnalysisBoard";
 import { Puzzle } from "@/components/chess/Puzzle";
+import {
+  SlideAnalysis,
+  SlideBoard,
+  SlidePuzzle,
+} from "@/components/lesson/SlideChessBlocks";
 import { SlideDeck } from "@/components/lesson/SlideDeck";
 import { Slide } from "@/components/lesson/Slide";
 import { KahootQuestion } from "@/components/lesson/KahootQuestion";
@@ -20,6 +25,9 @@ export const mdxComponents = {
   ChessBoard,
   AnalysisBoard,
   Puzzle,
+  SlidePuzzle,
+  SlideBoard,
+  SlideAnalysis,
   SlideDeck,
   Slide,
   KahootQuestion,

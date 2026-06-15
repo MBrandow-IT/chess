@@ -93,6 +93,12 @@ export default async function HostDashboardPage() {
                           Edit puzzles
                         </Link>
                         <Link
+                          href={`/host/lessons/${plan.slug}/${lesson.slug}/slide-chess`}
+                          className="focus-ring rounded-md border border-black/10 bg-white px-3 py-1.5 text-xs font-medium hover:bg-black/5"
+                        >
+                          Edit slide chess
+                        </Link>
+                        <Link
                           href={`/plans/${plan.slug}/${lesson.slug}`}
                           className="text-xs text-buckeye-gray hover:underline"
                         >

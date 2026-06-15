@@ -113,6 +113,23 @@ export type LessonQuizQuestionRow = {
   created_at: string;
 };
 
+export type SlideChessBlockType =
+  | "puzzle"
+  | "display-board"
+  | "analysis-board";
+
+export type LessonSlideChessBlockRow = {
+  id: string;
+  lesson_id: string;
+  slug: string;
+  type: SlideChessBlockType;
+  slide_label: string;
+  payload: Record<string, unknown>;
+  order_idx: number;
+  published: boolean;
+  created_at: string;
+};
+
 export type ContactSubmissionRow = {
   id: string;
   category: ContactCategory;
@@ -228,6 +245,16 @@ export type Database = {
             "lesson_id" | "slug" | "type" | "prompt" | "payload"
           >;
         Update: Partial<LessonQuizQuestionRow>;
+        Relationships: [];
+      };
+      lesson_slide_chess_blocks: {
+        Row: LessonSlideChessBlockRow;
+        Insert: Partial<LessonSlideChessBlockRow> &
+          Pick<
+            LessonSlideChessBlockRow,
+            "lesson_id" | "slug" | "type" | "payload"
+          >;
+        Update: Partial<LessonSlideChessBlockRow>;
         Relationships: [];
       };
       contact_submissions: {

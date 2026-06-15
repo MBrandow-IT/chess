@@ -97,6 +97,9 @@ components/
   lesson/Term.tsx          Tooltip term used inline in MDX.
   lesson/KahootQuestion.tsx Legacy MDX quiz block (extractor still used in tests).
   lesson/LessonQuizPreview.tsx DB-driven quiz preview on lesson pages.
+  lesson/SlideChessBlocks.tsx  DB-backed SlidePuzzle / SlideBoard / SlideAnalysis MDX wrappers.
+  lesson/LessonSlideChessShell.tsx Provider shell on lesson pages.
+  host/SlideChessEditorForm.tsx Admin editor for in-lesson chess blocks.
   play/PlayerQuiz.tsx      The whole student-side quiz UI.
   brand/BuckeyeHeader.tsx  Global header (hidden on /play and /host).
   brand/BuckeyeFooter.tsx  Global footer (also hidden on /play and /host).
@@ -109,7 +112,9 @@ lib/
   mdx/components.tsx       MDX component registry — see §5.
   mdx/extract-questions.ts Legacy: parses `<KahootQuestion>` from MDX (tests only).
   lesson-quiz-questions.ts Fetch helpers for `lesson_quiz_questions` catalog.
+  lesson-slide-chess-blocks.ts Fetch helpers for `lesson_slide_chess_blocks` catalog.
   host/quiz-question-validation.ts Admin form validation for quiz questions.
+  host/slide-chess-validation.ts Admin validation for slide chess block payloads.
   quiz/start.ts            Creates a quiz row + snapshots questions from DB catalog.
   quiz/pin.ts              6-digit PIN generator.
   supabase/                Browser/server clients, types, RPC helper.
@@ -170,7 +175,10 @@ The MDX registry in `lib/mdx/components.tsx` exposes these globally:
 | `<SlideDeck>` | Wrap your `<Slide>`s; gives keyboard nav + fullscreen + URL sync. |
 | `<Slide title="..." subtitle="...">` | One slide. |
 | `<ChessBoard fen="..." selectedSquare="e4" showLegalMoves />` | The board. See §6. |
-| `<Puzzle fen="..." solution={["exd5"]} hint="..." title="..." />` | Solve-a-line. |
+| `<Puzzle fen="..." solution={["exd5"]} hint="..." title="..." />` | In-lesson solve-a-line (legacy inline props). Prefer `<SlidePuzzle slug="..." />` — see §5.7. |
+| `<SlidePuzzle slug="..." />` | DB-backed in-lesson puzzle — see §5.7. |
+| `<SlideBoard slug="..." />` | DB-backed teaching board (`ChessBoard` props). |
+| `<SlideAnalysis slug="..." />` | DB-backed free-play analysis board. |
 | `<KahootQuestion type="multiple-choice" ... />` | **Deprecated** in MDX — use host quiz editor instead. Still registered for legacy content. |
 | `<Term name="check">check</Term>` | Inline tooltip for chess vocabulary. |
 | `<Collapsible title="..." subtitle="..." defaultOpen={false}>` | Section that collapses; default closed. |
@@ -246,6 +254,47 @@ API routes (admin-only): `POST/PATCH/DELETE /api/host/lesson-quiz-questions`.
 
 Schema: `0006_lesson_quiz_questions.sql`. Seed data for lesson 1 is in that
 migration; new lessons start empty until questions are added in the host UI.
+
+### 5.7 Slide chess blocks (host editor → Supabase)
+
+In-lesson **puzzles**, **display boards**, and **analysis boards** can be
+authored in Supabase instead of inline MDX props. Slide prose and titles stay
+in `lesson.mdx`; reference blocks by slug:
+
+**`/host/lessons/<plan>/<lesson>/slide-chess`**
+
+MDX components (registered in `lib/mdx/components.tsx`):
+
+| MDX tag | DB `type` | Renders |
+|---|---|---|
+| `<SlidePuzzle slug="..." />` | `puzzle` | `<Puzzle>` |
+| `<SlideBoard slug="..." />` | `display-board` | `<ChessBoard>` |
+| `<SlideAnalysis slug="..." />` | `analysis-board` | `<AnalysisBoard>` |
+
+Block types and `payload` shapes:
+
+| Type | `payload` |
+|---|---|
+| `puzzle` | `{ fen, solution: string[], hint?, title?, allowReveal? }` |
+| `display-board` | `{ fen, highlights?, selectedSquare?, flipped?, lastMove?, interactive? }` |
+| `analysis-board` | `{ fen, flipped? }` |
+
+Workflow:
+
+1. Sign in as admin → host dashboard → **Edit slide chess** on a lesson.
+2. Create a block (puzzle / display board / analysis board) with the board
+   editor; puzzles use the same alternating solution model as practice puzzles.
+3. Add the matching MDX slug reference inside the appropriate `<Slide>`.
+4. Published blocks appear on the lesson page without redeploying MDX.
+
+Legacy inline `<Puzzle fen=...>` / `<ChessBoard fen=...>` / `<AnalysisBoard>`
+still work during migration. This catalog is **separate** from `lesson_puzzles`
+(practice page) and `lesson_quiz_questions` (live quiz).
+
+API routes (admin-only): `POST/PATCH/DELETE /api/host/lesson-slide-chess`.
+
+Schema: `0013_lesson_slide_chess_blocks.sql`. Reference conversion:
+`tactics-forks-and-double-attacks` lesson MDX + seed rows in that migration.
 
 ---
 

@@ -8,8 +8,10 @@ import {
 } from "@/lib/content";
 import { renderLessonMDX } from "@/lib/mdx/compile";
 import { fetchLessonQuizQuestions } from "@/lib/lesson-quiz-questions";
+import { fetchLessonSlideChessBlocks } from "@/lib/lesson-slide-chess-blocks";
 import { PrintButton } from "@/components/lesson/PrintButton";
 import { LessonQuizPreview } from "@/components/lesson/LessonQuizPreview";
+import { LessonSlideChessShell } from "@/components/lesson/LessonSlideChessShell";
 import { SoundToggle } from "@/components/lesson/SoundToggle";
 import { getLessonAccess, isLessonLiveForStudents } from "@/lib/events/lesson-access";
 import { fetchLessonScheduleMap, type LessonScheduleState } from "@/lib/events/queries";
@@ -91,6 +93,11 @@ export default async function LessonPage({
 
   const content = await renderLessonMDX(file.content);
   const quizQuestions = await fetchLessonQuizQuestions(planSlug, lessonSlug);
+  const slideChessBlocks = await fetchLessonSlideChessBlocks(
+    planSlug,
+    lessonSlug,
+    { includeUnpublished: isAdmin },
+  );
 
   return (
     <article className="container-page py-8">
@@ -104,10 +111,22 @@ export default async function LessonPage({
         </Link>
       </nav>
 
-      {isAdmin && schedule ? (
+      {isAdmin ? (
         <div className="no-print mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Admin preview — this lesson is scheduled to go live on{" "}
-          {formatEventDate(schedule.unlockAt)} ({schedule.eventTitle}).
+          Admin preview —{" "}
+          <Link
+            href={`/host/lessons/${planSlug}/${lessonSlug}/slide-chess`}
+            className="font-medium underline"
+          >
+            Edit slide chess blocks
+          </Link>
+          {schedule ? (
+            <>
+              {" "}
+              · scheduled to go live on {formatEventDate(schedule.unlockAt)} (
+              {schedule.eventTitle})
+            </>
+          ) : null}
         </div>
       ) : null}
 
@@ -137,7 +156,14 @@ export default async function LessonPage({
         </div>
       </header>
 
-      <div className="lesson-content">{content}</div>
+      <LessonSlideChessShell
+        blocks={slideChessBlocks}
+        planSlug={planSlug}
+        lessonSlug={lessonSlug}
+        isAdmin={isAdmin}
+      >
+        <div className="lesson-content">{content}</div>
+      </LessonSlideChessShell>
 
       <div className="no-print mt-8">
         <LessonQuizPreview questions={quizQuestions} />

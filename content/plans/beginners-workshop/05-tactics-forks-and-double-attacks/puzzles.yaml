@@ -1,9 +1,9 @@
 puzzles:
   - id: tactics-knight-fork
     title: "Knight fork"
-    fen: "1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1"
-    solution: ["Nc5"]
-    hint: "Knights move in an L-shape. Which square hits both king and queen?"
+    fen: "1k1q4/p7/8/4N3/8/8/8/4K3 w - - 0 1"
+    solution: ["Nc6+", "Kc8", "Nxd8"]
+    hint: "From e5, which L-shape jump checks the king and attacks the queen on d8?"
     themes: ["fork", "knight"]
     difficulty: easy
     order_idx: 0
@@ -21,9 +21,9 @@ puzzles:
 
   - id: tactics-pawn-fork
     title: "Pawn fork"
-    fen: "8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1"
-    solution: ["d5"]
-    hint: "One square forward on the d-file creates two attacks at once."
+    fen: "8/8/2k1n3/4K3/3P4/8/8/8 w - - 0 1"
+    solution: ["d5+"]
+    hint: "Push the d-pawn one square — which two enemy pieces does it hit?"
     themes: ["fork", "pawn"]
     difficulty: easy
     order_idx: 2

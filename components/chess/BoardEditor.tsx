@@ -9,6 +9,7 @@ import {
   emptyBoardSetup,
   movePieceOnBoard,
   removeSquare,
+  startingBoardSetup,
   type BoardSetup,
 } from "@/lib/chess/board-editor";
 import type {
@@ -119,6 +120,13 @@ export function BoardEditor({
           }`}
         >
           Black
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange(startingBoardSetup())}
+          className="focus-ring rounded-md border border-black/10 bg-white px-3 py-1.5 text-sm font-medium hover:bg-black/5"
+        >
+          Starting position
         </button>
         <button
           type="button"

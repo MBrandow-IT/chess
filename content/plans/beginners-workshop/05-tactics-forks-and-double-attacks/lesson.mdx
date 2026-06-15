@@ -43,7 +43,7 @@
     **find** tactics. If you skip development, you won't have pieces in place
     to punish mistakes.
 
-    <ChessBoard fen="r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" />
+    <SlideBoard slug="tactics-why-matter-board" />
   </Slide>
 
   <Slide title="Double attacks — two threats, one move">
@@ -77,26 +77,21 @@
 
     Watch for enemy knights landing on **c7**, **d5**, **e5**, and **f7**
     near your king and queen.
-  </Slide>
 
-  <Slide title="Example — knight fork on c5">
-    White to move. The knight on **d3** can jump to **c5**, attacking both
-    the king on **b6** and the queen on **d8** at the same time.
+    Drag the pieces on the board below and try landing a knight on those
+    squares — notice how a central jump often threatens more than one target
+    at once.
 
-    Black can save only one. White wins the queen.
-
-    <ChessBoard fen="1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1" />
+    <SlideAnalysis slug="tactics-knight-fork-demo" />
   </Slide>
 
   <Slide title="Puzzle — knight fork">
-    White to move. Jump your knight to attack the king and queen together.
+    White to move. Your knight sits on **e5** and Black's b-pawn is on **b6**.
 
-    <Puzzle
-      fen="1k1q4/ppp5/8/8/8/3N4/PPP2PPP/4K3 w - - 0 1"
-      solution={["Nc5"]}
-      hint="Knights move in an L-shape. Which square hits both king and queen?"
-      title="Knight fork"
-    />
+    Play the forcing line that wins the queen: **Nc6+**, then after
+    **…Kc8**, finish with **Nxd8**.
+
+    <SlidePuzzle slug="tactics-knight-fork-puzzle" />
   </Slide>
 
   <Slide title="Queen double attacks">
@@ -119,38 +114,18 @@
     White to move. Slide the queen to a square that checks the king and
     attacks the bishop at the same time.
 
-    <Puzzle
-      fen="4k3/8/8/8/3b4/8/8/4Q1K2 w - - 0 1"
-      solution={["Qe5+"]}
-      hint="The queen on e1 can reach e5 in one move — a square that hits e8 and d4."
-      title="Queen fork"
-    />
-  </Slide>
-
-  <Slide title="Pawn forks — small piece, big surprise">
-    Pawns attack diagonally, so a single pawn push can fork two pieces at
-    once.
-
-    Common pattern:
-
-    - Enemy king on **c6**, knight on **e6**
-    - **d4–d5+** attacks both
-
-    Pawn forks are easy to miss because pawns feel slow. Always check what
-    squares your opponent's next pawn push will hit.
-
-    <ChessBoard fen="8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1" />
+    <SlidePuzzle slug="tactics-queen-fork-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — pawn fork">
-    White to move. Push your d-pawn to attack the king and knight together.
+    White to move. Your king stands on **e5**, Black's knight sits on **e6**,
+    and the black king is on **c6**.
 
-    <Puzzle
-      fen="8/8/2k5/4n3/3P4/8/8/4K3 w - - 0 1"
-      solution={["d5"]}
-      hint="One square forward on the d-file creates two attacks at once."
-      title="Pawn fork"
-    />
+    Pawns attack diagonally, so one push can threaten two targets at once.
+    Play **d5+** — it checks the king and attacks the knight. Black can
+    save only one.
+
+    <SlidePuzzle slug="tactics-pawn-fork-puzzle" />
   </Slide>
 
   <Slide title="Pins — stuck in place">
@@ -162,7 +137,7 @@
 
     Think: **"stuck in place."**
 
-    <ChessBoard fen="r1bqk2r/pppp1ppp/2n5/4p3/1PB5/8/PPP2PPP/RNBQK2R b KQkq - 0 1" />
+    <SlideBoard slug="tactics-pin-diagram" />
   </Slide>
 
   <Slide title="Absolute vs relative pins">
@@ -181,12 +156,7 @@
     White to move. Develop your bishop to pin Black's knight to the king on
     **e8**.
 
-    <Puzzle
-      fen="r1bqk2r/pppp1ppp/2n5/4p3/2B1P3/8/PPPP1PPP/RNBQK1R w KQkq - 2 4"
-      solution={["Bb5"]}
-      hint="A bishop on b5 looks through the knight on c6 toward the king."
-      title="Pin the knight"
-    />
+    <SlidePuzzle slug="tactics-set-pin-puzzle" />
   </Slide>
 
   <Slide title="Skewers — the reverse pin">
@@ -200,7 +170,7 @@
     Classic pattern: bishop checks the king on **b6**, and a rook on **c7**
     sits behind it on the same diagonal.
 
-    <ChessBoard fen="8/2r5/1k6/B7/8/8/8/4K3 b - - 0 1" />
+    <SlideBoard slug="tactics-skewer-diagram" />
   </Slide>
 
   <Slide title="Pin vs skewer — side by side">
@@ -218,12 +188,7 @@
     White to move. Place your bishop on a square that checks the king and
     attacks the rook behind it.
 
-    <Puzzle
-      fen="8/2r5/1k6/8/1B6/8/8/4K3 w - - 0 1"
-      solution={["Ba5+"]}
-      hint="From b4, one diagonal move hits both b6 and c7."
-      title="Bishop skewer"
-    />
+    <SlidePuzzle slug="tactics-skewer-puzzle" />
   </Slide>
 
   <Slide title="How to find tactics — the CCT scan">
@@ -268,12 +233,7 @@
     White to move. Black's knight on **c6** is pinned to the king by your
     bishop on **b4**. Take advantage.
 
-    <Puzzle
-      fen="r1bqk2r/pppp1ppp/2n5/4N3/1PB5/8/PPP2PPP/RNBQK2R w KQkq - 0 1"
-      solution={["Nxc6"]}
-      hint="The knight cannot move away — what can you capture?"
-      title="Exploit the pin"
-    />
+    <SlidePuzzle slug="tactics-exploit-pin-puzzle" />
   </Slide>
 
   <Slide title="Tactic checklist (use every game)">
