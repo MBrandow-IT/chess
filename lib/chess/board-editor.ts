@@ -29,6 +29,20 @@ export function countKings(position: BoardPosition, color: "w" | "b"): number {
   return Object.values(position).filter((piece) => piece === king).length;
 }
 
+/**
+ * Infer FEN castling rights from piece placement. chess.js clears rights when
+ * pieces are placed via put() after clear(), so puzzle editors must restore
+ * them when the king and rooks still sit on their home squares.
+ */
+export function castlingRightsFromPosition(position: BoardPosition): string {
+  let rights = "";
+  if (position.e1 === "wK" && position.h1 === "wR") rights += "K";
+  if (position.e1 === "wK" && position.a1 === "wR") rights += "Q";
+  if (position.e8 === "bK" && position.h8 === "bR") rights += "k";
+  if (position.e8 === "bK" && position.a8 === "bR") rights += "q";
+  return rights.length > 0 ? rights : "-";
+}
+
 export function canPlaceSparePiece(
   position: BoardPosition,
   piece: Piece,
@@ -84,6 +98,7 @@ export function boardSetupToFen({ position, turn }: BoardSetup): string {
 
   const parts = game.fen().split(" ");
   parts[1] = turn;
+  parts[2] = castlingRightsFromPosition(position);
   return parts.join(" ");
 }
 
