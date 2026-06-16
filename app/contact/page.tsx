@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch about chess tutoring, admin access, advice, or bug reports.",
+    "Get in touch about admin access, general advice, or bug reports.",
 };
 
 export default function ContactPage() {
@@ -19,8 +19,8 @@ export default function ContactPage() {
             Contact us
           </h1>
           <p className="mt-4 max-w-2xl text-buckeye-gray">
-            Use this form for general advice, chess tutoring requests, admin
-            access to host your own quizzes, or bug reports. We will follow up
+            Use this form for general advice, admin access to host your own
+            quizzes, or bug reports. We will follow up
             using the email address you provide — your message is not posted
             publicly.
           </p>

@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const CONTACT_CATEGORIES = [
   "advice",
-  "tutoring",
   "admin_access",
   "bug_report",
 ] as const;
@@ -11,7 +10,6 @@ export type ContactCategory = (typeof CONTACT_CATEGORIES)[number];
 
 export const CONTACT_CATEGORY_LABELS: Record<ContactCategory, string> = {
   advice: "General advice or question",
-  tutoring: "Chess tutoring request",
   admin_access: "Request admin access (host your own quizzes)",
   bug_report: "Report a bug",
 };
