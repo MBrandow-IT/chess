@@ -1,48 +1,239 @@
 <SlideDeck>
-  <Slide title="Lesson 4 — Tactics II: Removing Defenders, Overloading, and Finishing Attacks">
-    Strong tactics often start by identifying one piece that is doing too much.
+  <Slide title="Lesson 4 — Tactics II: Removing Defenders, Deflection, Overloading, and Finishing Attacks">
+    Last week you learned to **spot** forks, pins, and skewers. This week you
+    learn to **manufacture** tactics by attacking the pieces that hold the
+    enemy position together.
 
-    Goals:
+    By the end of class, you should be able to:
 
-    - Find key defenders in a position
-    - Use exchanges to remove that defender
-    - Recognize overloaded pieces and convert into mating attacks
+    - Find the **defender** that guards a key piece or square
+    - **Remove**, **deflect**, or **overload** that defender
+    - Finish the job with a **back-rank** or mating-net attack
+    - Chain two ideas together into a short winning **combination**
   </Slide>
 
-  <Slide title="Class plan (30 minutes)">
-    - **5 min**: Review line tactics
-    - **12 min**: Defender-focused tactical thinking
-    - **10 min**: Puzzle lab (**teacher adds manually**)
-    - **3 min**: Debrief and concept check
+  <Slide title="Key definitions">
+    The vocabulary for this week:
+
+    | Term | Meaning |
+    |---|---|
+    | **Defender** | A piece whose job is to guard another piece or a key square |
+    | **Remove the defender** | Capture or trade off the guard, leaving the target undefended |
+    | **Deflection** | Force a defender to move *away* from the square it is guarding |
+    | **Overload** | A piece given two defensive jobs at once — it cannot keep both |
+    | **Back-rank mate** | A rook or queen mates a king trapped behind its own pawns |
+    | **Luft** | A "breathing hole" — a pawn move that gives the king an escape square |
+
+    Tactics I asked **"is anything loose?"** Tactics II asks the deeper
+    question: **"what is holding this position together — and can I knock it
+    out?"**
+  </Slide>
+
+  <Slide title="From Tactics I to Tactics II">
+    A fork or pin only works if the target is **undefended** or **stuck**. Most
+    of the time the target *is* defended — by exactly one piece.
+
+    That single defender is the weak link. The whole lesson is one idea in
+    three flavors:
+
+    - **Remove** it — capture or trade the guard.
+    - **Deflect** it — chase it off its post with a threat.
+    - **Overload** it — give it more jobs than it can do.
+
+    Knock out the guard, and the fork, pin, or capture you wanted suddenly
+    works.
+  </Slide>
+
+  <Slide title="Every piece has a job">
+    Before you attack, ask **"what is each enemy piece defending?"**
+
+    Below, Black's rook on **d8** is defended only by the knight on **d7**
+    (highlighted). The knight is the guard — and White doubles rooks straight
+    at it.
+
+    <SlideBoard slug="tactics2-defender-board" />
+
+    Find the guard first. Everything this week flows from that one question.
   </Slide>
 
   <Slide title="Removing the defender">
-    If one piece protects a critical square or piece, eliminate it first.
+    The most direct method: **trade or capture the guard**, then take what it
+    was protecting.
 
     Typical sequence:
 
-    1. Identify the defender.
-    2. Force it away or trade it off.
-    3. Win material or deliver mate on the newly weak target.
+    1. Identify the defender of your target.
+    2. Capture or trade it off — often with **check** or a **threat** so the
+       opponent cannot reorganize.
+    3. Win the now-undefended piece, or mate on the newly weak square.
 
-    <ChessBoard fen="4k3/8/8/2q5/3b4/4N3/4Q3/4K3 w - - 0 1" />
+    The cleaner the forcing move (check first!), the less time your opponent
+    has to bring up a new defender.
   </Slide>
 
-  <Slide title="Overloading and practical play">
-    An overloaded piece has multiple defensive jobs at once and cannot maintain
-    all of them after a forcing move.
+  <Slide title="Try it — knock out the guard">
+    Free play. Below, Black's rook on **d8** is held up by the bishop on
+    **d7**. Drag White's pieces and try the two-step idea: capture the guard,
+    then capture the rook.
 
-    This concept appears constantly in beginner and intermediate games.
+    Notice how the **order** matters — capture the defender *first*.
+
+    <SlideAnalysis slug="tactics2-remove-defender-demo" />
   </Slide>
 
-  <Slide title="Puzzle lab + homework setup">
-    **Puzzle Lab (10 min):** Teacher inserts manual positions for:
+  <Slide title="Puzzle — remove the defender">
+    White to move. Black's queen on **d8** is guarded by the knight on **f7**.
+    The bishop on **b3** is aimed right at that knight.
 
-    - Remove-the-defender wins
-    - Overloaded queen or rook examples
-    - Defensive resources that avoid collapse
+    Capture the guard **with check**, then collect the queen.
 
-    **Homework idea:** Annotate one game position where one defending piece was
-    carrying too many responsibilities.
+    <SlidePuzzle slug="tactics2-remove-defender-puzzle" />
+  </Slide>
+
+  <Slide title="Deflection — drag the guard away">
+    You do not always have to *capture* a defender. Sometimes you can **force
+    it to move** with a threat it cannot ignore — a check, or an attack on
+    something more valuable.
+
+    Below, the black rook on **c8** is the only thing guarding the back rank.
+    If you can pull it off the eighth rank, the mate lands.
+
+    <SlideBoard slug="tactics2-deflection-board" />
+
+    Think: **"what would force that piece to abandon its post?"**
+  </Slide>
+
+  <Slide title="Puzzle — deflection">
+    White to move. The black rook on **c8** is the lone back-rank defender.
+
+    Give a check that the rook **must** capture — dragging it onto **d8** —
+    then mate with your other rook.
+
+    <SlidePuzzle slug="tactics2-deflection-puzzle" />
+  </Slide>
+
+  <Slide title="Overloading — one piece, two jobs">
+    An **overloaded** piece is asked to defend two things at once. Attack one
+    job, and it has to drop the other.
+
+    Below, the black rook on **e8** is doing double duty: it contests the open
+    e-file **and** defends the loose bishop on **a8** along the back rank. It
+    cannot truly do both.
+
+    <SlideBoard slug="tactics2-overload-board" />
+
+    To spot overloads, ask: **"is one piece the only defender of two different
+    things?"**
+  </Slide>
+
+  <Slide title="Puzzle — overloaded defender">
+    White to move. Black's queen on **d8** is overloaded: it defends the knight
+    on **d4** **and** guards the back rank against your rooks.
+
+    Take the knight. If the queen recaptures, it abandons the back rank — and
+    your second rook delivers mate.
+
+    <SlidePuzzle slug="tactics2-overload-puzzle" />
+  </Slide>
+
+  <Slide title="Finishing attacks — the back rank">
+    Removing a defender wins material. **Finishing attacks** turn that edge
+    into checkmate. The most common one in beginner games is the **back-rank
+    mate**.
+
+    It happens when a king is boxed in behind its own unmoved pawns:
+
+    <SlideBoard slug="tactics2-backrank-board" />
+
+    The king on **g8** has no escape — the pawns on f7, g7, and h7 wall it in.
+    A rook or queen reaching the eighth rank is mate. The cure is **luft**:
+    nudge a pawn early so your king can breathe.
+  </Slide>
+
+  <Slide title="Puzzle — back-rank mate">
+    White to move. Black never made luft, so the king is trapped on the back
+    rank.
+
+    One rook move ends the game.
+
+    <SlidePuzzle slug="tactics2-backrank-puzzle" />
+  </Slide>
+
+  <Slide title="Putting it together">
+    Real combinations chain these ideas. A typical finish looks like:
+
+    1. **Remove or deflect** the piece guarding the back rank.
+    2. The opponent recaptures or steps aside — abandoning the key square.
+    3. A waiting piece (a quiet bishop or second rook) delivers **mate**.
+
+    The next puzzle is the full pattern. Look for the defender of **d8**, knock
+    it out, and notice the bishop on **h5** quietly covering **f7** for the
+    mate.
+  </Slide>
+
+  <Slide title="Final challenge — find the combination">
+    White to move. Black's rook on **d8** guards the back rank, defended only by
+    the knight on **f7**.
+
+    Sacrifice to remove the defender, force the recapture, then mate with your
+    second rook — the bishop on **h5** takes away the king's last escape.
+
+    <SlidePuzzle slug="tactics2-final-challenge-puzzle" />
+  </Slide>
+
+  <Slide title="How to find these tactics — the defender scan">
+    Add one habit to last week's **CCT scan** (Checks, Captures, Threats):
+
+    1. Pick the enemy piece or square you want to win.
+    2. Ask **"what is defending it?"** — usually one piece.
+    3. Ask **"can I remove, deflect, or overload that defender?"**
+    4. Check whether the follow-up is a **capture** or a **mate**.
+
+    Most beginner combinations are just CCT plus this defender question, two
+    moves deep.
+  </Slide>
+
+  <Slide title="Defending — protect your defenders">
+    The same lens keeps *you* safe. Before you move, ask the opponent's
+    questions for them:
+
+    - **Don't let one piece guard two things** — give every important piece a
+      backup defender.
+    - **Make luft early** — a quiet `h3` or `h6` stops most back-rank tricks.
+    - **Watch for checks and captures** that hit your guards, not just your
+      king.
+    - If a defender is removed, **bring a new one** before grabbing material
+      elsewhere.
+
+    A position with no overloaded pieces and a king that can breathe is very
+    hard to combine against.
+  </Slide>
+
+  <Slide title="Game-day checklist (use every move)">
+    Keep this open while you play your games today. Before each move, run down
+    the list:
+
+    - **CCT scan** — any **C**hecks, **C**aptures, or **T**hreats for me?
+    - **Find the guard** — what single piece defends the target I want?
+    - **Knock it out** — can I **remove**, **deflect**, or **overload** it?
+    - **Finish** — does a check, fork, or **back-rank** mate follow?
+    - **My king** — do I have **luft**? Is any of my pieces overloaded?
+    - **Their last move** — what did it stop defending?
+
+    Five seconds per move. It catches almost every beginner combination — and
+    stops you from walking into one.
+  </Slide>
+
+  <Slide title="This week's challenge">
+    Play **three** games this week (online or with a friend). Use the
+    game-day checklist on every move. After each game, write down:
+
+    - One time you (or your opponent) **removed, deflected, or overloaded** a
+      defender
+    - One **back-rank** scare — did you have luft?
+    - One moment you found a guard but **could not** knock it out — why not?
+
+    Bonus: solve **five** "remove the defender" or back-rank puzzles on your
+    chess site of choice before next class. Accuracy first, then speed.
   </Slide>
 </SlideDeck>
