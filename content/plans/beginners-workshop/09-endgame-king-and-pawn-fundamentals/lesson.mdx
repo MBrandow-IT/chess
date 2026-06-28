@@ -1,48 +1,593 @@
 <SlideDeck>
-  <Slide title="Lesson 5 — Endgame I: King and Pawn Fundamentals">
-    Endgames teach calculation, planning, and king activity.
+  <Slide title="Lesson 5 — Endgame I: Finishing Wins and King Activity">
+    An **endgame** starts when most pieces are traded off and the kings come
+    out to fight. This week you learn skills that win games you already
+    deserve to win.
 
-    Goals:
+    By the end of class, you should be able to:
 
-    - Activate the king as a fighting piece
-    - Understand passed pawns
-    - Use opposition and the square rule in pawn races
+    - Deliver **checkmate** with king and queen vs king
+    - Use **ladder mate** with two rooks to push the king to the edge
+    - Avoid the stalemate trap when you are winning
+    - Activate your king as a fighting piece
+    - Spot **passed pawns** and simple pawn races
   </Slide>
 
-  <Slide title="Class plan (30 minutes)">
-    - **5 min**: Mating pattern recap
-    - **12 min**: King-and-pawn principles
-    - **10 min**: Puzzle lab (**teacher adds manually**)
-    - **3 min**: Endgame checklist summary
+  <Slide title="Key definitions">
+    Endgame vocabulary for this week:
+
+    | Term | Meaning |
+    |---|---|
+    | **Endgame** | The final phase — fewer pieces, kings in the center, pawns matter more |
+    | **Checkmate** | The enemy king is in check and has no legal escape — the game is over |
+    | **Stalemate** | It is your turn, you are **not** in check, but you have **no legal moves** — the game is a **draw** |
+    | **Passed pawn** | A pawn with no enemy pawns blocking it on the same file or on the files next to it |
+    | **Promotion** | When a pawn reaches the far rank and becomes a queen (or another piece) |
+    | **Opposition** | Kings face each other with one square between them; the side **not** to move often has an advantage |
+    | **Ladder mate** | Two rooks (or a rook and queen) take turns giving check, pushing the enemy king toward the edge like rungs on a ladder |
+
+    Last month you learned tactics to **win material**. Endgames teach you how
+    to **convert** that advantage into a full point.
   </Slide>
 
-  <Slide title="King activity is everything">
-    In endgames, the king belongs in the center and supports pawns.
+  <Slide title="What changes in the endgame?">
+    In the opening and middle game, the king hides behind pawns. In the
+    endgame, the king becomes a **strong piece** — like an extra minor piece.
 
-    Priorities:
+    Typical endgame signs:
 
-    - Centralize king
-    - Create and push passed pawns
-    - Keep pawn structure healthy when possible
+    - Most queens and heavy pieces are gone
+    - Pawns become the main attackers
+    - The king walks toward the center and supports pawns
+    - One small mistake can turn a win into a draw — or a loss
 
     <ChessBoard fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1" />
   </Slide>
 
-  <Slide title="The square rule (beginner version)">
-    If your king can step into the pawn's promotion square "box," it can catch
-    the pawn. If it cannot, the pawn usually promotes.
+  <Slide title="Why endgames matter for beginners">
+    Many beginner games follow the same story:
 
-    This quick visual rule helps beginners evaluate pawn races fast.
+    1. You win the opponent's queen with a tactic
+    2. You grab a few more pawns
+    3. You **cannot find checkmate** and the game drags on
+    4. You accidentally stalemate or blunder the queen back
+
+    Learning king-and-queen checkmate fixes step 3. Learning stalemate
+    awareness fixes step 4. King activity fixes pawn endgames where every
+    square counts.
   </Slide>
 
-  <Slide title="Puzzle lab + homework setup">
-    **Puzzle Lab (10 min):** Teacher inserts manual positions for:
+  <Slide title="When you are up a queen — finish the game">
+    If you have **king + queen** vs **king**, you should win **every time**
+    with correct technique. There is no excuse for a draw here.
 
-    - King centralization choices
-    - Passed pawn races
-    - Correct king route to stop promotion
+    Your job is not to chase the king randomly. Your job is a **plan**:
 
-    **Homework idea:** Play one king-and-pawn mini-game from a simplified
-    starting position.
+    1. Use the **queen** to shrink the enemy king's living space
+    2. Walk your **king** closer to help at the finish
+    3. Push the enemy king to the **edge** of the board
+    4. Deliver **checkmate** — without stalemating
+
+    <ChessBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="King + Queen vs King — the big picture">
+    Think of the queen as a **fence**. Each queen move builds a smaller
+    box around the enemy king.
+
+    Your own king is the **helper**. The queen alone can push the enemy king
+    to the edge, but your king must get close for the final checkmate.
+
+    <PieceValue piece="queen" />
+
+    Rule of thumb: **queen builds the box, king closes the door.**
+  </Slide>
+
+  <Slide title="Stalemate — the #1 way wins disappear">
+    <Term name="stalemate">Stalemate</Term> is when the side to move is **not**
+    in check but has **zero legal moves**. The game is a **draw** — even if
+    you were winning by a queen!
+
+    When you are ahead, never take every enemy piece and every escape square
+    unless the king is actually in **checkmate**.
+
+    Ask before every winning move: **"Does my opponent still have a legal
+    move?"** If not, it is stalemate — not victory.
+  </Slide>
+
+  <Slide title="Stalemate trap — what NOT to do">
+    Black to move below. White's queen sits on **g7**, White's king on **g6**,
+    and Black's king is trapped on **h8** — but Black is **not** in check.
+
+    Black has no legal moves. That is **stalemate**. White threw away a win.
+
+    When you push a king to the edge, leave it one escape square until you
+    are ready to give **checkmate**.
+
+    <ChessBoard fen="7k/6Q1/6K1/8/8/8/8/8 b - - 0 1" />
+  </Slide>
+
+  <Slide title="Correct checkmate on the edge">
+    Same corner idea — but now White delivers **checkmate**, not stalemate.
+
+    The queen gives check from **f7**. The king on **g6** guards escape
+    squares. Black's king on **h8** has nowhere to go.
+
+    Notice: the queen is **not** right next to the enemy king on **g7** (that
+    was the stalemate square). **f7** checks and covers **g8**.
+
+    <ChessBoard fen="7k/5Q2/6K1/8/8/8/8/8 b - - 0 1" />
+  </Slide>
+
+  <Slide title="Step 1 — shrink the box with your queen">
+    Place the queen so the enemy king has fewer and fewer squares.
+
+    Good queen habits:
+
+    - Stay roughly a **knight's move** away from the enemy king when
+      restricting — you control many escape squares without touching the king
+    - Use the queen like a **wall** on a rank, file, or diagonal
+    - Do **not** let your queen get too close and accidentally stalemate
+
+    After each queen move that shrinks the box, look for a safe **king** move
+    that steps toward the action.
+
+    <ChessBoard
+      fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1"
+      highlights={["e4", "d4", "e5", "d5", "c4", "c5"]}
+    />
+  </Slide>
+
+  <Slide title="Step 1 in action — cut the king off">
+    White to move. The black king sits on **e4**. A queen move to **e5** (or
+    **d5**) builds a wall — the king cannot cross to the other half of the
+    board.
+
+    This is the first step in almost every king-and-queen win: **limit the
+    king's territory**.
+
+    <ChessBoard fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1" selectedSquare="a1" />
+  </Slide>
+
+  <Slide title="Step 2 — walk your king forward">
+    The queen does the chasing. Your king does the **marathon**.
+
+    Move the king **one step** toward the enemy king whenever it is safe. You
+    do not need to rush — just keep getting closer.
+
+    In the position below, White's king on **c3** supports the finish while
+    the queen on **c5** keeps Black boxed in on **c8**.
+
+    <ChessBoard fen="2k5/8/8/2Q5/8/2K5/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Step 3 — push the king to the edge">
+    Repeat the pattern: **queen restricts → king walks → queen restricts**.
+
+    The enemy king gets pushed toward the **side** of the board — the **a**-,
+    **h**-, **1**-, or **8**-rank or file. Corners are the easiest place to
+    finish.
+
+    Below, Black's king is trapped on the **a**-file edge. White's queen and
+    king work together to close the net.
+
+    <ChessBoard fen="k7/8/8/8/8/1K6/1Q6/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — starting position">
+    White has king and queen. Black has only a king. White to move.
+
+    **Plan:** box with the queen, bring the white king up, push Black to the
+    edge, then mate.
+
+    Try tracing the idea on the board: where would you play **Qd4** or **Qe5**
+    to limit the black king on **f3**?
+
+    <ChessBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — middle of the chase">
+    A few moves later. Black's king has been pushed toward the corner. White's
+    king stepped from **b1** toward **c3** and beyond.
+
+    The queen keeps shrinking the box. The white king keeps marching. Black
+    has fewer escape squares every turn.
+
+    <ChessBoard fen="8/8/5k2/8/8/2K5/2Q4/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — ready to mate">
+    Black's king is on the **h**-file edge. White's king on **g6** guards the
+    queen on **g8**. Checkmate.
+
+    Black's king on **h8** cannot capture on **g8** (protected), cannot go to
+    **g7** or **h7**, and is in check.
+
+    <ChessBoard fen="6k1/6Q1/6K1/8/8/8/8/8 b - - 0 1" />
+  </Slide>
+
+  <Slide title="Puzzle — cut off the king">
+    White to move. Black's king is on **e4**. Play one queen move that builds
+    a wall and limits how far the king can run.
+
+    <Puzzle
+      fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1"
+      solution={["Qe5"]}
+      hint="Place the queen on the same file or rank as the enemy king, one step closer to the center."
+      title="Shrink the box"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — step your king closer">
+    White to move. The queen already boxes Black's king on **c8**. Your king
+    on **b2** should march forward to help finish the game.
+
+    <Puzzle
+      fen="2k5/8/8/2Q5/8/1K6/8/8 w - - 0 1"
+      solution={["Kc3"]}
+      hint="Walk toward the enemy king. You do not need to rush — one safe step is enough."
+      title="King marches forward"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — deliver checkmate">
+    White to move. Black's king is on **h8**. Your queen on **f2** and king on
+    **g6** are ready. Find **checkmate** — not stalemate!
+
+    <Puzzle
+      fen="7k/8/6K1/8/8/5Q2/8 w - - 0 1"
+      solution={["Qf7"]}
+      hint="Give check on the f-file. Landing on g7 with the queen would be stalemate."
+      title="Finish on the edge"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — check and push the king">
+    White to move. Black's king is on **c3**. Use the queen to give **check**
+    and force the king away from the center.
+
+    <Puzzle
+      fen="8/8/8/8/8/2k5/8/1Q6 w - - 0 1"
+      solution={["Qc2+"]}
+      hint="Slide the queen one square to attack the king on c3."
+      title="Push with check"
+    />
+  </Slide>
+
+  <Slide title="Practice board — king and queen vs king">
+    Set up **king + queen vs king** on the analysis board and practice the
+    full method:
+
+    1. Box with the queen
+    2. Walk your king closer
+    3. Push the enemy king to the edge
+    4. Checkmate — check for stalemate first!
+
+    Partner drill: one student calls queen moves, one student calls king
+    moves. Goal: checkmate in under **20** moves.
+
+    <AnalysisBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Next up — ladder mate with two rooks">
+    Queen checkmate uses one piece as a **fence**. Two rooks work the same way
+    — but they team up like **rungs on a ladder**.
+
+    If you have **king + two rooks** vs **king**, you should win every time,
+    just like king and queen. The idea is familiar:
+
+    1. **Cut off** the enemy king
+    2. **Push** it to the edge with coordinated checks
+    3. Deliver **checkmate**
+
+    Many students trade down to two rooks after winning the queen. This
+    pattern finishes those games cleanly.
+  </Slide>
+
+  <Slide title="King + two rooks vs king">
+    Two rooks are worth about as much as a queen — but they checkmate
+    differently. Instead of one queen building a box, the rooks **take turns**
+    giving check and shrinking the king's space.
+
+    Your own king can help at the end (just like queen mate), but two rooks
+    can often force mate on their own once the enemy king is trapped on the
+    back rank or a-file.
+
+    <PieceValue piece="rook" />
+
+    Rule of thumb: **one rook cuts off, both rooks climb the ladder.**
+  </Slide>
+
+  <Slide title="What is ladder mate?">
+    **Ladder mate** means two rooks (or rook + queen) stand on **parallel**
+    ranks or files and **alternate checks**, pushing the enemy king one step
+    closer to the edge each time.
+
+    Think of each check as stepping up one **rung**:
+
+    - One rook gives check from far away
+    - The king sidesteps
+    - The other rook gives check from the same direction
+    - Repeat until the king is on the back rank or **a**-/ **h**-file
+
+    Same goal as queen mate: **limit first, finish second.**
+  </Slide>
+
+  <Slide title="Step 1 — cut off the king (same idea as the queen)">
+    Start by using one rook as a **wall** on a rank or file — exactly like
+    **Qe5** in queen mate.
+
+    Below, White plays **Ra5**. The rook controls the whole **5th rank**.
+    Black's king on **e4** cannot cross to the upper half of the board.
+
+    Cut the king off **before** you start the ladder.
+
+    <ChessBoard fen="8/8/8/R7/4k3/8/8/1R6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Step 2 — build the ladder">
+    Once the king is cut off, place your rooks on **nearby ranks or files**
+    so they can take turns checking.
+
+    They work like fence posts on the same side of the board — one higher,
+    one lower — closing the net with each check.
+
+    Below, both rooks sit on the **5th rank** while Black's king is already
+    trapped on the **8th rank**.
+
+    <ChessBoard fen="8/4k3/8/RR6/8/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Step 3 — alternate checks up the ladder">
+    Each checking rook move pushes the king **one step** toward the edge.
+
+    In the position below, Black's king is on **h6**. White can play **Ra6+**
+    — the rook on **a1** checks from the side and forces the king toward the
+    **8th rank**.
+
+    After the king moves, the other rook checks from a new rung. Climb until
+    the king is cornered.
+
+    <ChessBoard fen="8/8/5k2/8/8/8/8/RR6 w - - 0 1" selectedSquare="a1" />
+  </Slide>
+
+  <Slide title="Ladder mate on the back rank">
+    When the king reaches the back rank, the rooks finish with a final
+    checking move.
+
+    Below, Black's king is on **h8**. White's rooks on **f6** and **g6** are
+    ready. **Rh6#** ends the game — the king cannot escape to **g8** or **g7**.
+
+    Notice both rooks work together on the same side of the king, like the
+    last two rungs of a ladder.
+
+    <ChessBoard fen="7k/8/6R1/6R1/8/8/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — two rooks, starting chase">
+    White has two rooks on **a1** and **b1**. Black's king stands on **e3**.
+    White to move.
+
+    **Plan:** cut off with **Ra5**, then use both rooks to give checking
+    moves that push Black toward the edge.
+
+    <ChessBoard fen="8/8/8/8/8/4k3/8/RR6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — ladder checks in action">
+    A few moves later. Black's king has been driven to **h7**. White's rooks
+    sit on **f3** and **g3**, ready to keep checking and push the king to the
+    **8th rank**.
+
+    The king is climbing the ladder whether it wants to or not.
+
+    <ChessBoard fen="8/6k1/8/8/8/6R1/6R1/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Worked example — ladder mate finished">
+    Black's king is trapped on **h8**. White plays **Rh6#**.
+
+    The rook on **h6** delivers checkmate. The rook on **g6** covers **g7**
+    and **g8**. Same finishing idea as queen mate on the edge — but two
+    rooks split the job.
+
+    <ChessBoard fen="7k/8/7R/6R1/8/8/8/8 b - - 0 1" />
+  </Slide>
+
+  <Slide title="Puzzle — cut off with a rook">
+    White to move. Black's king is on **e4**. Play one rook move that builds
+    a wall on the **5th rank** and limits the king.
+
+    <Puzzle
+      fen="8/8/8/8/4k3/8/8/RR6 w - - 0 1"
+      solution={["Ra5"]}
+      hint="Same idea as Qe5 — control a whole rank with one rook move."
+      title="Rook builds the wall"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — climb one rung">
+    White to move. Black's king is on **h6**. Give **check** with the rook on
+    **a1** and push the king toward the edge.
+
+    <Puzzle
+      fen="8/8/5k2/8/8/8/8/RR6 w - - 0 1"
+      solution={["Ra6+"]}
+      hint="Slide the a-rook up the a-file to attack the king on h6."
+      title="Ladder check"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — deliver ladder mate">
+    White to move. Black's king is on **h8**. Your rooks on **f6** and **g6**
+    are in place. Find **checkmate**.
+
+    <Puzzle
+      fen="7k/8/6R1/6R1/8/8/8/8 w - - 0 1"
+      solution={["Rh6#"]}
+      hint="Move the f-rook to the h-file to give check on the back rank."
+      title="Finish the ladder"
+    />
+  </Slide>
+
+  <Slide title="Practice board — two rooks vs king">
+    Set up **king + two rooks vs king** and practice the full ladder:
+
+    1. Cut off the king with one rook
+    2. Alternate checking moves with both rooks
+    3. Push the king to the back rank or **a**-/ **h**-file
+    4. Deliver checkmate
+
+    Partner drill: one student calls moves for the **a**-rook, one for the
+    **b**-rook. Goal: checkmate in under **25** moves.
+
+    <AnalysisBoard fen="8/8/8/8/8/4k3/8/RR6 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Queen mate vs ladder mate — quick compare">
+    | | **King + queen** | **Two rooks (ladder)** |
+    |---|---|---|
+    | Main tool | One queen builds a **box** | Two rooks **alternate checks** |
+    | King needed? | Yes — for the final mate | Helpful, but rooks often finish alone |
+    | Stalemate risk | High — watch closely | Lower, but still possible |
+    | When you see it | After winning the queen | After trading queen for two rooks |
+
+    Both patterns share the same lesson: **restrict the king, then finish.**
+  </Slide>
+
+  <Slide title="King activity in pawn endgames">
+    When most pieces are traded, **activate your king early**.
+
+    Priority list in king-and-pawn endgames:
+
+    1. **Centralize** the king — toward **e4**, **d4**, **e5**, or **d5**
+    2. Support your **passed pawns**
+    3. Block or capture enemy passed pawns
+    4. Use **opposition** when kings face each other
+
+    The king below on **e3** supports the d-pawn and fights Black's king on
+    **e5**.
+
+    <ChessBoard fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Passed pawns — pawns that can run">
+    A **passed pawn** has no enemy pawn blocking it on its own file or the
+    files on either side. It can march toward promotion if the king supports
+    it.
+
+    Passed pawns are endgame **threats**. Even if they are far from promotion,
+    they force the enemy king to react.
+
+    Below, White's **d4** pawn is passed — nothing stops it from running to
+    **d8** except Black's king.
+
+    <ChessBoard
+      fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1"
+      highlights={["d4", "d5", "d6", "d7", "d8"]}
+    />
+  </Slide>
+
+  <Slide title="Opposition — kings face to face">
+    When two kings stand on the same rank, file, or diagonal with **one
+    square** between them, the side **not** to move often controls the key
+    squares in front.
+
+    That is **opposition**. It shows up constantly in king-and-pawn endings.
+
+    Below, if it is Black's turn, White's king on **e4** controls **d5** and
+    **f5** — Black may have to give ground.
+
+    <ChessBoard fen="8/8/8/3k4/3K4/8/8/8 b - - 0 1" />
+  </Slide>
+
+  <Slide title="The square rule — can the king catch the pawn?">
+    Draw an imaginary **square** from a pawn to its promotion square. If the
+    **enemy king can step inside that square** on its turn, it can usually
+    catch the pawn. If the king stays **outside**, the pawn often promotes.
+
+    Fast visual check before a pawn race — no deep calculation needed.
+
+    Count diagonally from the pawn to the promotion square. That box tells
+    you whether the chase is winning or losing.
+  </Slide>
+
+  <Slide title="Square rule — winning pawn race">
+    White's pawn on **d3** is racing. Black's king on **e2** looks close — but
+    count the square from **d3** to **d8**.
+
+    If the king cannot enter that square in time, **push the pawn** and
+    promote.
+
+    <ChessBoard fen="8/8/8/8/8/3P4/4k4/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Square rule — king catches the pawn">
+    Same idea, different result. Black's king on **b4** steps into the pawn's
+    promotion square in time. The pawn on **d4** will **not** promote if
+    White pushes it now.
+
+    Before you push a passed pawn, ask: **"Can the enemy king enter the
+    square?"**
+
+    <ChessBoard fen="8/8/8/8/1k6/3P4/8/8 w - - 0 1" />
+  </Slide>
+
+  <Slide title="Puzzle — use opposition">
+    White to move. Black's king wants to reach **d6** and stop your pawn. Use
+    **opposition** — step in front of the enemy king so Black must give way.
+
+    <Puzzle
+      fen="8/8/8/3k4/3P4/3K4/8/8 w - - 0 1"
+      solution={["Ke3"]}
+      hint="Mirror the enemy king on the next rank. Take the e4 square in front of Black's king."
+      title="Take the opposition"
+    />
+  </Slide>
+
+  <Slide title="Puzzle — push the passed pawn">
+    White to move. Your king supports the pawn on **d4**. Black's king is too
+    far away — push the pawn and win the race.
+
+    <Puzzle
+      fen="8/8/8/8/8/3P4/4k4/8 w - - 0 1"
+      solution={["d4"]}
+      hint="If the enemy king cannot enter the promotion square, advance the pawn."
+      title="Win the pawn race"
+    />
+  </Slide>
+
+  <Slide title="Endgame checklist">
+    Use this in games and practice this week:
+
+    **When you are up material:**
+
+    - Do I have a **plan** to checkmate, not just random checks?
+    - With a queen: am I **shrinking the box**?
+    - With two rooks: am I **climbing the ladder** with alternating checks?
+    - Am I avoiding **stalemate**?
+    - Is my **king** helping, not sitting on the back rank?
+
+    **In pawn endgames:**
+
+    - Is my king **centralized**?
+    - Do I have a **passed pawn**?
+    - Can the enemy king enter the pawn's **promotion square**?
+    - Can I take **opposition**?
+  </Slide>
+
+  <Slide title="This week's challenge">
+    **King + queen drill:** Practice queen checkmate until you can do it in
+    **under 20 moves** without stalemating.
+
+    **Two-rook ladder drill:** Set up king + two rooks vs king and practice
+    ladder mate until you can checkmate in **under 25 moves**.
+
+    **Play two games** this week. If you win the opponent's queen, your goal
+    is to **checkmate** — not just keep capturing pawns. If you trade to two
+    rooks, use the **ladder**.
+
+    **Bonus:** Explain to a partner the difference between shrinking the box
+    (queen) and climbing the ladder (two rooks).
   </Slide>
 </SlideDeck>
