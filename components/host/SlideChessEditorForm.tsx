@@ -214,13 +214,16 @@ export function SlideChessEditorForm({
               onChange={(e) =>
                 setBlockType(e.target.value as SlideChessBlockType)
               }
-              disabled={Boolean(initial)}
               className="focus-ring mt-1 w-full rounded-md border border-black/10 px-3 py-2"
             >
               <option value="puzzle">Puzzle (solve-a-line)</option>
               <option value="display-board">Display board (teaching)</option>
               <option value="analysis-board">Analysis board (free play)</option>
             </select>
+            <span className="mt-1 block text-xs text-buckeye-gray">
+              You can change the type anytime. The lesson renders from this
+              setting — you do not need to edit MDX when switching types.
+            </span>
           </label>
           <label className="block text-sm sm:col-span-2">
             <span className="font-medium">Slide label</span>
@@ -245,7 +248,7 @@ export function SlideChessEditorForm({
               required
             />
             <span className="mt-1 block text-xs text-buckeye-gray">
-              Reference in MDX:{" "}
+              MDX reference (any tag works once the slug matches):{" "}
               <code className="rounded bg-black/5 px-1">
                 {blockType === "puzzle"
                   ? `<SlidePuzzle slug="${slug || "your-slug"}" />`
