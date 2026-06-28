@@ -41,7 +41,7 @@
     - The king walks toward the center and supports pawns
     - One small mistake can turn a win into a draw — or a loss
 
-    <ChessBoard fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-king-pawn-intro-board" />
   </Slide>
 
   <Slide title="Why endgames matter for beginners">
@@ -68,7 +68,7 @@
     3. Push the enemy king to the **edge** of the board
     4. Deliver **checkmate** — without stalemating
 
-    <ChessBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+    <SlideBoard slug="endgame1-queen-finish-board" />
   </Slide>
 
   <Slide title="King + Queen vs King — the big picture">
@@ -104,7 +104,7 @@
     When you push a king to the edge, leave it one escape square until you
     are ready to give **checkmate**.
 
-    <ChessBoard fen="7k/6Q1/6K1/8/8/8/8/8 b - - 0 1" />
+    <SlideBoard slug="endgame1-stalemate-trap-board" />
   </Slide>
 
   <Slide title="Correct checkmate on the edge">
@@ -116,7 +116,7 @@
     Notice: the queen is **not** right next to the enemy king on **g7** (that
     was the stalemate square). **f7** checks and covers **g8**.
 
-    <ChessBoard fen="7k/5Q2/6K1/8/8/8/8/8 b - - 0 1" />
+    <SlideBoard slug="endgame1-mate-on-edge-board" />
   </Slide>
 
   <Slide title="Step 1 — shrink the box with your queen">
@@ -132,10 +132,7 @@
     After each queen move that shrinks the box, look for a safe **king** move
     that steps toward the action.
 
-    <ChessBoard
-      fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1"
-      highlights={["e4", "d4", "e5", "d5", "c4", "c5"]}
-    />
+    <SlideBoard slug="endgame1-queen-shrink-box-board" />
   </Slide>
 
   <Slide title="Step 1 in action — cut the king off">
@@ -146,7 +143,7 @@
     This is the first step in almost every king-and-queen win: **limit the
     king's territory**.
 
-    <ChessBoard fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1" selectedSquare="a1" />
+    <SlideBoard slug="endgame1-queen-cutoff-demo-board" />
   </Slide>
 
   <Slide title="Step 2 — walk your king forward">
@@ -158,7 +155,7 @@
     In the position below, White's king on **c3** supports the finish while
     the queen on **c5** keeps Black boxed in on **c8**.
 
-    <ChessBoard fen="2k5/8/8/2Q5/8/2K5/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-queen-king-walk-board" />
   </Slide>
 
   <Slide title="Step 3 — push the king to the edge">
@@ -171,7 +168,7 @@
     Below, Black's king is trapped on the **a**-file edge. White's queen and
     king work together to close the net.
 
-    <ChessBoard fen="k7/8/8/8/8/1K6/1Q6/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-queen-push-edge-board" />
   </Slide>
 
   <Slide title="Worked example — starting position">
@@ -183,7 +180,7 @@
     Try tracing the idea on the board: where would you play **Qd4** or **Qe5**
     to limit the black king on **f3**?
 
-    <ChessBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+    <SlideBoard slug="endgame1-queen-example-start-board" />
   </Slide>
 
   <Slide title="Worked example — middle of the chase">
@@ -193,7 +190,7 @@
     The queen keeps shrinking the box. The white king keeps marching. Black
     has fewer escape squares every turn.
 
-    <ChessBoard fen="8/8/5k2/8/8/2K5/2Q4/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-queen-example-middle-board" />
   </Slide>
 
   <Slide title="Worked example — ready to mate">
@@ -203,55 +200,35 @@
     Black's king on **h8** cannot capture on **g8** (protected), cannot go to
     **g7** or **h7**, and is in check.
 
-    <ChessBoard fen="6k1/6Q1/6K1/8/8/8/8/8 b - - 0 1" />
+    <SlideBoard slug="endgame1-queen-example-mate-board" />
   </Slide>
 
   <Slide title="Puzzle — cut off the king">
     White to move. Black's king is on **e4**. Play one queen move that builds
     a wall and limits how far the king can run.
 
-    <Puzzle
-      fen="8/8/8/8/4k3/8/8/QK6 w - - 0 1"
-      solution={["Qe5"]}
-      hint="Place the queen on the same file or rank as the enemy king, one step closer to the center."
-      title="Shrink the box"
-    />
+    <SlidePuzzle slug="endgame1-queen-cutoff-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — step your king closer">
     White to move. The queen already boxes Black's king on **c8**. Your king
     on **b2** should march forward to help finish the game.
 
-    <Puzzle
-      fen="2k5/8/8/2Q5/8/1K6/8/8 w - - 0 1"
-      solution={["Kc3"]}
-      hint="Walk toward the enemy king. You do not need to rush — one safe step is enough."
-      title="King marches forward"
-    />
+    <SlidePuzzle slug="endgame1-queen-king-walk-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — deliver checkmate">
     White to move. Black's king is on **h8**. Your queen on **f2** and king on
     **g6** are ready. Find **checkmate** — not stalemate!
 
-    <Puzzle
-      fen="7k/8/6K1/8/8/5Q2/8 w - - 0 1"
-      solution={["Qf7"]}
-      hint="Give check on the f-file. Landing on g7 with the queen would be stalemate."
-      title="Finish on the edge"
-    />
+    <SlidePuzzle slug="endgame1-queen-deliver-mate-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — check and push the king">
     White to move. Black's king is on **c3**. Use the queen to give **check**
     and force the king away from the center.
 
-    <Puzzle
-      fen="8/8/8/8/8/2k5/8/1Q6 w - - 0 1"
-      solution={["Qc2+"]}
-      hint="Slide the queen one square to attack the king on c3."
-      title="Push with check"
-    />
+    <SlidePuzzle slug="endgame1-queen-push-check-puzzle" />
   </Slide>
 
   <Slide title="Practice board — king and queen vs king">
@@ -266,7 +243,7 @@
     Partner drill: one student calls queen moves, one student calls king
     moves. Goal: checkmate in under **20** moves.
 
-    <AnalysisBoard fen="8/8/8/8/8/5k2/8/QK6 w - - 0 1" />
+    <SlideAnalysis slug="endgame1-queen-practice-board" />
   </Slide>
 
   <Slide title="Next up — ladder mate with two rooks">
@@ -322,7 +299,7 @@
 
     Cut the king off **before** you start the ladder.
 
-    <ChessBoard fen="8/8/8/R7/4k3/8/8/1R6 w - - 0 1" />
+    <SlideBoard slug="endgame1-rook-cutoff-board" />
   </Slide>
 
   <Slide title="Step 2 — build the ladder">
@@ -335,7 +312,7 @@
     Below, both rooks sit on the **5th rank** while Black's king is already
     trapped on the **8th rank**.
 
-    <ChessBoard fen="8/4k3/8/RR6/8/8/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-rook-ladder-build-board" />
   </Slide>
 
   <Slide title="Step 3 — alternate checks up the ladder">
@@ -348,7 +325,7 @@
     After the king moves, the other rook checks from a new rung. Climb until
     the king is cornered.
 
-    <ChessBoard fen="8/8/5k2/8/8/8/8/RR6 w - - 0 1" selectedSquare="a1" />
+    <SlideBoard slug="endgame1-rook-ladder-check-board" />
   </Slide>
 
   <Slide title="Ladder mate on the back rank">
@@ -361,7 +338,7 @@
     Notice both rooks work together on the same side of the king, like the
     last two rungs of a ladder.
 
-    <ChessBoard fen="7k/8/6R1/6R1/8/8/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-rook-ladder-mate-demo-board" />
   </Slide>
 
   <Slide title="Worked example — two rooks, starting chase">
@@ -371,7 +348,7 @@
     **Plan:** cut off with **Ra5**, then use both rooks to give checking
     moves that push Black toward the edge.
 
-    <ChessBoard fen="8/8/8/8/8/4k3/8/RR6 w - - 0 1" />
+    <SlideBoard slug="endgame1-rook-example-start-board" />
   </Slide>
 
   <Slide title="Worked example — ladder checks in action">
@@ -381,7 +358,7 @@
 
     The king is climbing the ladder whether it wants to or not.
 
-    <ChessBoard fen="8/6k1/8/8/8/6R1/6R1/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-rook-example-middle-board" />
   </Slide>
 
   <Slide title="Worked example — ladder mate finished">
@@ -391,43 +368,28 @@
     and **g8**. Same finishing idea as queen mate on the edge — but two
     rooks split the job.
 
-    <ChessBoard fen="7k/8/7R/6R1/8/8/8/8 b - - 0 1" />
+    <SlideBoard slug="endgame1-rook-example-finished-board" />
   </Slide>
 
   <Slide title="Puzzle — cut off with a rook">
     White to move. Black's king is on **e4**. Play one rook move that builds
     a wall on the **5th rank** and limits the king.
 
-    <Puzzle
-      fen="8/8/8/8/4k3/8/8/RR6 w - - 0 1"
-      solution={["Ra5"]}
-      hint="Same idea as Qe5 — control a whole rank with one rook move."
-      title="Rook builds the wall"
-    />
+    <SlidePuzzle slug="endgame1-rook-cutoff-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — climb one rung">
     White to move. Black's king is on **h6**. Give **check** with the rook on
     **a1** and push the king toward the edge.
 
-    <Puzzle
-      fen="8/8/5k2/8/8/8/8/RR6 w - - 0 1"
-      solution={["Ra6+"]}
-      hint="Slide the a-rook up the a-file to attack the king on h6."
-      title="Ladder check"
-    />
+    <SlidePuzzle slug="endgame1-rook-ladder-check-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — deliver ladder mate">
     White to move. Black's king is on **h8**. Your rooks on **f6** and **g6**
     are in place. Find **checkmate**.
 
-    <Puzzle
-      fen="7k/8/6R1/6R1/8/8/8/8 w - - 0 1"
-      solution={["Rh6#"]}
-      hint="Move the f-rook to the h-file to give check on the back rank."
-      title="Finish the ladder"
-    />
+    <SlidePuzzle slug="endgame1-rook-ladder-mate-puzzle" />
   </Slide>
 
   <Slide title="Practice board — two rooks vs king">
@@ -441,7 +403,7 @@
     Partner drill: one student calls moves for the **a**-rook, one for the
     **b**-rook. Goal: checkmate in under **25** moves.
 
-    <AnalysisBoard fen="8/8/8/8/8/4k3/8/RR6 w - - 0 1" />
+    <SlideAnalysis slug="endgame1-rook-practice-board" />
   </Slide>
 
   <Slide title="Queen mate vs ladder mate — quick compare">
@@ -468,7 +430,7 @@
     The king below on **e3** supports the d-pawn and fights Black's king on
     **e5**.
 
-    <ChessBoard fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-king-activity-board" />
   </Slide>
 
   <Slide title="Passed pawns — pawns that can run">
@@ -482,10 +444,7 @@
     Below, White's **d4** pawn is passed — nothing stops it from running to
     **d8** except Black's king.
 
-    <ChessBoard
-      fen="8/8/4k3/3p4/3P4/4K3/8/8 w - - 0 1"
-      highlights={["d4", "d5", "d6", "d7", "d8"]}
-    />
+    <SlideBoard slug="endgame1-passed-pawn-board" />
   </Slide>
 
   <Slide title="Opposition — kings face to face">
@@ -498,7 +457,7 @@
     Below, if it is Black's turn, White's king on **e4** controls **d5** and
     **f5** — Black may have to give ground.
 
-    <ChessBoard fen="8/8/8/3k4/3K4/8/8/8 b - - 0 1" />
+    <SlideBoard slug="endgame1-opposition-board" />
   </Slide>
 
   <Slide title="The square rule — can the king catch the pawn?">
@@ -519,7 +478,7 @@
     If the king cannot enter that square in time, **push the pawn** and
     promote.
 
-    <ChessBoard fen="8/8/8/8/8/3P4/4k4/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-square-rule-win-board" />
   </Slide>
 
   <Slide title="Square rule — king catches the pawn">
@@ -530,31 +489,21 @@
     Before you push a passed pawn, ask: **"Can the enemy king enter the
     square?"**
 
-    <ChessBoard fen="8/8/8/8/1k6/3P4/8/8 w - - 0 1" />
+    <SlideBoard slug="endgame1-square-rule-lose-board" />
   </Slide>
 
   <Slide title="Puzzle — use opposition">
     White to move. Black's king wants to reach **d6** and stop your pawn. Use
     **opposition** — step in front of the enemy king so Black must give way.
 
-    <Puzzle
-      fen="8/8/8/3k4/3P4/3K4/8/8 w - - 0 1"
-      solution={["Ke3"]}
-      hint="Mirror the enemy king on the next rank. Take the e4 square in front of Black's king."
-      title="Take the opposition"
-    />
+    <SlidePuzzle slug="endgame1-opposition-puzzle" />
   </Slide>
 
   <Slide title="Puzzle — push the passed pawn">
     White to move. Your king supports the pawn on **d4**. Black's king is too
     far away — push the pawn and win the race.
 
-    <Puzzle
-      fen="8/8/8/8/8/3P4/4k4/8 w - - 0 1"
-      solution={["d4"]}
-      hint="If the enemy king cannot enter the promotion square, advance the pawn."
-      title="Win the pawn race"
-    />
+    <SlidePuzzle slug="endgame1-push-pawn-puzzle" />
   </Slide>
 
   <Slide title="Endgame checklist">
